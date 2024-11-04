@@ -4,6 +4,7 @@ import CommonForm from "../../components/common/form";
 import { loginFormControls } from "@/components/config";
 import { useDispatch, useSelector } from "react-redux";
 import { useToast } from "../../hooks/use-toast";
+import { login } from "@/store/auth-slice";
 
 const initialState = {
   email: "",
@@ -19,8 +20,19 @@ const AuthLogin = () => {
 
   const onSubmit = async (event) => {
     event.preventDefault();
-    console.log("Form Data", formData);
-    navigate("/");
+
+    dispatch(login(formData)).then((res) => {
+      if (res?.payload?.status) {
+        toast({title: res.message || "Login successful",});
+        navigate("/employee/dashboard");
+      } else {
+        toast({
+          variant: "destructive",
+          title: "Login failed",
+          description: res?.payload?.message || res?.error?.message || "",
+        });
+      }
+    });
     return;
   };
 
@@ -28,7 +40,7 @@ const AuthLogin = () => {
     <div className="mx-auto w-full max-w-md space-y-6 bg-yellow-500">
       <div className="text-center">
         <h1 className="sm:text-3xl text-2xl font-bold tracking-tight text-primary">
-          Sign in to ATPL Dhaka MMS
+          Sign in to ATPL Dhaka
         </h1>
         <p className="mt-2">
           Don't have an account?

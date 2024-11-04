@@ -11,7 +11,6 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Separator } from "@/components/ui/separator";
-import { menus } from "@/components/config";
 
 const Home = () => {
   const [date, setDate] = useState({
@@ -22,22 +21,7 @@ const Home = () => {
   return (
     <div className="flex flex-col space-y-6 flex-1">
       <div className="flex flex-wrap gap-6 p-6">
-        <div className="bg-background rounded-lg shadow-md p-4 space-y-2">
-          <h1 className="font-bold text-lg">Menus</h1>
-          {/* <Separator /> */}
-          {menus.map((menu) => (
-            <Fragment key={menu.day}>
-              <Separator />
-              <div className="flex items-center">
-                <div className="w-28 font-semibold">{menu.day} :</div>
-                <div>
-                  <div>{menu.items.join(", ")}</div>
-                  <div>{menu.time}</div>
-                </div>
-              </div>
-            </Fragment>
-          ))}
-        </div>
+        
         <div className="grid gap-2">
           <Popover>
             <PopoverTrigger asChild>
