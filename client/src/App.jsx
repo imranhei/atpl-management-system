@@ -8,6 +8,7 @@ import UserLayout from "./components/user-view/layout";
 import Home from "./pages/user-view/home";
 import Meal from "./pages/user-view/meal";
 import EmployeeLeave from "./pages/user-view/leave";
+import EmployeeSetting from "./pages/user-view/setting";
 import { useDispatch, useSelector } from "react-redux";
 import { checkAuth } from "./store/auth-slice";
 import { LoaderCircle } from "lucide-react";
@@ -75,6 +76,7 @@ function App() {
           <Route path="dashboard" element={<Home />} />
           <Route path="meal" element={<Meal />} />
           <Route path="leave" element={<EmployeeLeave />} />
+          <Route path="setting" element={<EmployeeSetting />} />
           {/* <Route path="contact" element={<Contact />} /> */}
         </Route>
       </Routes>

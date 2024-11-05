@@ -3,8 +3,8 @@ const DefaultOrder = require("../../models/DefaultOrder");
 // Create a new default order
 const createDefaultOrder = async (req, res) => {
   try {
-    const { name, meal } = req.body;
-    const newDefaultOrder = new DefaultOrder({ name, meal });
+    const { name, emp_id, meal } = req.body;
+    const newDefaultOrder = new DefaultOrder({ name, emp_id, meal });
     await newDefaultOrder.save();
     return res
       .status(201)
@@ -21,8 +21,9 @@ const createDefaultOrder = async (req, res) => {
 // Get all default orders
 const getDefaultOrders = async (req, res) => {
   try {
-    const defaultOrders = await DefaultOrder.find();
-    return res.status(200).json({ success: true, defaultOrders });
+    const { id } = req.params;
+    const defaultOrders = await DefaultOrder.findOne({ emp_id: id });
+    return res.status(200).json({ success: true, data: defaultOrders });
   } catch (error) {
     return res.status(500).json({
       success: false,
@@ -42,7 +43,7 @@ const getDefaultOrder = async (req, res) => {
         .status(404)
         .json({ success: false, message: "Default order not found" });
     }
-    return res.status(200).json({ success: true, defaultOrder });
+    return res.status(200).json({ success: true, data: defaultOrder });
   } catch (error) {
     return res.status(500).json({
       success: false,
@@ -79,33 +80,9 @@ const updateDefaultOrder = async (req, res) => {
   }
 };
 
-// Delete default order
-const deleteDefaultOrder = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const defaultOrder = await DefaultOrder.findById(id);
-    if (!defaultOrder) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Default order not found" });
-    }
-    await defaultOrder.remove();
-    return res
-      .status(200)
-      .json({ success: true, message: "Default order deleted successfully" });
-  } catch (error) {
-    return res.status(500).json({
-      success: false,
-      error: error.message,
-      message: "Failed to delete default order",
-    });
-  }
-};
-
 module.exports = {
   createDefaultOrder,
   getDefaultOrders,
   getDefaultOrder,
   updateDefaultOrder,
-  deleteDefaultOrder,
 };

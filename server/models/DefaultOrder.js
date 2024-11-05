@@ -6,6 +6,11 @@ const defaultOrderSchema = new mongoose.Schema({
     required: true,
     trim: true,
   },
+  emp_id: {
+    type: String,
+    required: true,
+    trim: true,
+  },
   meal: {
     type: Map,
     of: mongoose.Schema.Types.Mixed,

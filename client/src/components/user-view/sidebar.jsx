@@ -61,13 +61,13 @@ const adminSidebarMenuItems = [
   {
     id: "settings",
     label: "Settings",
-    path: "/admin/profile",
+    path: "/employee/setting",
     icon: <Settings size={20} />,
     submenu: [
       {
         id: "profile",
         label: "Profile",
-        path: "/admin/profile",
+        path: "/employee/setting",
         icon: <CircleUser size={20} />,
       },
     ],
