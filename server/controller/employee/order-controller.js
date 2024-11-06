@@ -3,8 +3,8 @@ const Order = require("../../models/Order");
 // Create a new order
 const createOrder = async (req, res) => {
   try {
-    const { name, date, meal } = req.body;
-    const newOrder = new Order({ name, date, meal });
+    const { name, emp_id, date, meal } = req.body;
+    const newOrder = new Order({ name, emp_id, date, meal });
     await newOrder.save();
     return res
       .status(201)
@@ -55,19 +55,37 @@ const getOrder = async (req, res) => {
 // get orders by date
 const getOrdersByDate = async (req, res) => {
   try {
-    const { date } = req.params;
-    const orders = await Order.find({
+    const { emp_id } = req.params;
+    const startOfDay = new Date();
+    startOfDay.setHours(0, 0, 0, 0);
+
+    const endOfDay = new Date();
+    endOfDay.setHours(23, 59, 59, 999);
+
+    const order = await Order.findOne({
+      emp_id: emp_id,
       date: {
-        $gte: new Date(date),
-        $lt: new Date(date + "T23:59:59.999Z"),
+        $gte: startOfDay,
+        $lt: endOfDay,
       },
     });
-    return res.status(200).json({ success: true, orders });
+
+    if (!order) {
+      return res.status(404).json({
+        success: false,
+        message: "No order found for today",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: order,
+    });
   } catch (error) {
     return res.status(500).json({
       success: false,
       error: error.message,
-      message: "Failed to get orders",
+      message: "Failed to get today's order",
     });
   }
 };
@@ -76,16 +94,15 @@ const getOrdersByDate = async (req, res) => {
 const updateOrder = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, date, meal } = req.body;
+    const { meal, date } = req.body;
     const order = await Order.findById(id);
     if (!order) {
       return res
         .status(404)
         .json({ success: false, message: "Order not found" });
     } else {
-      order.name = name;
-      order.date = date;
-      order.meal = meal;
+      order.date = date || order.date;
+      order.meal = meal || order.meal;
       await order.save();
       return res
         .status(200)

@@ -13,7 +13,7 @@ const router = express.Router();
 router.post("/create", createOrder);
 router.get("/get", getOrders);
 router.get("/get/:id", getOrder);
-router.get("/get-by-date/:date", getOrdersByDate);
+router.get("/get-by-date/:emp_id", getOrdersByDate);
 router.put("/update/:id", updateOrder);
 router.delete("/delete/:id", deleteOrder);
 

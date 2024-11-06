@@ -6,6 +6,10 @@ const orderSchema = new mongoose.Schema({
     required: true,
     trim: true,
   },
+  emp_id: {
+    type: String,
+    required: true,
+  },
   date: {
     type: Date,
     required: true,

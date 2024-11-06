@@ -57,20 +57,30 @@ const getDefaultOrder = async (req, res) => {
 const updateDefaultOrder = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, meal } = req.body;
+    const { meal } = req.body;
+
+    if (!meal || typeof meal !== 'object') {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid meal data",
+      });
+    }
+
     const defaultOrder = await DefaultOrder.findByIdAndUpdate(
       id,
-      { name, meal },
-      { new: true }
+      { meal },
+      { new: true, runValidators: true } // Return updated document and run validators
     );
+
     if (!defaultOrder) {
       return res
         .status(404)
         .json({ success: false, message: "Default order not found" });
     }
+    
     return res
       .status(200)
-      .json({ success: true, message: "Default order updated successfully" });
+      .json({ success: true, message: "Default order updated successfully", data: defaultOrder });
   } catch (error) {
     return res.status(500).json({
       success: false,
