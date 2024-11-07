@@ -6,6 +6,7 @@ const initialState = {
   order: {},
   defaultMeal: {},
   id: null,
+  orders: [],
 };
 
 export const fetchDefaultMeal = createAsyncThunk(
@@ -39,6 +40,13 @@ export const updateDefaultMeal = createAsyncThunk(
     return response.data;
   }
 );
+
+export const getAllOrder = createAsyncThunk("menu/getAllOrder", async (id) => {
+  const response = await axios.get(
+    `${import.meta.env.VITE_API_URL_MONGO}/api/order/get-all-order/${id}`
+  );
+  return response.data;
+});
 
 export const getTodayOrder = createAsyncThunk(
   "menu/getTodayOrder",
@@ -99,6 +107,17 @@ const menuSlice = createSlice({
       .addCase(getTodayOrder.rejected, (state) => {
         state.order = {};
         state.isLoading = false;
+      })
+      .addCase(getAllOrder.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getAllOrder.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.orders = action.payload.data;
+      })
+      .addCase(getAllOrder.rejected, (state) => {
+        state.isLoading = false;
+        state.orders = [];
       });
   },
 });

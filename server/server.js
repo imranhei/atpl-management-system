@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const cors = require("cors");
+const startCronJobs = require("./cornJobs");
 // const cookieParser = require('cookie-parser');
 
 const authRoutes = require("./routes/auth/auth-routes");
@@ -47,6 +48,8 @@ app.use("/api/auth", authRoutes);
 app.use("/api/default-order", defaultOrderRoutes);
 app.use("/api/order", orderRoutes);
 app.use("/api/menu", menuRoutes);
+
+startCronJobs();
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

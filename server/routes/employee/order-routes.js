@@ -11,7 +11,7 @@ const {
 const router = express.Router();
 
 router.post("/create", createOrder);
-router.get("/get", getOrders);
+router.get("/get-all-order/:id", getOrders);
 router.get("/get/:id", getOrder);
 router.get("/get-by-date/:emp_id", getOrdersByDate);
 router.put("/update/:id", updateOrder);

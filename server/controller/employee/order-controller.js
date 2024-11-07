@@ -21,8 +21,9 @@ const createOrder = async (req, res) => {
 // Get all orders
 const getOrders = async (req, res) => {
   try {
-    const orders = await Order.find();
-    return res.status(200).json({ success: true, orders });
+    const { id } = req.params;
+    const orders = await Order.find({ emp_id: id });
+    return res.status(200).json({ success: true, data: orders });
   } catch (error) {
     return res.status(500).json({
       success: false,

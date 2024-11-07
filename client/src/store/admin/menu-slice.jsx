@@ -7,7 +7,7 @@ const initialState = {
 };
 
 export const fetchMenu = createAsyncThunk("menu/fetchMenu", async () => {
-  const response = await axios.get(`https://atpl-dhaka-server.vercel.app/api/menu/get`);
+  const response = await axios.get(`${import.meta.env.VITE_API_URL_MONGO}/api/menu/get`);
   return response.data;
 });
 
@@ -44,16 +44,13 @@ const menuSlice = createSlice({
     builder
       .addCase(fetchMenu.pending, (state) => {
         state.isLoading = true;
-        console.log("fetchMenu.pending");
       })
       .addCase(fetchMenu.fulfilled, (state, action) => {
         state.isLoading = false;
         state.menu = action.payload.data.meal;
-        console.log("fetchMenu.fulfilled");
       })
       .addCase(fetchMenu.rejected, (state) => {
         state.isLoading = false;
-        console.log("fetchMenu.rejected");
       });
   },
 });
