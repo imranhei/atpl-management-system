@@ -59,7 +59,7 @@ const updateDefaultOrder = async (req, res) => {
     const { id } = req.params;
     const { meal } = req.body;
 
-    if (!meal || typeof meal !== 'object') {
+    if (!meal || typeof meal !== "object") {
       return res.status(400).json({
         success: false,
         message: "Invalid meal data",
@@ -77,10 +77,14 @@ const updateDefaultOrder = async (req, res) => {
         .status(404)
         .json({ success: false, message: "Default order not found" });
     }
-    
+
     return res
       .status(200)
-      .json({ success: true, message: "Default order updated successfully", data: defaultOrder });
+      .json({
+        success: true,
+        message: "Default order updated successfully",
+        data: defaultOrder,
+      });
   } catch (error) {
     return res.status(500).json({
       success: false,

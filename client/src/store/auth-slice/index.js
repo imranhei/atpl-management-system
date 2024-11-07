@@ -12,7 +12,7 @@ const initialState = {
 export const login = createAsyncThunk("auth/login", async (data) => {
   try {
     const response = await axios.post(
-      `${import.meta.env.VITE_API_URL}/login`,
+      `${import.meta.env.VITE_API_URL}/api/login`,
       data
     );
     return response.data;
@@ -23,7 +23,7 @@ export const login = createAsyncThunk("auth/login", async (data) => {
 
 export const checkAuth = createAsyncThunk("/auth/checkauth", async (token) => {
   const response = await axios.get(
-    `${import.meta.env.VITE_API_URL}/profile`,
+    `${import.meta.env.VITE_API_URL}/api/profile`,
     {
       headers: {
         Authorization: `Bearer ${token}`,
