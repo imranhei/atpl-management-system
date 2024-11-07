@@ -3,9 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchDefaultMeal, getTodayOrder } from "@/store/employee/meal-slice";
 import { fetchMenu } from "@/store/admin/menu-slice";
 import DefaultOrderTable from "./defaultOrderTable";
-import TodayOrderTable from "./TodayOrderTable";
-import OrderDialogForm from "./OrderDialogForm";
-import DefaultOrderDialogForm from "./DefaultOrderDialogForm";
+import TodayOrderTable from "./todayOrderTable";
+import OrderDialogForm from "./orderDialogForm";
+import DefaultOrderDialogForm from "./defaultOrderDialogForm";
 import { Separator } from "../ui/separator";
 
 const EmployeeOrder = () => {

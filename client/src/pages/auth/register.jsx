@@ -61,7 +61,7 @@ const AuthResgister = () => {
       });
       return;
     }
-    return
+    return;
 
     dispatch(registerUser(formData)).then((data) => {
       if (data?.payload && data?.payload?.success) {
