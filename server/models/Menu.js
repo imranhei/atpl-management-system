@@ -7,14 +7,17 @@ const menuSchema = new mongoose.Schema({
       quantity: {
         type: Number,
         required: false,
+        default: undefined, // Only add when explicitly provided
       },
       variant: {
         type: [String],
         required: false,
+        default: undefined, // Only add when explicitly provided
       },
       price: {
         type: Number,
         required: false,
+        default: undefined, // Only add when explicitly provided
       },
     }),
     required: true,

@@ -51,10 +51,9 @@ const EmployeeSetting = () => {
     e.preventDefault();
     const mealData = {
       itemName: formData.itemName,
-      quantity: formData.quantity ? parseInt(formData.quantity, 10) : undefined,
-      variant:
-        formData.variantsList.length > 0 ? formData.variantsList : undefined,
-      price: formData.price ? parseFloat(formData.price) : undefined,
+      ...(formData.quantity ? { quantity: parseInt(formData.quantity, 10) } : {}),
+      ...(formData.variantsList.length > 0 ? { variant: formData.variantsList } : {}),
+      ...(formData.price ? { price: parseFloat(formData.price) } : {}),
     };
 
     if (editMode) {

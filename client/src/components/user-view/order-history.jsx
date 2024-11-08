@@ -50,7 +50,7 @@ const EmployeeOrderHistory = () => {
               <TableCell>{new Date(order.date).toLocaleDateString()}</TableCell>
               {allOrder.map((item) => (
                 <React.Fragment key={item}>
-                  <TableCell>{order.meal[item]?.quantity || "-"}</TableCell>
+                  <TableCell>{order.meal[item]?.quantity || "1"}</TableCell>
                   <TableCell>{order.meal[item]?.variant || "-"}</TableCell>
                 </React.Fragment>
               ))}

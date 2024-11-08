@@ -21,6 +21,18 @@ export const login = createAsyncThunk("auth/login", async (data) => {
   }
 });
 
+export const registerUser = createAsyncThunk("/auth/register", async (data) => {
+  try {
+    const response = await axios.post(
+      `${import.meta.env.VITE_API_URL}/api/register`,
+      data
+    );
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+});
+
 export const checkAuth = createAsyncThunk("/auth/checkauth", async (token) => {
   const response = await axios.get(
     `${import.meta.env.VITE_API_URL}/api/profile`,
@@ -60,22 +72,32 @@ const authSlice = createSlice({
         sessionStorage.setItem("token", JSON.stringify(action.payload.token));
       }
     });
-    builder.addCase(login.rejected, (state) => {
-      state.isLoading = false;
-    })
-    .addCase(checkAuth.pending, (state) => {
-      state.isLoadingAuth = true;
-    })
-    .addCase(checkAuth.fulfilled, (state, action) => {
-      state.isLoadingAuth = false;
-      state.user = !action.payload?.status ? null : action.payload?.data;
-      state.isAuthenticated = action.payload?.status;
-    })
-    .addCase(checkAuth.rejected, (state) => {
-      state.isLoadingAuth = false;
-      state.user = null;
-      state.isAuthenticated = false;
-    });
+    builder
+      .addCase(login.rejected, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(checkAuth.pending, (state) => {
+        state.isLoadingAuth = true;
+      })
+      .addCase(checkAuth.fulfilled, (state, action) => {
+        state.isLoadingAuth = false;
+        state.user = !action.payload?.status ? null : action.payload?.data;
+        state.isAuthenticated = action.payload?.status;
+      })
+      .addCase(checkAuth.rejected, (state) => {
+        state.isLoadingAuth = false;
+        state.user = null;
+        state.isAuthenticated = false;
+      })
+      .addCase(registerUser.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(registerUser.fulfilled, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(registerUser.rejected, (state) => {
+        state.isLoading = false;
+      });
   },
 });
 

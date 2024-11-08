@@ -30,6 +30,7 @@ const addMenu = async (req, res) => {
 const getMenu = async (req, res) => {
   try {
     const menu = await Menu.findOne();
+    console.log(menu);
     return res.status(200).json({ success: true, data: menu });
   } catch (error) {
     return res.status(500).json({

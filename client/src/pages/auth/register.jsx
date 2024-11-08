@@ -3,13 +3,13 @@ import { useState } from "react";
 import CommonForm from "../../components/common/form";
 import { registerFormControls } from "@/components/config";
 import { useDispatch, useSelector } from "react-redux";
-// import { registerUser } from "@/store/auth-slice";
+import { registerUser } from "@/store/auth-slice";
 import { useToast } from "../../hooks/use-toast"
 
 const initialState = {
-  name: "",
   email: "",
   password: "",
+  password_confirmation: "",
 };
 
 const AuthResgister = () => {
@@ -23,29 +23,29 @@ const AuthResgister = () => {
     event.preventDefault();
     
     //form validation
-    if(formData.password !== formData.confirmPassword) {
+    if(formData.password !== formData.password_confirmation) {
       toast({
         variant: "destructive",
-        title: "Password and confirm password do not match",
+        title: "Password and confirm password does not match",
       });
       return;
     }
 
     //valid gmail check
     const email = formData.email;
-    const validGmail = new RegExp(
-      /^[a-zA-Z0-9._-]+@gmail.com$/
-    );
-    if (!validGmail.test(email)) {
-      toast({
-        variant: "destructive",
-        title: "Please enter a valid gmail address",
-      });
-      return;
-    }
+    // const validGmail = new RegExp(
+    //   /^[a-zA-Z0-9._-]+@gmail.com$/
+    // );
+    // if (!validGmail.test(email)) {
+    //   toast({
+    //     variant: "destructive",
+    //     title: "Please enter a valid gmail address",
+    //   });
+    //   return;
+    // }
 
     //all fields are required
-    if (!formData.name || !formData.email || !formData.password) {
+    if (!formData.email || !formData.password || !formData.password_confirmation) {
       toast({
         variant: "destructive",
         title: "All fields are required",
@@ -61,10 +61,9 @@ const AuthResgister = () => {
       });
       return;
     }
-    return;
 
     dispatch(registerUser(formData)).then((data) => {
-      if (data?.payload && data?.payload?.success) {
+      if (data?.payload && data?.payload?.status) {
         toast({
           title: data.payload.message || "Registration success",
         });
