@@ -5,17 +5,23 @@ const User = require("../../models/User");
 // Register a new user
 const registerUser = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
-    // Check if user already exists
+    const { name, email, password, confirmPassword } = req.body;
+
     const user = await User.findOne({ email });
     if (user) {
       return res.status(400).json({ message: "User already exists" });
     }
+
+    if (password !== confirmPassword) {
+      return res.status(400).json({ message: "Passwords do not match" });
+    }
+
     // Hash the password
     const hashedPassword = await bcrypt.hash(password, 12);
     // Create a new user
     const newUser = new User({ name, email, password: hashedPassword });
     await newUser.save();
+
     return res
       .status(201)
       .json({ success: true, message: "User registered successfully" });
@@ -53,8 +59,8 @@ const login = async (req, res) => {
       { expiresIn: "1h" }
     );
 
-    user.lastLogin = new Date();
-    await user.save();
+    // user.lastLogin = new Date();
+    // await user.save();
     res.status(200).json({
       success: true,
       message: "Login successfull",
@@ -64,6 +70,8 @@ const login = async (req, res) => {
         name: user.name,
         email: user.email,
         role: user.role,
+        defaultOrder: user.defaultOrder,
+        leaveDates: user.leaveDates,
       },
     });
   } catch (error) {
@@ -75,20 +83,20 @@ const login = async (req, res) => {
   }
 };
 
-const logout = async (req, res) => {
-  try {
-    res.clearCookie("token").json({
-      success: true,
-      message: "Logout successfull",
-    });
-  } catch (error) {
-    return res.status(500).json({
-      success: false,
-      error: error.message,
-      message: "Failed to logout user",
-    });
-  }
-};
+// const logout = async (req, res) => {
+//   try {
+//     res.clearCookie("token").json({
+//       success: true,
+//       message: "Logout successfull",
+//     });
+//   } catch (error) {
+//     return res.status(500).json({
+//       success: false,
+//       error: error.message,
+//       message: "Failed to logout user",
+//     });
+//   }
+// };
 
 const authMiddleware = async (req, res, next) => {
   const authHeader = req.headers["authorization"];
@@ -165,34 +173,28 @@ const resetPassword = async (req, res) => {
 
 const isEmployee = (req, res, next) => {
   if (req.user.role !== "employee") {
-    return res
-      .status(403)
-      .json({ error: "Access denied. Admin or super admin required." });
+    return res.status(403).json({ error: "Access denied." });
   }
   next();
 };
 
 const isAdmin = (req, res, next) => {
   if (req.user.role !== "admin") {
-    return res
-      .status(403)
-      .json({ error: "Access denied. Admin or super admin required." });
+    return res.status(403).json({ error: "Access denied." });
   }
   next();
 };
 
-const isSuperAdmin = (req, res, next) => {
-  if (req.user.role !== "super-admin") {
-    return res.status(403).json({ error: "Permission denied." });
-  }
-  next();
-};
+// const isSuperAdmin = (req, res, next) => {
+//   if (req.user.role !== "super-admin") {
+//     return res.status(403).json({ error: "Permission denied." });
+//   }
+//   next();
+// };
 
 const isService = (req, res, next) => {
   if (req.user.role !== "service") {
-    return res
-      .status(403)
-      .json({ error: "Access denied. Service provider required." });
+    return res.status(403).json({ error: "Access denied." });
   }
   next();
 };
@@ -200,12 +202,12 @@ const isService = (req, res, next) => {
 module.exports = {
   registerUser,
   login,
-  logout,
+  // logout,
   authMiddleware,
   deleteUser,
   resetPassword,
   isEmployee,
   isAdmin,
-  isSuperAdmin,
+  // isSuperAdmin,
   isService,
 };

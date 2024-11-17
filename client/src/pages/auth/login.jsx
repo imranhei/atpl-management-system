@@ -22,7 +22,7 @@ const AuthLogin = () => {
     event.preventDefault();
 
     dispatch(login(formData)).then((res) => {
-      if (res?.payload?.status) {
+      if (res?.payload?.success) {
         toast({title: res.message || "Login successful",});
         navigate("/employee/dashboard");
       } else {

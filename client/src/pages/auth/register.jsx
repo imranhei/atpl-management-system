@@ -7,9 +7,10 @@ import { registerUser } from "@/store/auth-slice";
 import { useToast } from "../../hooks/use-toast"
 
 const initialState = {
+  name: "",
   email: "",
   password: "",
-  password_confirmation: "",
+  confirmPassword: "",
 };
 
 const AuthResgister = () => {
@@ -23,7 +24,7 @@ const AuthResgister = () => {
     event.preventDefault();
     
     //form validation
-    if(formData.password !== formData.password_confirmation) {
+    if(formData.password !== formData.confirmPassword) {
       toast({
         variant: "destructive",
         title: "Password and confirm password does not match",
@@ -31,21 +32,18 @@ const AuthResgister = () => {
       return;
     }
 
-    //valid gmail check
-    const email = formData.email;
-    // const validGmail = new RegExp(
-    //   /^[a-zA-Z0-9._-]+@gmail.com$/
-    // );
-    // if (!validGmail.test(email)) {
-    //   toast({
-    //     variant: "destructive",
-    //     title: "Please enter a valid gmail address",
-    //   });
-    //   return;
-    // }
+    //email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      toast({
+        variant: "destructive",
+        title: "Invalid email address",
+      });
+      return;
+    }
 
     //all fields are required
-    if (!formData.email || !formData.password || !formData.password_confirmation) {
+    if (!formData.name || !formData.email || !formData.password || !formData.confirmPassword) {
       toast({
         variant: "destructive",
         title: "All fields are required",
@@ -63,7 +61,7 @@ const AuthResgister = () => {
     }
 
     dispatch(registerUser(formData)).then((data) => {
-      if (data?.payload && data?.payload?.status) {
+      if (data?.payload && data?.payload?.success) {
         toast({
           title: data.payload.message || "Registration success",
         });

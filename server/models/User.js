@@ -1,34 +1,38 @@
 const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
-const userSchema = new mongoose.Schema(
+const userSchema = new Schema(
   {
     name: {
       type: String,
       required: true,
       trim: true,
     },
+    role: {
+      type: String,
+      enum: ["admin", "employee", "service"],
+      required: true,
+      default: "employee",
+    },
     email: {
       type: String,
       required: true,
-      trim: true,
       unique: true,
+      trim: true,
     },
     password: {
       type: String,
       required: true,
-      minLength: 6,
     },
-    role: {
-      type: String,
-      enum: ["employee", "admin", "service"],
-      default: "employee",
+    defaultOrder: {
+      itemId: {
+        type: Schema.Types.ObjectId,
+        ref: "MealItem",
+      },
+      variant: String,
+      quantity: Number,
     },
-    lastLogin: {
-      type: Date,
-      default: null,
-    },
-    pro_pic: String,
-    phone: String,
+    leaveDates: [Date],
   },
   { timestamps: true }
 );

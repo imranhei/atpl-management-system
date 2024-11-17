@@ -13,6 +13,7 @@ const CheckAuth = ({ isAuthenticated, user, children }) => {
       if (user?.role === "admin" || user?.role === "super-admin") {
         return <Navigate to="/admin/dashboard" />;
       } else {
+        console.log("triggered");
         return <Navigate to="/employee/dashboard" />;
       }
     }

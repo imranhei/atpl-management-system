@@ -1,24 +1,36 @@
-const mongoose = require("mongoose");
+const dailyOrderSchema = new Schema(
+  {
+    employeeId: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    date: {
+      type: Date,
+      required: true,
+    },
+    order: {
+      itemId: {
+        type: Schema.Types.ObjectId,
+        ref: "MealItem",
+        required: true,
+      },
+      variant: String, // Optional for items with variants
+      quantity: {
+        type: Number,
+        required: true,
+      },
+    },
+    isCustomOrder: {
+      type: Boolean,
+      default: false,
+    },
+    isOnLeave: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  { timestamps: true }
+);
 
-const orderSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-    trim: true,
-  },
-  emp_id: {
-    type: String,
-    required: true,
-  },
-  date: {
-    type: Date,
-    required: true,
-  },
-  meal: {
-    type: Map,
-    of: mongoose.Schema.Types.Mixed,
-    required: true,
-  },
-});
-
-module.exports = mongoose.model("Order", orderSchema);
+module.exports = mongoose.model("DailyOrder", dailyOrderSchema);

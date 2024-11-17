@@ -1,28 +1,35 @@
 const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
-const menuSchema = new mongoose.Schema({
-  meal: {
-    type: Map,
-    of: new mongoose.Schema({
-      quantity: {
-        type: Number,
-        required: false,
-        default: undefined, // Only add when explicitly provided
+const mealItemSchema = new Schema(
+  {
+    itemName: {
+      type: String,
+      required: true,
+    },
+    hasVariant: {
+      type: Boolean,
+      default: false,
+    },
+    variants: [
+      {
+        type: String,
       },
-      variant: {
-        type: [String],
-        required: false,
-        default: undefined, // Only add when explicitly provided
-      },
-      price: {
-        type: Number,
-        required: false,
-        default: undefined, // Only add when explicitly provided
-      },
-    }),
-    required: true,
+    ],
+    hasQuantity: {
+      type: Boolean,
+      default: false,
+    },
+    maxQuantity: {
+      type: Number,
+      default: 0,
+    },
+    price: {
+      type: Number,
+      required: true,
+    },
   },
-});
+  { timestamps: true }
+);
 
-const Menu = mongoose.model("Menu", menuSchema);
-module.exports = Menu;
+module.exports = mongoose.model("MealItem", mealItemSchema);

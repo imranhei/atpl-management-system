@@ -15,6 +15,12 @@ const EmployeeOrderHistory = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
   const { orders } = useSelector((state) => state.meal);
+  const { menu } = useSelector((state) => state.menu);
+
+  const headers = Array.from(
+    new Set(Object.values(menu).flatMap(item => Object.keys(item)))
+  );
+  console.log(headers);
 
   useEffect(() => {
     if (user) {

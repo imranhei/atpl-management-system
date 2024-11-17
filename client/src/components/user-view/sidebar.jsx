@@ -70,6 +70,11 @@ const adminSidebarMenuItems = [
         path: "/employee/setting",
         icon: <CircleUser size={20} />,
       },
+      {
+        id: "day-wise-meal",
+        label: "Day Wise Meal",
+        path: "/employee/day-wise-meal",
+      }
     ],
   },
 ];

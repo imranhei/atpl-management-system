@@ -22,8 +22,21 @@ const createOrder = async (req, res) => {
 const getOrders = async (req, res) => {
   try {
     const { id } = req.params;
-    const orders = await Order.find({ emp_id: id });
-    return res.status(200).json({ success: true, data: orders });
+    const orders = await Order.find({ emp_id: id }).lean();
+    
+    const modifiedOrders = orders.map(order => {
+      // Destructure order data to remove `price` and `_id` from `meal`
+      const modifiedMeal = Object.fromEntries(
+        Object.entries(order.meal).map(([key, item]) => {
+          const { price, _id, ...rest } = item; // Exclude `price` and `_id`
+          return [key, rest];
+        })
+      );
+    
+      return { ...order.toObject(), meal: modifiedMeal }; // Include modified `meal` in order
+    });
+
+    return res.status(200).json({ success: true, data: modifiedOrders });
   } catch (error) {
     return res.status(500).json({
       success: false,
