@@ -2,81 +2,53 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const initialState = {
+  defaultOrder: null,
+  mealList: [],
   isLoading: false,
-  order: {},
-  defaultMeal: {},
-  id: null,
-  orders: [],
+  error: null,
 };
 
-export const fetchDefaultMeal = createAsyncThunk(
-  "menu/fetchDefaultMeal",
-  async (emp_code) => {
-    const response = await axios.get(
-      `${import.meta.env.VITE_API_URL_MONGO}/api/default-order/get/${emp_code}`
-    );
-    return response.data;
+export const fetchDefaultOrder = createAsyncThunk(
+  "defaultOrder/fetchDefaultOrder",
+  async (id, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL_MONGO}/api/default-order`,
+        id
+      );
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
   }
 );
 
-export const createDefaultMeal = createAsyncThunk(
-  "menu/createDefaultMeal",
-  async ({ name, emp_id, meal }) => {
-    const response = await axios.post(
-      `${import.meta.env.VITE_API_URL_MONGO}/api/default-order/create`,
-      { name, emp_id, meal }
-    );
-    return response.data;
+export const updateDefaultOrder = createAsyncThunk(
+  "defaultOrder/updateDefaultOrder",
+  async (formData, { rejectWithValue }) => {
+    try {
+      const response = await axios.put(
+        `${import.meta.env.VITE_API_URL_MONGO}/api/default-order`,
+        formData
+      );
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
   }
 );
 
-export const updateDefaultMeal = createAsyncThunk(
-  "menu/updateDefaultMeal",
-  async ({ id, meal }) => {
-    const response = await axios.put(
-      `${import.meta.env.VITE_API_URL_MONGO}/api/default-order/update/${id}`,
-      { meal }
-    );
-    return response.data;
-  }
-);
-
-export const getAllOrder = createAsyncThunk("menu/getAllOrder", async (id) => {
-  const response = await axios.get(
-    `${import.meta.env.VITE_API_URL_MONGO}/api/order/get-all-order/${id}`
-  );
-  return response.data;
-});
-
-export const getTodayOrder = createAsyncThunk(
-  "menu/getTodayOrder",
-  async (emp_id) => {
-    const response = await axios.get(
-      `${import.meta.env.VITE_API_URL_MONGO}/api/order/get-by-date/${emp_id}`
-    );
-    return response.data;
-  }
-);
-
-export const createOrder = createAsyncThunk(
-  "menu/createOrder",
-  async ({ name, emp_id, meal, date }) => {
-    const response = await axios.post(
-      `${import.meta.env.VITE_API_URL_MONGO}/api/order/create`,
-      { name, emp_id, meal, date }
-    );
-    return response.data;
-  }
-);
-
-export const updateOrder = createAsyncThunk(
-  "menu/updateOrder",
-  async ({ id, meal, date }) => {
-    const response = await axios.put(
-      `${import.meta.env.VITE_API_URL_MONGO}/api/order/update/${id}`,
-      { meal, date }
-    );
-    return response.data;
+export const fetchMealItems = createAsyncThunk(
+  "defaultOrder/fetchMealItems",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL_MONGO}/api/meals/get`
+      );
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
   }
 );
 
@@ -86,38 +58,40 @@ const menuSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchDefaultMeal.pending, (state) => {
+      .addCase(fetchDefaultOrder.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(fetchDefaultMeal.fulfilled, (state, action) => {
+      .addCase(fetchDefaultOrder.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.defaultMeal = action.payload.data?.meal;
-        state.id = action.payload.data?._id;
+        state.defaultOrder = action.payload.data;
       })
-      .addCase(fetchDefaultMeal.rejected, (state) => {
+      .addCase(fetchDefaultOrder.rejected, (state, action) => {
         state.isLoading = false;
+        state.error = action.payload;
       })
-      .addCase(getTodayOrder.pending, (state) => {
+      // Update default order
+      .addCase(updateDefaultOrder.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(getTodayOrder.fulfilled, (state, action) => {
+      .addCase(updateDefaultOrder.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.order = action.payload.data;
+        state.defaultOrder = action.payload.data;
       })
-      .addCase(getTodayOrder.rejected, (state) => {
-        state.order = {};
+      .addCase(updateDefaultOrder.rejected, (state, action) => {
         state.isLoading = false;
+        state.error = action.payload;
       })
-      .addCase(getAllOrder.pending, (state) => {
+      // Fetch meal items
+      .addCase(fetchMealItems.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(getAllOrder.fulfilled, (state, action) => {
+      .addCase(fetchMealItems.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.orders = action.payload.data;
+        state.mealList = action.payload.data;
       })
-      .addCase(getAllOrder.rejected, (state) => {
+      .addCase(fetchMealItems.rejected, (state, action) => {
         state.isLoading = false;
-        state.orders = [];
+        state.error = action.payload;
       });
   },
 });

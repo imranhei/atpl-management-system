@@ -1,16 +1,12 @@
 const express = require("express");
 const {
-  createDefaultOrder,
-  getDefaultOrders,
-  getDefaultOrder,
-  updateDefaultOrder,
+  getUserDefaultOrder,
+  createOrUpdateDefaultOrder,
 } = require("../../controller/employee/default-order-controller");
 
 const router = express.Router();
 
-router.post("/create", createDefaultOrder);
-router.get("/get/:id", getDefaultOrders);
-router.get("/get/:id", getDefaultOrder);
-router.put("/update/:id", updateDefaultOrder);
+router.get("/", getUserDefaultOrder);
+router.put("/", createOrUpdateDefaultOrder);
 
 module.exports = router;

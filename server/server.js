@@ -7,7 +7,7 @@ const startCronJobs = require("./cornJobs");
 
 const authRoutes = require("./routes/auth/auth-routes");
 // const orderRoutes = require("./routes/employee/order-routes");
-// const defaultOrderRoutes = require("./routes/employee/default-order-routes");
+const defaultOrderRoutes = require("./routes/employee/default-order-routes");
 const menuRoutes = require("./routes/admin/menu-routes");
 
 dotenv.config();
@@ -45,7 +45,7 @@ app.use("/api/alive", async (req, res) => {
   res.json({ message: "Server is alive" });
 });
 app.use("/api/auth", authRoutes);
-// app.use("/api/default-order", defaultOrderRoutes);
+app.use("/api/default-order", defaultOrderRoutes);
 // app.use("/api/order", orderRoutes);
 app.use("/api/meals", menuRoutes);
 

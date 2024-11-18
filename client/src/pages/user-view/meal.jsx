@@ -1,5 +1,3 @@
-import { Button } from "@/components/ui/button"
-import { Label } from "@/components/ui/label"
 import {
   Tabs,
   TabsContent,
@@ -8,7 +6,7 @@ import {
 } from "@/components/ui/tabs"
 import EmployeeMenu from "@/components/user-view/menus"
 import EmployeeOrder from "@/components/user-view/order"
-import EmployeeOrderHistory from "@/components/user-view/order-history"
+// import EmployeeOrderHistory from "@/components/user-view/order-history"
 
 const Meal = () => {
   return (
@@ -21,10 +19,10 @@ const Meal = () => {
       <TabsContent value="menus">
         <EmployeeMenu />
       </TabsContent>
-      {/* <TabsContent value="order">
+      <TabsContent value="order">
         <EmployeeOrder />
       </TabsContent>
-      <TabsContent value="history">
+      {/* <TabsContent value="history">
         <EmployeeOrderHistory />
       </TabsContent> */}
     </Tabs>

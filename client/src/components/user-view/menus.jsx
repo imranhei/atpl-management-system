@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchWeeklyMeals } from "@/store/admin/day-wise-meal-slice";
 import {
@@ -12,9 +12,7 @@ import {
 
 const EmployeeMenu = () => {
   const dispatch = useDispatch();
-  const { weeklyMeals, mealList, isLoading, error } = useSelector(
-    (state) => state.weeklyMeals
-  );
+  const { weeklyMeals, isLoading } = useSelector((state) => state.weeklyMeals);
 
   useEffect(() => {
     dispatch(fetchWeeklyMeals());
@@ -38,7 +36,7 @@ const EmployeeMenu = () => {
         <TableBody>
           {weeklyMeals?.map((meal, pIndex) =>
             meal.availableItems.map((item, index) => {
-              const isFirstRow = index === 0; // Display merged cells only for the first row
+              const isFirstRow = index === 0;
               return (
                 <TableRow
                   key={item._id}
@@ -64,7 +62,9 @@ const EmployeeMenu = () => {
                       : "—"}
                   </TableCell>
                   <TableCell>
-                    {item?.itemId?.hasQuantity ? item?.itemId?.maxQuantity : "—"}
+                    {item?.itemId?.hasQuantity
+                      ? item?.itemId?.maxQuantity
+                      : "—"}
                   </TableCell>
                 </TableRow>
               );
