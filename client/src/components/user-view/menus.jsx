@@ -1,6 +1,6 @@
-import React, { Fragment } from 'react'
-import { Separator } from '../ui/separator'
-import { menus } from "@/components/config";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchWeeklyMeals } from "@/store/admin/day-wise-meal-slice";
 import {
   Table,
   TableBody,
@@ -11,10 +11,21 @@ import {
 } from "@/components/ui/table";
 
 const EmployeeMenu = () => {
+  const dispatch = useDispatch();
+  const { weeklyMeals, mealList, isLoading, error } = useSelector(
+    (state) => state.weeklyMeals
+  );
+
+  useEffect(() => {
+    dispatch(fetchWeeklyMeals());
+  }, [dispatch]);
+
+  if (isLoading) return <div>Loading...</div>;
+
   return (
     <div className="bg-background rounded-lg shadow-md p-4 space-y-2">
-          <h1 className="font-bold text-lg">Menus</h1>
-          <Table className="bg-background rounded">
+      <h1 className="font-bold text-xl text-center py-2">Menus</h1>
+      <Table className="bg-background rounded">
         <TableHeader className="text-nowrap">
           <TableRow>
             <TableHead>Day</TableHead>
@@ -22,7 +33,6 @@ const EmployeeMenu = () => {
             <TableHead>Item Name</TableHead>
             <TableHead>Variants</TableHead>
             <TableHead>Max Quantity</TableHead>
-            <TableHead className="text-center">Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -30,7 +40,10 @@ const EmployeeMenu = () => {
             meal.availableItems.map((item, index) => {
               const isFirstRow = index === 0; // Display merged cells only for the first row
               return (
-                <TableRow key={item._id} className={`${!(pIndex%2) ? "bg-slate-50" : ""}`}>
+                <TableRow
+                  key={item._id}
+                  className={`${!(pIndex % 2) ? "bg-slate-50" : ""}`}
+                >
                   {isFirstRow && (
                     <>
                       <TableCell rowSpan={meal.availableItems.length}>
@@ -44,42 +57,23 @@ const EmployeeMenu = () => {
                       </TableCell>
                     </>
                   )}
-                  <TableCell>{item.itemId.itemName}</TableCell>
+                  <TableCell>{item?.itemId?.itemName}</TableCell>
                   <TableCell>
-                    {item.itemId.hasVariant
-                      ? item.itemId.variants.join(", ")
+                    {item?.itemId?.hasVariant
+                      ? item?.itemId?.variants.join(", ")
                       : "—"}
                   </TableCell>
                   <TableCell>
-                    {item.itemId.hasQuantity ? item.itemId.maxQuantity : "—"}
+                    {item?.itemId?.hasQuantity ? item?.itemId?.maxQuantity : "—"}
                   </TableCell>
-                  {isFirstRow && (
-                    <TableCell
-                      className="text-center border-l"
-                      rowSpan={meal.availableItems.length}
-                    >
-                      <div className="flex items-center gap-3 justify-center">
-                        <Pencil
-                          size={20}
-                          className="text-green-500 cursor-pointer"
-                          onClick={() => handleEdit(meal)}
-                        />
-                        <Trash2
-                          size={20}
-                          className="text-red-500 cursor-pointer"
-                          // Add your delete functionality here
-                        />
-                      </div>
-                    </TableCell>
-                  )}
                 </TableRow>
               );
             })
           )}
         </TableBody>
       </Table>
-        </div>
-  )
-}
+    </div>
+  );
+};
 
-export default EmployeeMenu
+export default EmployeeMenu;

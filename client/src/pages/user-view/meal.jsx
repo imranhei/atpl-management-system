@@ -21,12 +21,12 @@ const Meal = () => {
       <TabsContent value="menus">
         <EmployeeMenu />
       </TabsContent>
-      <TabsContent value="order">
+      {/* <TabsContent value="order">
         <EmployeeOrder />
       </TabsContent>
       <TabsContent value="history">
         <EmployeeOrderHistory />
-      </TabsContent>
+      </TabsContent> */}
     </Tabs>
   )
 }

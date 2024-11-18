@@ -142,7 +142,7 @@ const WeeklyMealManager = () => {
         </TableHeader>
         <TableBody>
           {weeklyMeals?.map((meal, pIndex) =>
-            meal.availableItems.map((item, index) => {
+            meal?.availableItems?.map((item, index) => {
               const isFirstRow = index === 0; // Display merged cells only for the first row
               return (
                 <TableRow key={item._id} className={`${!(pIndex%2) ? "bg-slate-50" : ""}`}>
@@ -159,14 +159,14 @@ const WeeklyMealManager = () => {
                       </TableCell>
                     </>
                   )}
-                  <TableCell>{item.itemId.itemName}</TableCell>
+                  <TableCell>{item?.itemId?.itemName}</TableCell>
                   <TableCell>
-                    {item.itemId.hasVariant
+                    {item?.itemId?.hasVariant
                       ? item.itemId.variants.join(", ")
                       : "—"}
                   </TableCell>
                   <TableCell>
-                    {item.itemId.hasQuantity ? item.itemId.maxQuantity : "—"}
+                    {item?.itemId?.hasQuantity ? item?.itemId?.maxQuantity : "—"}
                   </TableCell>
                   {isFirstRow && (
                     <TableCell
