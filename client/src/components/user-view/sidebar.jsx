@@ -32,11 +32,11 @@ const adminSidebarMenuItems = [
     path: "/employee/meal",
     icon: <UtensilsCrossed size={20} />,
   },
-  {
-    id: "leave",
-    label: "Leave",
-    path: "/employee/leave",
-    icon: <TicketsPlane size={20} />,
+  // {
+  //   id: "leave",
+  //   label: "Leave",
+  //   path: "/employee/leave",
+  //   icon: <TicketsPlane size={20} />,
     // submenu: [
     //   {
     //     id: "orders",
@@ -57,7 +57,7 @@ const adminSidebarMenuItems = [
     //     icon: <NotepadText size={20} />,
     //   },
     // ],
-  },
+  // },
   {
     id: "settings",
     label: "Settings",

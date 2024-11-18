@@ -5,7 +5,12 @@ import {
   createDayMeal,
   updateDayMeal,
 } from "@/store/admin/day-wise-meal-slice";
-import { Pencil, Trash2, X } from "lucide-react";
+import { ChevronDown, Pencil, Trash2, X } from "lucide-react";
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+} from "@/components/ui/popover";
 import {
   Table,
   TableBody,
@@ -33,6 +38,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 
 const initialFormState = {
@@ -66,7 +72,10 @@ const WeeklyMealManager = () => {
         // setEditDayMealId(null);
       });
     } else {
-      dispatch(createDayMeal(formData)).then(() => {
+      dispatch(createDayMeal(formData)).then((data) => {
+        if (data.payload?.success) {
+          dispatch(fetchWeeklyMeals());
+        }
         setFormData(initialFormState);
       });
     }
@@ -94,27 +103,26 @@ const WeeklyMealManager = () => {
 
   if (isLoading) return <div>Loading...</div>;
 
-  const handleSelectChange = (itemId) => {
-    console.log("itemId", itemId);
+  const handleCheckboxChange = (itemId) => {
     setFormData((prev) => {
-      const exists = prev.availableItems.some((i) => i.itemId === itemId);
+      // Check if the itemId already exists in the availableItems array
+      const exists = prev.availableItems.some((item) => item.itemId === itemId);
 
-      // Toggle logic: Remove if exists, add if not
+      // Add or remove item from availableItems array
       const updatedItems = exists
-        ? prev.availableItems.filter((i) => i.itemId !== itemId) // Remove if exists
-        : [...prev.availableItems, { itemId }]; // Add if not exists
+        ? prev.availableItems.filter((item) => item.itemId !== itemId) // Remove
+        : [...prev.availableItems, { itemId }]; // Add in required format
 
-      return {
-        ...prev,
-        availableItems: updatedItems,
-      };
+      return { ...prev, availableItems: updatedItems };
     });
   };
 
   const removeItem = (itemId) => {
     setFormData((prev) => ({
       ...prev,
-      availableItems: prev.availableItems.filter((i) => i.itemId !== itemId),
+      availableItems: prev.availableItems.filter(
+        (item) => item.itemId !== itemId
+      ),
     }));
   };
 
@@ -133,11 +141,11 @@ const WeeklyMealManager = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {weeklyMeals?.map((meal) =>
+          {weeklyMeals?.map((meal, pIndex) =>
             meal.availableItems.map((item, index) => {
-              const isFirstRow = index === 0; // Display the day and mealType only for the first row
+              const isFirstRow = index === 0; // Display merged cells only for the first row
               return (
-                <TableRow key={item._id}>
+                <TableRow key={item._id} className={`${!(pIndex%2) ? "bg-slate-50" : ""}`}>
                   {isFirstRow && (
                     <>
                       <TableCell rowSpan={meal.availableItems.length}>
@@ -160,18 +168,25 @@ const WeeklyMealManager = () => {
                   <TableCell>
                     {item.itemId.hasQuantity ? item.itemId.maxQuantity : "—"}
                   </TableCell>
-                  <TableCell className="text-center flex items-center gap-3 justify-center">
-                    <Pencil
-                      size={20}
-                      className="text-green-500 cursor-pointer"
-                      onClick={() => handleEdit(meal)}
-                    />
-                    <Trash2
-                      size={20}
-                      className="text-red-500 cursor-pointer"
-                      // Add your delete functionality here
-                    />
-                  </TableCell>
+                  {isFirstRow && (
+                    <TableCell
+                      className="text-center border-l"
+                      rowSpan={meal.availableItems.length}
+                    >
+                      <div className="flex items-center gap-3 justify-center">
+                        <Pencil
+                          size={20}
+                          className="text-green-500 cursor-pointer"
+                          onClick={() => handleEdit(meal)}
+                        />
+                        <Trash2
+                          size={20}
+                          className="text-red-500 cursor-pointer"
+                          // Add your delete functionality here
+                        />
+                      </div>
+                    </TableCell>
+                  )}
                 </TableRow>
               );
             })
@@ -231,49 +246,56 @@ const WeeklyMealManager = () => {
 
         <div className="flex items-center gap-2">
           <Label className="text-nowrap w-24">Select Items:</Label>
-          <Select onValueChange={(value) => handleSelectChange(value)}>
-            <SelectTrigger className="bg-background flex-1 max-w-80 cursor-pointer border border-gray-300 px-3 py-2 rounded-md">
-              <span className="truncate">Select Items</span>
-            </SelectTrigger>
-            <SelectContent>
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button className="bg-background flex-1 max-w-80 cursor-pointer border border-gray-300 px-3 py-2 rounded-md">
+                {formData.availableItems.length
+                  ? `Selected (${formData.availableItems.length})`
+                  : "Select Items"} <ChevronDown size={20} />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-64">
               {mealList?.map((item) => (
-                <SelectItem
-                  key={item._id}
-                  value={item._id}
-                  onClick={() => handleSelectChange(item._id)}
-                  isSelected={formData.availableItems.some(
-                    (i) => i.itemId === item._id
-                  )}
-                >
-                  {item.itemName}
-                </SelectItem>
+                <div key={item._id} className="flex items-center gap-2 py-1">
+                  <Checkbox
+                    id={item._id}
+                    checked={formData.availableItems.some(
+                      (selectedItem) => selectedItem.itemId === item._id
+                    )}
+                    onCheckedChange={() => handleCheckboxChange(item._id)}
+                  />
+                  <Label htmlFor={item._id}>{item.itemName}</Label>
+                </div>
               ))}
-            </SelectContent>
-          </Select>
+            </PopoverContent>
+          </Popover>
         </div>
 
         <div className="my-2 flex flex-wrap gap-2">
-          {formData?.availableItems?.map((item) => {
-            const meal = mealList.find((meal) => meal._id === item.itemId);
+          {formData.availableItems.map((selectedItem) => {
+            const meal = mealList.find(
+              (meal) => meal._id === selectedItem.itemId
+            );
             return (
               <div
-                key={item.itemId}
-                variant="outline"
+                key={selectedItem.itemId}
                 className="flex items-center bg-gray-200 rounded border border-gray-400 gap-2 px-2 py-1 text-sm"
               >
                 {meal?.itemName}
                 <button
                   type="button"
-                  onClick={() => removeItem(item.itemId)}
+                  onClick={() => removeItem(selectedItem.itemId)}
                   className="text-red-400 hover:text-red-600"
                 >
-                  <X size={14} />
+                  <X size={16} />
                 </button>
               </div>
             );
           })}
         </div>
-        <Button type="submit">{isEditing ? "Update" : "Submit"}</Button>
+        <Button type="submit" className="sm:w-[424px]">
+          {isEditing ? "Update" : "Submit"}
+        </Button>
       </form>
     </div>
   );

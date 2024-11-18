@@ -26,7 +26,6 @@ const mealItemSchema = new Schema(
     },
     price: {
       type: Number,
-      required: true,
     },
   },
   { timestamps: true }

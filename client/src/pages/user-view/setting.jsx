@@ -172,7 +172,7 @@ const EmployeeSetting = () => {
       <Separator />
       <h1 className="text-lg font-semibold pb-2">Meal Manager</h1>
       <form onSubmit={handleSubmit} className="space-y-2">
-        <div className="flex items-center">
+        <div className="flex items-center gap-2">
           <Label className="text-nowrap w-24 font-normal">Item Name</Label>
           <Input
             type="text"
@@ -184,14 +184,13 @@ const EmployeeSetting = () => {
             placeholder="Enter item name"
           />
         </div>
-        <div className="flex items-center pb-2">
+        <div className="flex items-center pb-2 gap-2">
           <Label className="text-nowrap w-24 font-normal">Price</Label>
           <Input
             type="number"
             name="price"
             value={formData.price}
             onChange={handleInputChange}
-            required
             className="flex-1 bg-background"
             placeholder="Enter price"
           />
@@ -208,12 +207,13 @@ const EmployeeSetting = () => {
         {formData.hasVariant && (
           <div>
             <div className="flex items-center gap-2">
+            <Label className="text-nowrap w-24 font-normal">Max Quantity</Label>
               <Input
                 type="text"
                 value={variant}
                 onChange={(e) => setVariant(e.target.value)}
                 placeholder="Add Variant: e.g., Poch"
-                className="bg-background"
+                className="bg-background flex-1"
               />
               <Button type="button" onClick={handleVariantChange}>
                 Add Variant
@@ -259,7 +259,7 @@ const EmployeeSetting = () => {
           <Label>Has Quantity</Label>
         </div>
         {formData.hasQuantity && (
-          <div className="flex items-center">
+          <div className="flex items-center gap-2">
             <Label className="text-nowrap w-24 font-normal">Max Quantity</Label>
             <Input
               type="number"

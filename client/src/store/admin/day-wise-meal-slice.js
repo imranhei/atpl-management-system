@@ -90,7 +90,7 @@ const mealSlice = createSlice({
       })
       .addCase(createDayMeal.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.weeklyMeals.push(action.payload.data);
+        // state.weeklyMeals.push(action.payload.data);
       })
       .addCase(createDayMeal.rejected, (state, action) => {
         state.isLoading = false;

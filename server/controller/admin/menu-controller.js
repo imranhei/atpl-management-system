@@ -172,11 +172,25 @@ const updateDayMeal = async (req, res) => {
 
 const getWeeklyMeals = async (req, res) => {
   try {
+    const dayOrder = [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+      "Sunday",
+    ];
     // Fetch weekly meals and minimal meal item data in parallel
     const [weeklyMeals, allMealItems] = await Promise.all([
       DayWiseMeal.find()
         .populate("availableItems.itemId") // Populate meal item details
-        .sort({ day: 1 }), // Sort by day
+        .then((meals) =>
+          // Sort meals based on the custom day order
+          meals.sort(
+            (a, b) => dayOrder.indexOf(a.day) - dayOrder.indexOf(b.day)
+          )
+        ),
       MealItem.find({}, "itemName _id"), // Fetch only itemName and _id fields
     ]);
 
