@@ -35,7 +35,7 @@ const EmployeeMenu = () => {
         </TableHeader>
         <TableBody>
           {weeklyMeals?.map((meal, pIndex) =>
-            meal.availableItems.map((item, index) => {
+            meal?.availableItems?.map((item, index) => {
               const isFirstRow = index === 0;
               return (
                 <TableRow
@@ -45,13 +45,13 @@ const EmployeeMenu = () => {
                   {isFirstRow && (
                     <>
                       <TableCell rowSpan={meal.availableItems.length}>
-                        {meal.day}
+                        {meal?.day}
                       </TableCell>
                       <TableCell
                         rowSpan={meal.availableItems.length}
                         className="border-r"
                       >
-                        {meal.mealType}
+                        {meal?.mealType}
                       </TableCell>
                     </>
                   )}
