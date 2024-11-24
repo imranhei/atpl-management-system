@@ -3,18 +3,19 @@ const User = require("../../models/User");
 
 const createOrUpdateDefaultOrder = async (req, res) => {
   try {
-    const { itemId, variant, quantity } = req.body;
+    const { id } = req.params; // User ID
+    const { day, mealType, mealItems } = req.body; // Data from the client
 
     // Validate input
-    if (!itemId || !quantity) {
+    if (!day || !mealType || !Array.isArray(mealItems)) {
       return res.status(400).json({
         success: false,
-        message: "Item ID and quantity are required.",
+        message:
+          "Invalid input. Ensure day, mealType, and mealItems are provided.",
       });
     }
 
-    // Find the user
-    const user = await User.findById(req.user.id);
+    const user = await User.findById(id);
     if (!user) {
       return res.status(404).json({
         success: false,
@@ -22,17 +23,25 @@ const createOrUpdateDefaultOrder = async (req, res) => {
       });
     }
 
-    // Update or create the default order
-    user.defaultOrder = { itemId, variant, quantity };
-    await user.save();
+    // Check if the day and mealType already exist in the user's defaultOrder
+    const existingOrderIndex = user.defaultOrder.findIndex(
+      (order) => order.day === day && order.mealType === mealType
+    );
 
-    // Populate the default order with meal item details
-    await user.populate("defaultOrder.itemId");
+    if (existingOrderIndex !== -1) {
+      // Update existing order
+      user.defaultOrder[existingOrderIndex].mealItems = mealItems;
+    } else {
+      // Create new default order entry
+      user.defaultOrder.push({ day, mealType, mealItems });
+    }
+
+    await user.save();
 
     res.status(200).json({
       success: true,
       message: "Default order updated successfully.",
-      defaultOrder: user.defaultOrder,
+      data: user.defaultOrder,
     });
   } catch (error) {
     res.status(500).json({
@@ -44,10 +53,22 @@ const createOrUpdateDefaultOrder = async (req, res) => {
 
 const getUserDefaultOrder = async (req, res) => {
   try {
-    const user = await User.findById(req.id).populate("defaultOrder.itemId");
-    res.status(200).json({ success: true, data: user.defaultOrder });
+    const user = await User.findById(req.params.id); // No populate
+    if (!user) {
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: user.defaultOrder, // Directly return defaultOrder
+    });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({
+      success: false,
+      error: error.message,
+    });
   }
 };
 

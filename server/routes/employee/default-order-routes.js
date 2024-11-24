@@ -6,7 +6,7 @@ const {
 
 const router = express.Router();
 
-router.get("/", getUserDefaultOrder);
-router.put("/", createOrUpdateDefaultOrder);
+router.get("/:id", getUserDefaultOrder);
+router.put("/:id", createOrUpdateDefaultOrder);
 
 module.exports = router;

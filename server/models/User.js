@@ -25,12 +25,44 @@ const userSchema = new Schema(
       required: true,
     },
     defaultOrder: {
-      itemId: {
-        type: Schema.Types.ObjectId,
-        ref: "MealItem",
-      },
-      variant: String,
-      quantity: Number,
+      type: [
+        {
+          day: {
+            type: String,
+            enum: [
+              "Monday",
+              "Tuesday",
+              "Wednesday",
+              "Thursday",
+              "Friday",
+              "Saturday",
+              "Sunday",
+            ],
+            required: true,
+          },
+          mealType: {
+            type: String,
+            required: true,
+          },
+          mealItems: [
+            {
+              itemName: {
+                type: String,
+                required: true,
+              },
+              variant: {
+                type: String,
+                default: "",
+              },
+              quantity: {
+                type: Number,
+                default: 0,
+              },
+            },
+          ],
+        },
+      ],
+      default: [],
     },
     leaveDates: [Date],
   },

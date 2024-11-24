@@ -13,8 +13,7 @@ export const fetchDefaultOrder = createAsyncThunk(
   async (id, { rejectWithValue }) => {
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_API_URL_MONGO}/api/default-order`,
-        id
+        `${import.meta.env.VITE_API_URL_MONGO}/api/default-order/${id}`
       );
       return response.data;
     } catch (error) {
@@ -25,15 +24,15 @@ export const fetchDefaultOrder = createAsyncThunk(
 
 export const updateDefaultOrder = createAsyncThunk(
   "defaultOrder/updateDefaultOrder",
-  async (formData, { rejectWithValue }) => {
+  async ({ formData, id }, { rejectWithValue }) => {
     try {
       const response = await axios.put(
-        `${import.meta.env.VITE_API_URL_MONGO}/api/default-order`,
+        `${import.meta.env.VITE_API_URL_MONGO}/api/default-order/${id}`,
         formData
       );
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      return rejectWithValue(error.response?.data || error.message);
     }
   }
 );
@@ -75,7 +74,7 @@ const menuSlice = createSlice({
       })
       .addCase(updateDefaultOrder.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.defaultOrder = action.payload.data;
+        // state.defaultOrder = action.payload.data;
       })
       .addCase(updateDefaultOrder.rejected, (state, action) => {
         state.isLoading = false;
