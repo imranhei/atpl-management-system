@@ -21,7 +21,6 @@ const Home = () => {
   return (
     <div className="flex flex-col space-y-6 flex-1">
       <div className="flex flex-wrap gap-6 p-6">
-        
         <div className="grid gap-2">
           <Popover>
             <PopoverTrigger asChild>

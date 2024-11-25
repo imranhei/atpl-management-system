@@ -32,31 +32,37 @@ const adminSidebarMenuItems = [
     path: "/employee/meal",
     icon: <UtensilsCrossed size={20} />,
   },
+  {
+    id: "leave",
+    label: "Leave",
+    path: "/employee/leave",
+    icon: <TicketsPlane size={20} />,
+  },
   // {
   //   id: "leave",
   //   label: "Leave",
   //   path: "/employee/leave",
   //   icon: <TicketsPlane size={20} />,
-    // submenu: [
-    //   {
-    //     id: "orders",
-    //     label: "Orders",
-    //     path: "/admin/orders",
-    //     icon: <ShoppingCart size={20} />,
-    //   },
-    //   {
-    //     id: "other-cost",
-    //     label: "Other Cost",
-    //     path: "/admin/other-cost",
-    //     icon: <ShieldPlus size={20} />,
-    //   },
-    //   {
-    //     id: "sales-history",
-    //     label: "Sales History",
-    //     path: "/admin/sales-history",
-    //     icon: <NotepadText size={20} />,
-    //   },
-    // ],
+  // submenu: [
+  //   {
+  //     id: "orders",
+  //     label: "Orders",
+  //     path: "/admin/orders",
+  //     icon: <ShoppingCart size={20} />,
+  //   },
+  //   {
+  //     id: "other-cost",
+  //     label: "Other Cost",
+  //     path: "/admin/other-cost",
+  //     icon: <ShieldPlus size={20} />,
+  //   },
+  //   {
+  //     id: "sales-history",
+  //     label: "Sales History",
+  //     path: "/admin/sales-history",
+  //     icon: <NotepadText size={20} />,
+  //   },
+  // ],
   // },
   {
     id: "settings",
@@ -74,7 +80,7 @@ const adminSidebarMenuItems = [
         id: "day-wise-meal",
         label: "Day Wise Meal",
         path: "/employee/day-wise-meal",
-      }
+      },
     ],
   },
 ];
@@ -159,15 +165,12 @@ function MenuItem({ setOpenSidebar }) {
 }
 
 const EmployeeSidebar = ({ open, setOpenSidebar }) => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
   return (
     <Fragment>
-      <Sheet open={open} onOpenChange={setOpenSidebar} >
-        <SheetContent
-          side="left"
-          aria-describedby="sidebar"
-        >
+      <Sheet open={open} onOpenChange={setOpenSidebar}>
+        <SheetContent side="left" aria-describedby="sidebar">
           <div className="flex flex-col h-full">
             <SheetHeader className="border-b">
               <SheetTitle className="flex gap-2">
