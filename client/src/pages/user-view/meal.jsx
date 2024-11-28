@@ -6,11 +6,11 @@ import {
 } from "@/components/ui/tabs"
 import EmployeeMenu from "@/components/user-view/menus"
 import EmployeeOrder from "@/components/user-view/order"
-// import EmployeeOrderHistory from "@/components/user-view/order-history"
+import EmployeeOrderHistory from "@/components/user-view/order-history"
 
 const Meal = () => {
   return (
-    <Tabs defaultValue="menus" className="w-full">
+    <Tabs defaultValue="menus">
       <TabsList className="grid w-80 grid-cols-3 bg-transparent border">
         <TabsTrigger value="menus">Menus</TabsTrigger>
         <TabsTrigger value="order">Order</TabsTrigger>
@@ -22,9 +22,9 @@ const Meal = () => {
       <TabsContent value="order">
         <EmployeeOrder />
       </TabsContent>
-      {/* <TabsContent value="history">
+      <TabsContent value="history">
         <EmployeeOrderHistory />
-      </TabsContent> */}
+      </TabsContent>
     </Tabs>
   )
 }

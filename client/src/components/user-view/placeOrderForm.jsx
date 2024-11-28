@@ -22,7 +22,7 @@ const PlaceOrderForm = ({
   handleNewOrderQuantityChange,
   handleNewOrderVariantChange,
 }) => (
-  <form className="py-3 space-y-2 max-w-96" onSubmit={handleNewOrderSubmit}>
+  <form className="py-3 space-y-2 flex-1 border rounded p-4" onSubmit={handleNewOrderSubmit}>
     <h1 className="text-lg font-semibold pb-2">Place an Order</h1>
     <div className="flex items-center gap-2">
       <Label className="w-20 text-nowrap">Select Date:</Label>
@@ -31,7 +31,7 @@ const PlaceOrderForm = ({
           <Button
             variant={"outline"}
             className={cn(
-              "w-[280px] justify-start text-left font-normal",
+              "flex-1 justify-start text-left font-normal",
               !newOrderFormData?.date && "text-muted-foreground"
             )}
           >
@@ -70,7 +70,7 @@ const PlaceOrderForm = ({
               {item?.itemId?.hasQuantity && item?.itemId?.maxQuantity > 1 && (
                 <Input
                   type="number"
-                  className="flex-1"
+                  className="flex-1 bg-background"
                   value={
                     newOrderFormData.mealItems.find(
                       (selected) =>
@@ -116,8 +116,9 @@ const PlaceOrderForm = ({
       </div>
     )}
 
-    <Button type="submit" className="mt-4">
-      Submit Order
+    <div className="h-2"></div>
+    <Button type="submit" className="w-full">
+      Place Order
     </Button>
   </form>
 );

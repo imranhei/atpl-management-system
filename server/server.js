@@ -9,6 +9,7 @@ const authRoutes = require("./routes/auth/auth-routes");
 // const orderRoutes = require("./routes/employee/order-routes");
 const defaultOrderRoutes = require("./routes/employee/default-order-routes");
 const menuRoutes = require("./routes/admin/menu-routes");
+const placeOrderRoutes = require("./routes/employee/place-order-routes");
 
 dotenv.config();
 const app = express();
@@ -48,6 +49,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/default-order", defaultOrderRoutes);
 // app.use("/api/order", orderRoutes);
 app.use("/api/meals", menuRoutes);
+app.use("/api/place-order", placeOrderRoutes);
 
 // startCronJobs();
 

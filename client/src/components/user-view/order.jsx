@@ -4,10 +4,11 @@ import {
   fetchDefaultOrder,
   updateDefaultOrder,
 } from "@/store/employee/meal-slice";
+import { placeOrder, fetchOrder, updateOrder, deleteOrder } from "@/store/employee/place-order-slice";
 import OrderTable from "./OrderTable";
 import DefaultOrderForm from "./DefaultOrderForm";
 import PlaceOrderForm from "./PlaceOrderForm";
-import { format, getDay } from "date-fns";
+import { getDay } from "date-fns";
 
 const initialFormState = { day: "", mealType: "", mealItems: [] };
 const newOrderFormState = { date: "", mealType: "", mealItems: [] };
@@ -28,7 +29,10 @@ const EmployeeOrder = () => {
   const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
-    if (user?.id) dispatch(fetchDefaultOrder(user.id));
+    if (user?.id) {
+      dispatch(fetchDefaultOrder(user.id));
+      dispatch(fetchOrder(user.id));
+    }
   }, [dispatch]);
 
   const handleDayChange = (day) => {
@@ -89,8 +93,6 @@ const EmployeeOrder = () => {
       });
       setNewOrderFilteredItems([]);
     }
-
-    console.log("Date changed to:", selectedDate, "Day:", day);
   };
 
   const handleEdit = (order) => {
@@ -113,7 +115,10 @@ const EmployeeOrder = () => {
 
   const handleNewOrderSubmit = (e) => {
     e.preventDefault();
-    console.log("New order submitted:", newOrderFormData);
+    dispatch(placeOrder({ formData: newOrderFormData, id: user?.id })).then(() => {
+      // dispatch(fetchOrder(user?.id));
+      setNewOrderFormData(newOrderFormState);
+    });
   };
 
   if (isLoading) return <div>Loading...</div>;
@@ -122,6 +127,7 @@ const EmployeeOrder = () => {
     <div className="space-y-4">
       <h1 className="text-lg font-semibold pb-2">Default Meal Orders</h1>
       <OrderTable defaultOrder={defaultOrder} handleEdit={handleEdit} />
+      <div className="flex gap-6 w-full md:flex-row flex-col">
       <DefaultOrderForm
         formData={formData}
         daysOfWeek={daysOfWeek}
@@ -173,6 +179,7 @@ const EmployeeOrder = () => {
           }))
         }
       />
+      </div>
     </div>
   );
 };

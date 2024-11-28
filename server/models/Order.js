@@ -1,8 +1,10 @@
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
+
 const dailyOrderSchema = new Schema(
   {
     employeeId: {
-      type: Schema.Types.ObjectId,
-      ref: "User",
+      type: String,
       required: true,
     },
     date: {
@@ -25,7 +27,7 @@ const dailyOrderSchema = new Schema(
       type: Boolean,
       default: false,
     },
-    isOnLeave: {
+    isMealOff: {
       type: Boolean,
       default: false,
     },

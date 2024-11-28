@@ -21,14 +21,17 @@ const DefaultOrderForm = ({
   handleSubmit,
   isEditing,
 }) => (
-  <form className="py-3 space-y-2 max-w-96" onSubmit={handleSubmit}>
-    <h2 className="text-lg font-semibold">
+  <form
+    className="py-3 space-y-2 flex-1 border rounded p-4"
+    onSubmit={handleSubmit}
+  >
+    <h2 className="text-lg font-semibold pb-2">
       {isEditing ? "Update Default Order" : "Create Default Order"}
     </h2>
     <div className="flex items-center gap-2">
       <Label className="w-20 text-nowrap">Select Day:</Label>
       <Select value={formData.day || undefined} onValueChange={handleDayChange}>
-        <SelectTrigger className="flex-1 border rounded px-3 py-2">
+        <SelectTrigger className="flex-1 border rounded px-3 py-2 bg-background">
           <SelectValue placeholder="Select Day" />
         </SelectTrigger>
         <SelectContent>
@@ -51,7 +54,7 @@ const DefaultOrderForm = ({
               {item?.itemId?.hasQuantity && item?.itemId?.maxQuantity > 1 && (
                 <Input
                   type="number"
-                  className="flex-1"
+                  className="flex-1 bg-background"
                   value={
                     formData.mealItems.find(
                       (selected) =>
@@ -96,7 +99,9 @@ const DefaultOrderForm = ({
         ))}
       </div>
     )}
-    <Button type="submit" className="mt-4">
+
+    <div className="h-2"></div>
+    <Button type="submit" className="w-full">
       {isEditing ? "Update" : "Submit"}
     </Button>
   </form>

@@ -23,55 +23,55 @@ const EmployeeMenu = () => {
   return (
     <div className="bg-background rounded-lg shadow-md p-4 space-y-2">
       <h1 className="font-bold text-xl text-center py-2">Menus</h1>
-      <Table className="bg-background rounded">
-        <TableHeader className="text-nowrap">
-          <TableRow>
-            <TableHead>Day</TableHead>
-            <TableHead>Meal Type</TableHead>
-            <TableHead>Item Name</TableHead>
-            <TableHead>Variants</TableHead>
-            <TableHead>Max Quantity</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {weeklyMeals?.map((meal, pIndex) =>
-            meal?.availableItems?.map((item, index) => {
-              const isFirstRow = index === 0;
-              return (
-                <TableRow
-                  key={item._id}
-                  className={`${!(pIndex % 2) ? "bg-slate-50" : ""}`}
-                >
-                  {isFirstRow && (
-                    <>
-                      <TableCell rowSpan={meal.availableItems.length}>
-                        {meal?.day}
-                      </TableCell>
-                      <TableCell
-                        rowSpan={meal.availableItems.length}
-                        className="border-r"
-                      >
-                        {meal?.mealType}
-                      </TableCell>
-                    </>
-                  )}
-                  <TableCell>{item?.itemId?.itemName}</TableCell>
-                  <TableCell>
-                    {item?.itemId?.hasVariant
-                      ? item?.itemId?.variants.join(", ")
-                      : "—"}
-                  </TableCell>
-                  <TableCell>
-                    {item?.itemId?.hasQuantity
-                      ? item?.itemId?.maxQuantity
-                      : "—"}
-                  </TableCell>
-                </TableRow>
-              );
-            })
-          )}
-        </TableBody>
-      </Table>
+        <Table className="bg-background rounded">
+          <TableHeader className="text-nowrap">
+            <TableRow>
+              <TableHead>Day</TableHead>
+              <TableHead>Meal Type</TableHead>
+              <TableHead>Item Name</TableHead>
+              <TableHead>Variants</TableHead>
+              <TableHead>Max Quantity</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {weeklyMeals?.map((meal, pIndex) =>
+              meal?.availableItems?.map((item, index) => {
+                const isFirstRow = index === 0;
+                return (
+                  <TableRow
+                    key={item._id}
+                    className={`${!(pIndex % 2) ? "bg-slate-50" : ""}`}
+                  >
+                    {isFirstRow && (
+                      <>
+                        <TableCell rowSpan={meal.availableItems.length}>
+                          {meal?.day}
+                        </TableCell>
+                        <TableCell
+                          rowSpan={meal.availableItems.length}
+                          className="border-r"
+                        >
+                          {meal?.mealType}
+                        </TableCell>
+                      </>
+                    )}
+                    <TableCell>{item?.itemId?.itemName}</TableCell>
+                    <TableCell>
+                      {item?.itemId?.hasVariant
+                        ? item?.itemId?.variants.join(", ")
+                        : "—"}
+                    </TableCell>
+                    <TableCell>
+                      {item?.itemId?.hasQuantity
+                        ? item?.itemId?.maxQuantity
+                        : "—"}
+                    </TableCell>
+                  </TableRow>
+                );
+              })
+            )}
+          </TableBody>
+        </Table>
     </div>
   );
 };

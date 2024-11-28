@@ -64,7 +64,7 @@ const userSchema = new Schema(
       ],
       default: [],
     },
-    leaveDates: [Date],
+    isMealOff: [Date],
   },
   { timestamps: true }
 );
