@@ -53,7 +53,7 @@ function App() {
   }
 
   return (
-    <div className="flex flex-col overflow-hidden bg-gradient-to-tl from-amber-100 to-cyan-100">
+    <div className="flex flex-col bg-gradient-to-tl from-amber-100 to-cyan-100">
       <Routes>
         <Route
           path="/auth"

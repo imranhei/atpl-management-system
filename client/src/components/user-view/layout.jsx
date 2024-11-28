@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { Outlet } from 'react-router-dom'
+import React, { useState } from "react";
+import { Outlet } from "react-router-dom";
 // import Navbar from './navbar'
 import EmployeeSidebar from "./sidebar";
 import EmployeeHeader from "./header";
@@ -19,7 +19,7 @@ const EmployeeLayout = () => {
         </main>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default EmployeeLayout
+export default EmployeeLayout;
