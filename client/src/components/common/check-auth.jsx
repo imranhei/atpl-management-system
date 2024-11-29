@@ -38,18 +38,6 @@ const CheckAuth = ({ isAuthenticated, user, children }) => {
     }
   }
 
-  // if (
-  //   isAuthenticated &&
-  //   (location.pathname.includes("auth/login") ||
-  //     location.pathname.includes("auth/register"))
-  // ) {
-  //   if (user?.role === "admin" || user?.role === "super-admin") {
-  //     return <Navigate to="/dashboard" />;
-  //   } else {
-  //     return <Navigate to="/" />;
-  //   }
-  // }
-
   if (
     isAuthenticated &&
     (user?.role === "admin" || user?.role === "super-admin") &&
