@@ -5,7 +5,7 @@ import {
   updateDefaultOrder,
 } from "@/store/employee/meal-slice";
 import { placeOrder, fetchOrder, updateOrder, deleteOrder } from "@/store/employee/place-order-slice";
-import OrderTable from "./OrderTable";
+import OrderTable from "./orderTable";
 import DefaultOrderForm from "./DefaultOrderForm";
 import PlaceOrderForm from "./PlaceOrderForm";
 import { getDay } from "date-fns";
