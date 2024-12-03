@@ -1,6 +1,7 @@
 import React, { Fragment, useState } from "react";
 import { CalendarIcon } from "@radix-ui/react-icons";
 import { addDays, format } from "date-fns";
+import { useNavigate } from "react-router-dom";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -17,6 +18,7 @@ const Home = () => {
     from: new Date(),
     to: new Date(),
   });
+  const naigate = useNavigate();
 
   return (
     <div className="flex flex-col space-y-6 flex-1">
@@ -61,6 +63,7 @@ const Home = () => {
         </div>
         <Button onClick={() => console.log(date)}>Submit</Button>
       </div>
+      <Button onClick={() => naigate("auth/login")}>Login</Button>
     </div>
   );
 };

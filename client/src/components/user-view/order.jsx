@@ -5,9 +5,9 @@ import {
   updateDefaultOrder,
 } from "@/store/employee/meal-slice";
 import { placeOrder, fetchOrder, updateOrder, deleteOrder } from "@/store/employee/place-order-slice";
-import OrderTable from "./OrderTable";
-import DefaultOrderForm from "./DefaultOrderForm";
-import PlaceOrderForm from "./PlaceOrderForm";
+import OrderTable from "./orderTable";
+import DefaultOrderForm from "./defaultOrderForm";
+import PlaceOrderForm from "./placeOrderForm";
 import { getDay } from "date-fns";
 
 const initialFormState = { day: "", mealType: "", mealItems: [] };

@@ -21,9 +21,9 @@ import {
 
 const adminSidebarMenuItems = [
   {
-    id: "dashboard",
-    label: "Dashboard",
-    path: "/employee/dashboard",
+    id: "attendance",
+    label: "Attendance",
+    path: "/employee/attendance",
     icon: <LayoutDashboard size={20} />,
   },
   {

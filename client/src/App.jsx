@@ -13,7 +13,7 @@ import EmployeeSetting from "./pages/user-view/setting";
 import { useDispatch, useSelector } from "react-redux";
 import { checkAuth } from "./store/auth-slice";
 import { LoaderCircle } from "lucide-react";
-// import { checkAuth } from "./store/auth-slice";
+import Attendance from "./pages/user-view/attendance";
 
 function App() {
   const { isAuthenticated, user, isLoadingAuth } = useSelector(
@@ -30,8 +30,6 @@ function App() {
       } catch (error) {
         console.error("Error parsing token:", error);
       }
-    } else {
-      console.warn("No token found in sessionStorage");
     }
   }, [dispatch]);
 
@@ -55,6 +53,7 @@ function App() {
   return (
     <div className="flex flex-col bg-gradient-to-tl overflow-x-hidden from-amber-100 to-cyan-100">
       <Routes>
+        <Route path="/" element={<Home />} />
         <Route
           path="/auth"
           element={
@@ -74,12 +73,11 @@ function App() {
             </CheckAuth>
           }
         >
-          <Route path="dashboard" element={<Home />} />
+          <Route path="attendance" element={<Attendance />} />
           <Route path="meal" element={<Meal />} />
           <Route path="leave" element={<EmployeeLeave />} />
           <Route path="setting" element={<EmployeeSetting />} />
           <Route path="day-wise-meal" element={<TodayMeals />} />
-          {/* <Route path="contact" element={<Contact />} /> */}
         </Route>
       </Routes>
     </div>
