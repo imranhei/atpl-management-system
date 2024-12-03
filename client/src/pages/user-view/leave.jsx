@@ -1,6 +1,5 @@
 import LeaveApplicationTable from "@/components/admin-view/LeaveApplicationTable";
 import LeaveForm from "@/components/admin-view/leaveForm";
-import WeeklyMealTable from "@/components/admin-view/WeeklyMealTable";
 import { useToast } from "@/hooks/use-toast";
 import {
   addLeaveApplication,
