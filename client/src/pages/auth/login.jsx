@@ -24,7 +24,7 @@ const AuthLogin = () => {
     dispatch(login(formData)).then((res) => {
       if (res?.payload?.success) {
         toast({title: res.message || "Login successful",});
-        navigate("/employee/dashboard");
+        navigate("/employee/attendance");
       } else {
         toast({
           variant: "destructive",

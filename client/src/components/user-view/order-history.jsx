@@ -24,7 +24,7 @@ const EmployeeOrderHistory = () => {
 
   useEffect(() => {
     if (user) {
-      dispatch(getAllOrder(user.emp_code));
+      // dispatch(getAllOrder(user.emp_code));
     }
   }, [dispatch, user]);
 

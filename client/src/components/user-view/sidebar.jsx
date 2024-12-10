@@ -10,6 +10,7 @@ import {
   SlidersHorizontal,
   UtensilsCrossed,
   TicketsPlane,
+  FileChartColumn,
 } from "lucide-react";
 import {
   Sheet,
@@ -24,7 +25,7 @@ const adminSidebarMenuItems = [
     id: "attendance",
     label: "Attendance",
     path: "/employee/attendance",
-    icon: <LayoutDashboard size={20} />,
+    icon: <FileChartColumn size={20} />,
   },
   {
     id: "meal",

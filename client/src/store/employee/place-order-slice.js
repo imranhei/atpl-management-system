@@ -64,6 +64,21 @@ export const deleteOrder = createAsyncThunk(
   }
 );
 
+export const updateMealOffDates = createAsyncThunk(
+  "placeOrder/updateMealOffDates",
+  async ({ id, type, dates }, { rejectWithValue }) => {
+    try {
+      const response = await axios.put(
+        `${import.meta.env.VITE_API_URL_MONGO}/api/place-order/meal-off/${id}`,
+        { type, dates }
+      );
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 const placeOrderSlice = createSlice({
   name: "placeOrder",
   initialState,
