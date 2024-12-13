@@ -1,4 +1,5 @@
 const PlaceOrder = require("../../models/PlaceOrder");
+const User = require("../../models/User");
 
 const placeOrder = async (req, res) => {
   try {
@@ -160,7 +161,8 @@ const updateMealOffDates = async (req, res) => {
     if (invalidDates.length > 0) {
       return res.status(400).json({
         success: false,
-        message: "Invalid dates detected. Ensure dates are not in the past and are within the current year.",
+        message:
+          "Invalid dates detected. Ensure dates are not in the past and are within the current year.",
         data: invalidDates,
       });
     }
@@ -178,7 +180,9 @@ const updateMealOffDates = async (req, res) => {
     if (type === "add") {
       // Add unique dates to `isMealOff`
       const existingDates = user.isMealOff.map((date) => date.toISOString());
-      const newDates = dates.filter((date) => !existingDates.includes(new Date(date).toISOString()));
+      const newDates = dates.filter(
+        (date) => !existingDates.includes(new Date(date).toISOString())
+      );
       user.isMealOff.push(...newDates);
     } else if (type === "remove") {
       // Remove specified dates from `isMealOff`
@@ -192,8 +196,38 @@ const updateMealOffDates = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      message: type === "add" ? "Meal off dates added successfully." : "Meal off dates removed successfully.",
+      message:
+        type === "add"
+          ? "Meal off dates added successfully."
+          : "Meal off dates removed successfully.",
       data: user,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+const getMealOffDates = async (req, res) => {
+  try {
+    const { id } = req.params;
+    console
+
+    // Find the user (employee) by ID
+    const user = await User.findById(id);
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found.",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: user.isMealOff,
     });
   } catch (error) {
     res.status(500).json({
@@ -209,4 +243,5 @@ module.exports = {
   updatePlaceOrder,
   deletePlaceOrder,
   updateMealOffDates,
+  getMealOffDates,
 };

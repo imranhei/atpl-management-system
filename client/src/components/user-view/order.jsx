@@ -7,41 +7,15 @@ import {
 import {
   placeOrder,
   fetchOrder,
-  updateOrder,
-  deleteOrder,
+  updateMealOffDates,
+  getMealOffDates,
 } from "@/store/employee/place-order-slice";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import OrderTable from "./orderTable";
 import DefaultOrderForm from "./defaultOrderForm";
 import PlaceOrderForm from "./placeOrderForm";
-import { getDay } from "date-fns";
+import MealOffDialog from "./MealOffDialog";
+import { format } from "date-fns";
 import { Button } from "../ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Separator } from "@/components/ui/separator";
-import { X } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { Calendar } from "@/components/ui/calendar";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { CalendarIcon } from "@radix-ui/react-icons";
-import { addDays, format } from "date-fns";
-
-const tags = Array.from({ length: 50 }).map(
-  (_, i, a) => `v1.2.0-beta.${a.length - i}`
-);
 
 const initialFormState = { day: "", mealType: "", mealItems: [] };
 const newOrderFormState = { date: "", mealType: "", mealItems: [] };
@@ -54,6 +28,7 @@ const EmployeeOrder = () => {
   );
   const { weeklyMeals } = useSelector((state) => state.weeklyMeals);
   const { user } = useSelector((state) => state.auth);
+  const { mealOffDates } = useSelector((state) => state.placeOrder);
 
   const [formData, setFormData] = useState(initialFormState);
   const [newOrderFormData, setNewOrderFormData] = useState(newOrderFormState);
@@ -69,6 +44,7 @@ const EmployeeOrder = () => {
     if (user?.id) {
       dispatch(fetchDefaultOrder(user.id));
       dispatch(fetchOrder(user.id));
+      dispatch(getMealOffDates(user.id));
     }
   }, [dispatch]);
 
@@ -165,8 +141,6 @@ const EmployeeOrder = () => {
       // Generate an array of dates between 'from' and 'to'
       const startDate = new Date(date.from);
       const endDate = new Date(date.to);
-
-      // Create an array of dates in the desired format
       const formattedDates = [];
       let currentDate = startDate;
 
@@ -174,16 +148,53 @@ const EmployeeOrder = () => {
         formattedDates.push(format(currentDate, "yyyy-MM-dd")); // Format to "YYYY-MM-DD"
         currentDate = new Date(currentDate.setDate(currentDate.getDate() + 1)); // Increment by 1 day
       }
+
+      dispatch(
+        updateMealOffDates({
+          id: user?.id,
+          type: "add",
+          dates: formattedDates,
+        })
+      ).then(() => {
+        dispatch(getMealOffDates(user?.id));
+      });
     } else if (date?.from) {
       // If only 'from' is selected (single date)
       const formattedDate = [format(new Date(date.from), "yyyy-MM-dd")];
+      dispatch(
+        updateMealOffDates({
+          id: user?.id,
+          type: "add",
+          dates: formattedDate,
+        })
+      ).then((res) => {
+        dispatch(getMealOffDates(user?.id));
+        if (res.payload.success) {
+          toast({
+            title: "Meal off date added successfully.",
+          });
+        } else {
+          toast({
+            title: res.payload || "Error adding meal off date",
+            variant: "destructive",
+          });
+        }
+      });
     } else {
       console.log("No date selected");
     }
   };
 
-  const handleDayDelete = (tag) => {
-    console.log(tag);
+  const handleDayDelete = (date) => {
+    dispatch(
+      updateMealOffDates({
+        id: user?.id,
+        type: "remove",
+        dates: [date],
+      })
+    ).then(() => {
+      dispatch(getMealOffDates(user?.id));
+    });
   };
 
   if (isLoading) return <div>Loading...</div>;
@@ -192,92 +203,13 @@ const EmployeeOrder = () => {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <h1 className="text-lg font-semibold pb-2">Default Meal Orders</h1>
-        {/* <Button>Update Meal Off Date</Button> */}
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button variant="outline">Update Meal Off Date</Button>
-          </DialogTrigger>
-          <DialogContent className="sm:max-w-[425px]">
-            <DialogHeader>
-              <DialogTitle>Update Meal Off Date</DialogTitle>
-              <DialogDescription>
-                Update your meal off date to skip meals for a specific day/days.
-              </DialogDescription>
-            </DialogHeader>
-            <div>
-              <h1 className="mb-2">Selected meal off days</h1>
-              <ScrollArea className="h-40 w-full rounded-md border">
-                <div className="p-4">
-                  <h4 className="mb-4 text-sm font-medium leading-none">
-                    Day off
-                  </h4>
-                  {tags.map((tag) => (
-                    <div key={tag}>
-                      <div className="text-sm flex justify-between">
-                        <p>{tag}</p>
-                        <X
-                          size={16}
-                          className="text-red-500 cursor-pointer"
-                          onClick={() => handleDayDelete(tag)}
-                        />
-                      </div>
-                      <Separator className="my-2" />
-                    </div>
-                  ))}
-                </div>
-              </ScrollArea>
-
-              <Separator className="my-4" />
-              <p>Set a day off</p>
-              <div className="mt-2">
-                <div className="grid gap-2">
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <Button
-                        id="date"
-                        variant="outline"
-                        className={cn(
-                          "w-full justify-start text-left font-normal",
-                          !date && "text-muted-foreground"
-                        )}
-                      >
-                        <CalendarIcon className="mr-2" />
-                        {date?.from ? (
-                          date.to ? (
-                            <>
-                              {format(date.from, "LLL dd, y")} -{" "}
-                              {format(date.to, "LLL dd, y")}
-                            </>
-                          ) : (
-                            format(date.from, "LLL dd, y")
-                          )
-                        ) : (
-                          <span>Pick a date</span>
-                        )}
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
-                      <Calendar
-                        initialFocus
-                        mode="range"
-                        defaultMonth={date?.from}
-                        selected={date}
-                        onSelect={setDate}
-                        numberOfMonths={2}
-                      />
-                    </PopoverContent>
-                  </Popover>
-                </div>
-                {/* <Button onClick={() => console.log(date)}>Submit</Button> */}
-              </div>
-            </div>
-            <DialogFooter>
-              <Button type="submit" onClick={handleMealOff}>
-                Update Date
-              </Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
+        <MealOffDialog
+          mealOffDates={mealOffDates}
+          handleMealOff={handleMealOff}
+          handleDayDelete={handleDayDelete}
+          date={date}
+          setDate={setDate}
+        />
       </div>
       <OrderTable defaultOrder={defaultOrder} handleEdit={handleEdit} />
       <div className="flex gap-6 w-full md:flex-row flex-col">

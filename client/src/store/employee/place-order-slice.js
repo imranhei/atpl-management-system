@@ -4,6 +4,7 @@ import axios from "axios";
 const initialState = {
   placeOrder: null,
   isLoading: false,
+  mealOffDates: [],
 };
 
 export const placeOrder = createAsyncThunk(
@@ -74,6 +75,20 @@ export const updateMealOffDates = createAsyncThunk(
       );
       return response.data;
     } catch (error) {
+      return rejectWithValue(error.response.data.message);
+    }
+  }
+);
+
+export const getMealOffDates = createAsyncThunk(
+  "placeOrder/getMealOffDates",
+  async (id, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL_MONGO}/api/place-order/meal-off/${id}`
+      );
+      return response.data;
+    } catch (error) {
       return rejectWithValue(error.response.data);
     }
   }
@@ -120,6 +135,25 @@ const placeOrderSlice = createSlice({
         state.isLoading = false;
       })
       .addCase(deleteOrder.rejected, (state, action) => {
+        state.isLoading = false;
+      })
+      .addCase(updateMealOffDates.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateMealOffDates.fulfilled, (state, action) => {
+        state.isLoading = false;
+      })
+      .addCase(updateMealOffDates.rejected, (state, action) => {
+        state.isLoading = false;
+      })
+      .addCase(getMealOffDates.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getMealOffDates.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.mealOffDates = action.payload.data;
+      })
+      .addCase(getMealOffDates.rejected, (state, action) => {
         state.isLoading = false;
       });
   },
