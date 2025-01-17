@@ -19,7 +19,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { CalendarIcon } from "@radix-ui/react-icons";
-import { format } from "date-fns";
+import { format, isBefore, startOfDay } from "date-fns";
 import { Button } from "../ui/button";
 
 const MealOffDialog = ({
@@ -47,19 +47,27 @@ const MealOffDialog = ({
             <div className="p-4">
               <h4 className="mb-2 text-sm font-medium leading-none">Day off</h4>
               {mealOffDates.length ? (
-                mealOffDates.map((date) => (
-                  <div key={date}>
-                    <Separator className="" />
-                    <div className="text-sm flex justify-between p-1 hover:bg-gray-100">
-                      <p>{format(new Date(date), "MMM dd, yyyy")}</p>
-                      <X
-                        size={16}
-                        className="text-red-500 cursor-pointer"
-                        onClick={() => handleDayDelete(date)}
-                      />
+                mealOffDates.map((date) => {
+                  const isPastDate = isBefore(
+                    startOfDay(new Date(date)),
+                    startOfDay(new Date())
+                  );
+                  return (
+                    <div key={date}>
+                      <Separator className="" />
+                      <div className="text-sm flex justify-between p-1 hover:bg-gray-100">
+                        <p>{format(new Date(date), "MMM dd, yyyy")}</p>
+                        {!isPastDate && (
+                          <X
+                            size={16}
+                            className="text-red-500 cursor-pointer"
+                            onClick={() => handleDayDelete(date)}
+                          />
+                        )}
+                      </div>
                     </div>
-                  </div>
-                ))
+                  );
+                })
               ) : (
                 <div className="text-xl text-gray-300 font-bold">
                   No meal off days Found
