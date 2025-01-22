@@ -5,6 +5,7 @@ import dayWiseMealSlice from "./admin/day-wise-meal-slice";
 import defaultOrderSlice from "./employee/meal-slice";
 import leaveSlice from "./leave/leave-slice";
 import placeOrderSlice from "./employee/place-order-slice";
+import attendanceSlice from "./employee/attendance-slice";
 
 const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ const store = configureStore({
     weeklyMeals: dayWiseMealSlice,
     leaveApplication: leaveSlice,
     placeOrder: placeOrderSlice,
+    attendance: attendanceSlice,
   },
 });
 

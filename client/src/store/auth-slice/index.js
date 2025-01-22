@@ -12,7 +12,7 @@ const initialState = {
 export const login = createAsyncThunk("auth/login", async (data) => {
   try {
     const response = await axios.post(
-      `${import.meta.env.VITE_API_URL_MONGO}/api/auth/login`,
+      `${import.meta.env.VITE_API_URL}/api/login`,
       data
     );
     return response.data;
@@ -24,7 +24,7 @@ export const login = createAsyncThunk("auth/login", async (data) => {
 export const registerUser = createAsyncThunk("/auth/register", async (data) => {
   try {
     const response = await axios.post(
-      `${import.meta.env.VITE_API_URL_MONGO}/api/auth/register`,
+      `${import.meta.env.VITE_API_URL}/api/register`,
       data
     );
     return response.data;
@@ -35,7 +35,7 @@ export const registerUser = createAsyncThunk("/auth/register", async (data) => {
 
 export const checkAuth = createAsyncThunk("/auth/checkauth", async (token) => {
   const response = await axios.get(
-    `${import.meta.env.VITE_API_URL_MONGO}/api/auth/check-auth`,
+    `${import.meta.env.VITE_API_URL}/api/profile`,
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -49,7 +49,7 @@ export const checkAuth = createAsyncThunk("/auth/checkauth", async (token) => {
 
 export const deleteUser = createAsyncThunk("/auth/deleteUser", async (id) => {
   const response = await axios.delete(
-    `${import.meta.env.VITE_API_URL_MONGO}/api/auth/delete/${id}`
+    `${import.meta.env.VITE_API_URL}/api/auth/delete/${id}`
   );
   return response.data;
 });
@@ -58,7 +58,7 @@ export const resetPassword = createAsyncThunk(
   "/auth/resetPassword",
   async (data) => {
     const response = await axios.put(
-      `${import.meta.env.VITE_API_URL_MONGO}/api/auth/reset-password`,
+      `${import.meta.env.VITE_API_URL}/api/auth/reset-password`,
       data
     );
     return response.data;
@@ -83,7 +83,7 @@ const authSlice = createSlice({
     });
     builder.addCase(login.fulfilled, (state, action) => {
       state.isLoading = false;
-      if (action.payload.success) {
+      if (action.payload.status) {
         state.isAuthenticated = true;
         state.user = action.payload.user;
         state.token = action.payload.token;
@@ -99,8 +99,13 @@ const authSlice = createSlice({
       })
       .addCase(checkAuth.fulfilled, (state, action) => {
         state.isLoadingAuth = false;
-        state.user = !action.payload?.success ? null : action.payload?.user;
-        state.isAuthenticated = action.payload?.success;
+        state.user = !action.payload?.status
+          ? null
+          : {
+              name: action.payload?.data?.name,
+              email: action.payload?.data?.email,
+            };
+        state.isAuthenticated = action.payload?.status;
       })
       .addCase(checkAuth.rejected, (state) => {
         state.isLoadingAuth = false;

@@ -24,7 +24,7 @@ export const registerFormControls = [
     required: true,
   },
   {
-    name: "confirmPassword",
+    name: "password_confirmation",
     label: "Confirm Password",
     placeholder: "Confirm Password",
     componentType: "input",

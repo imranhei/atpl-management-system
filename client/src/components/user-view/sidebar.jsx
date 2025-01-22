@@ -2,10 +2,8 @@ import { Fragment, useState } from "react";
 import { useNavigate, Link, useLocation } from "react-router-dom";
 import {
   LayoutDashboard,
-  ShoppingBasket,
   ChevronDown,
   Settings,
-  FileChartColumnIncreasing,
   CircleUser,
   SlidersHorizontal,
   UtensilsCrossed,
@@ -19,8 +17,16 @@ import {
   SheetTitle,
   SheetDescription,
 } from "@/components/ui/sheet";
+import { useSelector } from "react-redux";
+import { Label } from "@radix-ui/react-dropdown-menu";
 
 const adminSidebarMenuItems = [
+  {
+    id: "dashboard",
+    label: "Dashboard",
+    path: "/employee/dashboard",
+    icon: <LayoutDashboard size={20} />,
+  },
   {
     id: "attendance",
     label: "Attendance",
@@ -39,32 +45,6 @@ const adminSidebarMenuItems = [
     path: "/employee/leave",
     icon: <TicketsPlane size={20} />,
   },
-  // {
-  //   id: "leave",
-  //   label: "Leave",
-  //   path: "/employee/leave",
-  //   icon: <TicketsPlane size={20} />,
-  // submenu: [
-  //   {
-  //     id: "orders",
-  //     label: "Orders",
-  //     path: "/admin/orders",
-  //     icon: <ShoppingCart size={20} />,
-  //   },
-  //   {
-  //     id: "other-cost",
-  //     label: "Other Cost",
-  //     path: "/admin/other-cost",
-  //     icon: <ShieldPlus size={20} />,
-  //   },
-  //   {
-  //     id: "sales-history",
-  //     label: "Sales History",
-  //     path: "/admin/sales-history",
-  //     icon: <NotepadText size={20} />,
-  //   },
-  // ],
-  // },
   {
     id: "settings",
     label: "Settings",
@@ -167,6 +147,7 @@ function MenuItem({ setOpenSidebar }) {
 
 const EmployeeSidebar = ({ open, setOpenSidebar }) => {
   const navigate = useNavigate();
+  const { user } = useSelector((state) => state.auth);
 
   return (
     <Fragment>
@@ -175,12 +156,13 @@ const EmployeeSidebar = ({ open, setOpenSidebar }) => {
           <div className="flex flex-col h-full">
             <SheetHeader className="border-b">
               <SheetTitle className="flex gap-2">
-                <SlidersHorizontal size={30} />
-                <span className="text-xl font-extrabold">Admin Panel</span>
+                <SlidersHorizontal size={24} />
+                <span className="text-xl font-extrabold">User Panel</span>
               </SheetTitle>
               <SheetDescription></SheetDescription>
             </SheetHeader>
             <MenuItem setOpenSidebar={setOpenSidebar} />
+            <Label className="absolute bottom-6 left-6">{user?.name}</Label>
           </div>
         </SheetContent>
       </Sheet>
@@ -189,10 +171,11 @@ const EmployeeSidebar = ({ open, setOpenSidebar }) => {
           onClick={() => navigate("/employee/dashboard")}
           className="flex items-center gap-2 cursor-pointer"
         >
-          <SlidersHorizontal size={30} />
-          <h1 className="text-2xl font-extrabold">Admin Panel</h1>
+          <SlidersHorizontal size={24} />
+          <h1 className="text-2xl font-extrabold">User Panel</h1>
         </div>
         <MenuItem />
+        <Label className="absolute bottom-6 left-6">{user?.name}</Label>
       </aside>
     </Fragment>
   );

@@ -10,7 +10,7 @@ const initialState = {
   name: "",
   email: "",
   password: "",
-  confirmPassword: "",
+  password_confirmation: "",
 };
 
 const AuthResgister = () => {
@@ -22,9 +22,9 @@ const AuthResgister = () => {
 
   const onSubmit = (event) => {
     event.preventDefault();
-    
+
     //form validation
-    if(formData.password !== formData.confirmPassword) {
+    if(formData.password !== formData.password_confirmation) {
       toast({
         variant: "destructive",
         title: "Password and confirm password does not match",
@@ -43,7 +43,7 @@ const AuthResgister = () => {
     }
 
     //all fields are required
-    if (!formData.name || !formData.email || !formData.password || !formData.confirmPassword) {
+    if (!formData.name || !formData.email || !formData.password || !formData.password_confirmation) {
       toast({
         variant: "destructive",
         title: "All fields are required",
@@ -61,7 +61,7 @@ const AuthResgister = () => {
     }
 
     dispatch(registerUser(formData)).then((data) => {
-      if (data?.payload && data?.payload?.success) {
+      if (data?.payload && data?.payload?.status) {
         toast({
           title: data.payload.message || "Registration success",
         });

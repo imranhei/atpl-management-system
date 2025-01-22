@@ -22,7 +22,8 @@ const AuthLogin = () => {
     event.preventDefault();
 
     dispatch(login(formData)).then((res) => {
-      if (res?.payload?.success) {
+      console.log(res);
+      if (res?.payload?.status) {
         toast({title: res.message || "Login successful",});
         navigate("/employee/attendance");
       } else {
@@ -43,7 +44,7 @@ const AuthLogin = () => {
           Sign in to ATPL Dhaka
         </h1>
         <p className="mt-2">
-          Don't have an account?
+          Don&apos;t have an account?
           <Link
             className="font-medium ml-2 text-yellowDark hover:text-yellowDark hover:underline"
             to="/auth/register"

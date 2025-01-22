@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import AuthLayout from "./components/auth/layout";
 import AuthLogin from "./pages/auth/login";
@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { checkAuth } from "./store/auth-slice";
 import { LoaderCircle } from "lucide-react";
 import Attendance from "./pages/user-view/attendance";
+import Dashboard from "./pages/user-view/dashboard";
 
 function App() {
   const { isAuthenticated, user, isLoadingAuth } = useSelector(
@@ -73,6 +74,7 @@ function App() {
             </CheckAuth>
           }
         >
+          <Route path="dashboard" element={<Dashboard />} />
           <Route path="attendance" element={<Attendance />} />
           <Route path="meal" element={<Meal />} />
           <Route path="leave" element={<EmployeeLeave />} />

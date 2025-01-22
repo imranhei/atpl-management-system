@@ -1,4 +1,3 @@
-import React from "react";
 import { Navigate, useLocation } from "react-router-dom";
 
 const CheckAuth = ({ isAuthenticated, user, children }) => {
@@ -10,9 +9,9 @@ const CheckAuth = ({ isAuthenticated, user, children }) => {
       return <Navigate to="/auth/login" />;
     } else {
       if (user?.role === "admin" || user?.role === "super-admin") {
-        return <Navigate to="/admin/attendance" />;
+        return <Navigate to="/admin/dashboard" />;
       } else {
-        return <Navigate to="/employee/attendance" />;
+        return <Navigate to="/employee/dashboard" />;
       }
     }
   }
@@ -29,9 +28,9 @@ const CheckAuth = ({ isAuthenticated, user, children }) => {
     (pathname.includes("auth/login") || pathname.includes("auth/register"))
   ) {
     if (user?.role === "admin" || user?.role === "super-admin") {
-      return <Navigate to="/admin/attendance" />;
+      return <Navigate to="/admin/dashboard" />;
     } else {
-      return <Navigate to="/employee/attendance" />;
+      return <Navigate to="/employee/dashboard" />;
     }
   }
 
@@ -40,7 +39,7 @@ const CheckAuth = ({ isAuthenticated, user, children }) => {
     (user?.role === "admin" || user?.role === "super-admin") &&
     location.pathname === "/"
   ) {
-    return <Navigate to="/admin/attendance" />;
+    return <Navigate to="/admin/dashboard" />;
   }
 
   return <>{children}</>;
