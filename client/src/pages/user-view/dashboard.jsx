@@ -67,7 +67,7 @@ const Dashboard = () => {
   const { punch_details } = attendance || {};
 
   const calculateAvgTime = (punchDetails, key) => {
-    if (!punchDetails.length) return "00:00:00";
+    if (!punchDetails?.length) return "00:00:00";
 
     // Convert all times to seconds
     const totalSeconds = punchDetails.reduce((total, punch) => {
@@ -169,7 +169,7 @@ const Dashboard = () => {
                   <div className="flex sm:flex-row flex-col justify-between w-full gap-2 text-nowrap">
                     <div className="flex gap-1">
                       <span className="font-semibold">Working Day:</span>
-                      <span>{punch_details.length}</span>
+                      <span>{punch_details?.length}</span>
                     </div>
                     <div className="flex gap-1">
                       <span className="font-semibold">Avg entry:</span>

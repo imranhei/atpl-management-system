@@ -16,7 +16,7 @@ const EmployeeLeave = () => {
   const { toast } = useToast();
 
   const [formData, setFormData] = useState({
-    emp_code: user?.emp_code || "",
+    // emp_code: user?.emp_code || "",
     leave_date_from: "",
     leave_date_to: "",
     leave_type: "",
@@ -24,12 +24,12 @@ const EmployeeLeave = () => {
   });
 
   useEffect(() => {
-    dispatch(fetchLeaveApplicationList({ emp_code: user?.emp_code }));
+    dispatch(fetchLeaveApplicationList());
   }, [dispatch]);
 
   const handleSubmit = async (formData) => {
+    console.log("Submitted formData:", formData);
     const convertedData = {
-      emp_code: user?.emp_code || "",
       leave_date_from: new Date(formData.leave_date_from)
         .toISOString()
         .split("T")[0],
@@ -39,14 +39,17 @@ const EmployeeLeave = () => {
       leave_type: formData.leave_type.toLowerCase(),
       reason: formData.reason,
     };
-    if (user?.emp_code) {
+    // if (user?.emp_code) {
       dispatch(addLeaveApplication(convertedData)).then((data) => {
-        if (data?.payload?.success) {
-          dispatch(fetchLeaveApplicationList({ emp_code: user?.emp_code }));
+        if (data?.payload?.status) {
+          dispatch(fetchLeaveApplicationList());
+        } else {
+          console.log(data.payload)
+          toast({ title: data?.payload || "Error" });
         }
       });
 
-      dispatch(fetchLeaveApplicationList({ emp_code: user?.emp_code }));
+      dispatch(fetchLeaveApplicationList());
       setFormData({
         emp_code: user?.emp_code || "",
         leave_date_from: "",
@@ -54,9 +57,9 @@ const EmployeeLeave = () => {
         leave_type: "",
         reason: "",
       });
-    } else {
-      toast({ title: "Employee code does't found, Please Login Again" });
-    }
+  //   } else {
+  //     toast({ title: "Employee code does't found, Please Login Again" });
+  //   }
   };
 
   return (

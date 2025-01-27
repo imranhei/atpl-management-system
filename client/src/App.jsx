@@ -5,7 +5,7 @@ import AuthLogin from "./pages/auth/login";
 import AuthRegister from "./pages/auth/register";
 import CheckAuth from "./components/common/check-auth";
 import UserLayout from "./components/user-view/layout";
-import Home from "./pages/user-view/home";
+// import Home from "./pages/user-view/home";
 import TodayMeals from "./pages/user-view/day-wise-meal";
 import Meal from "./pages/user-view/meal";
 import EmployeeLeave from "./pages/user-view/leave";
@@ -15,6 +15,7 @@ import { checkAuth } from "./store/auth-slice";
 import { LoaderCircle } from "lucide-react";
 import Attendance from "./pages/user-view/attendance";
 import Dashboard from "./pages/user-view/dashboard";
+import Home from "./pages/shared/home";
 
 function App() {
   const { isAuthenticated, user, isLoadingAuth } = useSelector(
@@ -36,15 +37,6 @@ function App() {
 
   if (isLoadingAuth) {
     return (
-      // <div className="flex items-center justify-center min-w-screen min-h-screen">
-      //   <div className="flex flex-col space-y-3">
-      //     <Skeleton className="h-[125px] w-[250px] rounded-xl" />
-      //     <div className="space-y-2">
-      //       <Skeleton className="h-4 w-[250px]" />
-      //       <Skeleton className="h-4 w-[200px]" />
-      //     </div>
-      //   </div>
-      // </div>
       <div className="flex items-center justify-center min-w-screen min-h-screen">
         <LoaderCircle size={48} className="animate-spin" />
       </div>

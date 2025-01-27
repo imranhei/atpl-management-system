@@ -74,7 +74,7 @@ const LeaveForm = ({ formData, setFormData, onSubmit }) => {
                     leave_date_to: date?.to || date?.from,
                   }));
                 }}
-                numberOfMonths={2}
+                numberOfMonths={1}
               />
             </PopoverContent>
           </Popover>
@@ -92,9 +92,12 @@ const LeaveForm = ({ formData, setFormData, onSubmit }) => {
             <SelectValue placeholder="Select Leave Type" />
           </SelectTrigger>
           <SelectContent>
-            {["Full", "Half"].map((type) => (
-              <SelectItem key={type} value={type}>
-                {type}
+            {[
+              { label: "Full", value: "full" },
+              { label: "Half", value: "half" },
+            ].map((option) => (
+              <SelectItem key={option.value} value={option.value}>
+                {option.label}
               </SelectItem>
             ))}
           </SelectContent>

@@ -22,10 +22,9 @@ const AuthLogin = () => {
     event.preventDefault();
 
     dispatch(login(formData)).then((res) => {
-      console.log(res);
       if (res?.payload?.status) {
         toast({title: res.message || "Login successful",});
-        navigate("/employee/attendance");
+        navigate("/employee/dashboard");
       } else {
         toast({
           variant: "destructive",

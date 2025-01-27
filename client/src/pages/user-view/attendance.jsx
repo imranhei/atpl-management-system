@@ -41,11 +41,11 @@ const Attendance = () => {
           getAttendance({
             token: parsedToken,
             page: currentPage,
-            start_date: date.from
-              ? format(date.from, "yyyy-MM-dd") // Format date to API format
+            start_date: date?.from
+              ? format(date?.from, "yyyy-MM-dd") // Format date to API format
               : null,
-            end_date: date.to
-              ? format(date.to, "yyyy-MM-dd") // Format date to API format
+            end_date: date?.to
+              ? format(date?.to, "yyyy-MM-dd") // Format date to API format
               : null,
           })
         );
@@ -75,7 +75,7 @@ const Attendance = () => {
               variant="outline"
               className={cn(
                 "w-[230px] justify-start text-left font-normal",
-                !date.from && !date.to && "text-muted-foreground"
+                !date?.from && !date?.to && "text-muted-foreground"
               )}
             >
               <CalendarIcon className="mr-2" />
@@ -113,7 +113,7 @@ const Attendance = () => {
               to: null,
             })
           }
-          disabled={!date.from && !date.to}
+          disabled={!date?.from && !date?.to}
         >
           <FilterX size={20} />
         </Button>

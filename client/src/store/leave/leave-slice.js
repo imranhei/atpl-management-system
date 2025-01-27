@@ -12,15 +12,22 @@ const initialState = {
 export const addLeaveApplication = createAsyncThunk(
   "defaultLeaveData/addLeaveApplication",
   async (mealData, { rejectWithValue }) => {
+    const token = sessionStorage.getItem("token");
+    const parsedToken = JSON.parse(token);
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/api/records`,
-        mealData
+        mealData,
+        {
+          headers: {
+            Authorization: `Bearer ${parsedToken}`,
+          },
+        }
       );
       return response.data; // Assumes response.data contains the added leave application
     } catch (error) {
       return rejectWithValue(
-        error.response?.data ||
+        error.response?.data?.message ||
           "An error occurred while adding a leave application."
       );
     }
@@ -29,16 +36,23 @@ export const addLeaveApplication = createAsyncThunk(
 
 export const fetchLeaveApplicationList = createAsyncThunk(
   "defaultLeaveData/fetchLeaveApplicationList",
-  async (params, { rejectWithValue }) => {
-    try {
-      // Add query parameters to the URL
-      const queryString = params
-        ? `?${new URLSearchParams(params).toString()}`
-        : "";
+  async (_, { rejectWithValue }) => {
+    const token = sessionStorage.getItem("token");
+    const parsedToken = JSON.parse(token);
 
+    try {
+      // const queryString = params
+      //   ? `?${new URLSearchParams(params).toString()}`
+      //   : "";
       const response = await axios.get(
-        `${import.meta.env.VITE_API_URL}/api/records${queryString}`
+        `${import.meta.env.VITE_API_URL}/api/records`,
+        {
+          headers: {
+            Authorization: `Bearer ${parsedToken}`,
+          },
+        }
       );
+
       return response.data;
     } catch (error) {
       return rejectWithValue(

@@ -13,7 +13,7 @@ import {
 import OrderTable from "./orderTable";
 import DefaultOrderForm from "./defaultOrderForm";
 import PlaceOrderForm from "./placeOrderForm";
-import MealOffDialog from "./MealOffDialog";
+import MealOffDialog from "./mealOffDialog";
 import { format } from "date-fns";
 import { Button } from "../ui/button";
 
