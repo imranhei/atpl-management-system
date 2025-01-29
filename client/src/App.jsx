@@ -15,7 +15,7 @@ import { checkAuth } from "./store/auth-slice";
 import { LoaderCircle } from "lucide-react";
 import Attendance from "./pages/user-view/attendance";
 import Dashboard from "./pages/user-view/dashboard";
-import Home from "./pages/shared/home";
+import Home from "./pages/shared/Home";
 
 function App() {
   const { isAuthenticated, user, isLoadingAuth } = useSelector(

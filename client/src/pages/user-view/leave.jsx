@@ -40,26 +40,26 @@ const EmployeeLeave = () => {
       reason: formData.reason,
     };
     // if (user?.emp_code) {
-      dispatch(addLeaveApplication(convertedData)).then((data) => {
-        if (data?.payload?.status) {
-          dispatch(fetchLeaveApplicationList());
-        } else {
-          console.log(data.payload)
-          toast({ title: data?.payload || "Error" });
-        }
-      });
+    dispatch(addLeaveApplication(convertedData)).then((data) => {
+      if (data?.payload?.success) {
+        // Use "success" instead of "status"
+        dispatch(fetchLeaveApplicationList());
+      } else {
+        console.log(data.payload);
+        toast({ title: data?.payload?.message || "Error occurred" }); // Extract message
+      }
+    });
 
-      dispatch(fetchLeaveApplicationList());
-      setFormData({
-        emp_code: user?.emp_code || "",
-        leave_date_from: "",
-        leave_date_to: "",
-        leave_type: "",
-        reason: "",
-      });
-  //   } else {
-  //     toast({ title: "Employee code does't found, Please Login Again" });
-  //   }
+    setFormData({
+      emp_code: user?.emp_code || "",
+      leave_date_from: "",
+      leave_date_to: "",
+      leave_type: "",
+      reason: "",
+    });
+    //   } else {
+    //     toast({ title: "Employee code does't found, Please Login Again" });
+    //   }
   };
 
   return (

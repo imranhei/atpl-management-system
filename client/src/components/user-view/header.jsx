@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { AlignJustify, LogOut } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { resetTokenAndCredentials } from "@/store/auth-slice";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 const EmployeeHeader = ({ setOpenSidebar }) => {
   const dispatch = useDispatch();
@@ -26,12 +26,12 @@ const EmployeeHeader = ({ setOpenSidebar }) => {
         <AlignJustify size={20} />
         <span className="sr-only">Toggle Menu</span>
       </Button>
-      <div className="flex flex-1 justify-start items-center">
+      <Link to="/" className="flex flex-1 justify-start items-center">
         <img src="/atpldhaka.png" className="lg:w-16 sm:w-14 w-12 lg:ml-0 ml-2" />
         {/* <span className="font-bold text-lg text-violet-800 sm:block hidden">
           ATPL Dhaka
         </span> */}
-      </div>
+      </Link>
       {/* <div className="flex flex-1 justify-end"> */}
         <Button
           onClick={handleLogout}
