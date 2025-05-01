@@ -47,13 +47,12 @@ const Dashboard = () => {
   useEffect(() => {
     const today = new Date();
     const weekRange = getWeekRange(today);
-    const token = sessionStorage.getItem("token");
+    const token = localStorage.getItem("access_token");
     if (token) {
       try {
-        const parsedToken = JSON.parse(token);
         dispatch(
           getAttendance({
-            token: parsedToken,
+            token,
             start_date: weekRange.start,
             end_date: weekRange.end,
           })
@@ -64,35 +63,31 @@ const Dashboard = () => {
     }
   }, []);
 
-  const { punch_details } = attendance || {};
+  const { results } = attendance || {};
 
   const calculateAvgTime = (punchDetails, key) => {
     if (!punchDetails?.length) return "00:00:00";
-
-    // Convert all times to seconds
+  
     const totalSeconds = punchDetails.reduce((total, punch) => {
-      const value = punch[key];
-
-      let time;
-      if (key === "total_time") {
-        // total_time is already in HH:mm:ss format
-        time = value.split(":");
-      } else {
-        // Extract time part from date-time string (first_punch_time or last_punch_time)
-        time = value.split(" ")[1].split(":");
+      let timeString = punch[key];
+  
+      if (!timeString || typeof timeString !== "string") return total;
+  
+      const timeParts = timeString.split(":").map((t) => parseInt(t, 10));
+  
+      let hours = 0, minutes = 0, seconds = 0;
+  
+      if (timeParts.length === 3) {
+        [hours, minutes, seconds] = timeParts;
+      } else if (timeParts.length === 2) {
+        [hours, minutes] = timeParts;
       }
-
-      const hours = parseInt(time[0], 10);
-      const minutes = parseInt(time[1], 10);
-      const seconds = parseInt(time[2], 10);
-
-      return total + hours * 3600 + minutes * 60 + seconds; // Convert to seconds
+  
+      return total + hours * 3600 + minutes * 60 + seconds;
     }, 0);
-
-    // Calculate average in seconds
+  
     const avgSeconds = Math.floor(totalSeconds / punchDetails.length);
-
-    // Convert back to HH:mm:ss
+  
     const hours = Math.floor(avgSeconds / 3600)
       .toString()
       .padStart(2, "0");
@@ -100,9 +95,9 @@ const Dashboard = () => {
       .toString()
       .padStart(2, "0");
     const seconds = (avgSeconds % 60).toString().padStart(2, "0");
-
+  
     return `${hours}:${minutes}:${seconds}`;
-  };
+  };  
 
   return (
     <div>
@@ -110,12 +105,13 @@ const Dashboard = () => {
         <p className="text-lg font-semibold">This Week Attendance</p>
         <Table className="bg-background rounded">
           <TableHeader>
-            <TableRow>
-              <TableHead>Name</TableHead>
+            <TableRow className="text-nowrap bg-sky-100">
+              {/* <TableHead>Name</TableHead> */}
               <TableHead>Date</TableHead>
               <TableHead>Entry</TableHead>
               <TableHead>Exit</TableHead>
-              <TableHead>Working Time</TableHead>
+              <TableHead>Duration</TableHead>
+              <TableHead>Status</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -131,21 +127,22 @@ const Dashboard = () => {
               //   </TableCell>
               // </TableRow>>
               <></>
-            ) : punch_details?.length > 0 ? (
-              punch_details.map((punch, index) => (
+            ) : results?.length > 0 ? (
+              results.map((punch, index) => (
                 <TableRow
                   key={index}
-                  className={index % 2 === 0 ? "bg-gray-100" : ""}
+                  className={index % 2 === 0 ? "bg-gray-100 text-nowrap" : "text-nowrap"}
                 >
-                  <TableCell>{attendance?.name}</TableCell>
+                  {/* <TableCell>{punch?.first_name}</TableCell> */}
                   <TableCell>{punch?.date}</TableCell>
                   <TableCell>
-                    {punch?.first_punch_time.split(" ")[1].split(".")[0]}
+                    {punch?.first_punch_time}
                   </TableCell>
                   <TableCell>
-                    {punch?.last_punch_time.split(" ")[1].split(".")[0]}
+                    {punch?.last_punch_time}
                   </TableCell>
-                  <TableCell>{punch?.total_time.split(".")[0]}</TableCell>
+                  <TableCell>{punch?.total_hour}</TableCell>
+                  <TableCell>{punch?.status}</TableCell>
                 </TableRow>
               ))
             ) : (
@@ -169,24 +166,24 @@ const Dashboard = () => {
                   <div className="flex sm:flex-row flex-col justify-between w-full gap-2 text-nowrap">
                     <div className="flex gap-1">
                       <span className="font-semibold">Working Day:</span>
-                      <span>{punch_details?.length}</span>
+                      <span>{results?.length}</span>
                     </div>
                     <div className="flex gap-1">
                       <span className="font-semibold">Avg entry:</span>
                       <span>
-                        {calculateAvgTime(punch_details, "first_punch_time")}
+                        {calculateAvgTime(results, "first_punch_time")}
                       </span>
                     </div>
                     <div className="flex gap-1">
                       <span className="font-semibold">Avg exit:</span>
                       <span>
-                        {calculateAvgTime(punch_details, "last_punch_time")}
+                        {calculateAvgTime(results, "last_punch_time")}
                       </span>
                     </div>
                     <div className="flex gap-1">
                       <span className="font-semibold">Avg working time:</span>
                       <span>
-                        {calculateAvgTime(punch_details, "total_time")}
+                        {calculateAvgTime(results, "total_hour")}
                       </span>
                     </div>
                   </div>

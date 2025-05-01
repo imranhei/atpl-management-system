@@ -28,17 +28,20 @@ const EmployeeLeave = () => {
   }, [dispatch]);
 
   const handleSubmit = async (formData) => {
-    console.log("Submitted formData:", formData);
+    const formatDateUTC = (date) => {
+      const d = new Date(date);
+      return new Date(d.getTime() - d.getTimezoneOffset() * 60000)
+        .toISOString()
+        .split("T")[0];
+    };
+
     const convertedData = {
-      leave_date_from: new Date(formData.leave_date_from)
-        .toISOString()
-        .split("T")[0],
-      leave_date_to: new Date(formData.leave_date_to)
-        .toISOString()
-        .split("T")[0],
+      leave_date_from: formatDateUTC(formData.leave_date_from),
+      leave_date_to: formatDateUTC(formData.leave_date_to),
       leave_type: formData.leave_type.toLowerCase(),
       reason: formData.reason,
     };
+
     // if (user?.emp_code) {
     dispatch(addLeaveApplication(convertedData)).then((data) => {
       if (data?.payload?.success) {

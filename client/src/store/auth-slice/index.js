@@ -5,15 +5,46 @@ const initialState = {
   isLoading: false,
   isAuthenticated: false,
   user: null,
-  token: null,
   isLoadingAuth: false,
 };
 
-export const login = createAsyncThunk("auth/login", async (data) => {
+export const login = createAsyncThunk(
+  "auth/login",
+  async (data, { rejectWithValue }) => {
+    try {
+      const formData = new FormData();
+      formData.append("username", data.username);
+      formData.append("password", data.password);
+
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/api/auth/login/`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      return rejectWithValue({
+        message:
+          error.response?.data?.error || error.message || "Unknown error",
+      });
+    }
+  }
+);
+
+export const logout = createAsyncThunk("auth/logout", async () => {
   try {
     const response = await axios.post(
-      `${import.meta.env.VITE_API_URL}/api/login`,
-      data
+      `${import.meta.env.VITE_API_URL}/api/auth/logout/`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
+      }
     );
     return response.data;
   } catch (error) {
@@ -35,12 +66,10 @@ export const registerUser = createAsyncThunk("/auth/register", async (data) => {
 
 export const checkAuth = createAsyncThunk("/auth/checkauth", async (token) => {
   const response = await axios.get(
-    `${import.meta.env.VITE_API_URL}/api/profile`,
+    `${import.meta.env.VITE_API_URL}/api/dashboard/`,
     {
       headers: {
         Authorization: `Bearer ${token}`,
-        "Cache-Control":
-          "no-store, no-cache, must-revalidate, proxy-revalidate",
       },
     }
   );
@@ -68,30 +97,30 @@ export const resetPassword = createAsyncThunk(
 const authSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {
-    resetTokenAndCredentials: (state) => {
-      // no subdomain
-      state.user = null;
-      state.isAuthenticated = false;
-      state.token = null;
-      sessionStorage.clear();
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(login.pending, (state) => {
-      state.isLoading = true;
-    });
-    builder.addCase(login.fulfilled, (state, action) => {
-      state.isLoading = false;
-      if (action.payload.status) {
-        state.isAuthenticated = true;
-        state.user = action.payload.user;
-        state.token = action.payload.token;
-        sessionStorage.setItem("token", JSON.stringify(action.payload.token));
-      }
-    });
     builder
+      .addCase(login.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(login.fulfilled, (state, action) => {
+        state.isLoading = false;
+        if (action.payload.status) {
+          state.isAuthenticated = true;
+        }
+      })
       .addCase(login.rejected, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(logout.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(logout.fulfilled, (state) => {
+        state.isLoading = false;
+        state.isAuthenticated = false;
+        state.user = null;
+      })
+      .addCase(logout.rejected, (state) => {
         state.isLoading = false;
       })
       .addCase(checkAuth.pending, (state) => {
@@ -99,13 +128,10 @@ const authSlice = createSlice({
       })
       .addCase(checkAuth.fulfilled, (state, action) => {
         state.isLoadingAuth = false;
-        state.user = !action.payload?.status
-          ? null
-          : {
-              name: action.payload?.data?.name,
-              email: action.payload?.data?.email,
-            };
-        state.isAuthenticated = action.payload?.status;
+        if (action.payload.success) {
+          state.user = action.payload.user;
+          state.isAuthenticated = true;
+        }
       })
       .addCase(checkAuth.rejected, (state) => {
         state.isLoadingAuth = false;
@@ -123,7 +149,5 @@ const authSlice = createSlice({
       });
   },
 });
-
-export const { resetTokenAndCredentials } = authSlice.actions;
 
 export default authSlice.reducer;

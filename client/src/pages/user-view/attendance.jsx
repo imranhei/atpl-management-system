@@ -21,6 +21,12 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import PaginationWithEllipsis from "@/components/user-view/paginationWithEllipsis";
 
 const Attendance = () => {
@@ -33,13 +39,12 @@ const Attendance = () => {
   });
 
   useEffect(() => {
-    const token = sessionStorage.getItem("token");
+    const token = localStorage.getItem("access_token");
     if (token) {
       try {
-        const parsedToken = JSON.parse(token);
         dispatch(
           getAttendance({
-            token: parsedToken,
+            token,
             page: currentPage,
             start_date: date?.from
               ? format(date?.from, "yyyy-MM-dd") // Format date to API format
@@ -55,12 +60,7 @@ const Attendance = () => {
     }
   }, [dispatch, currentPage, date]);
 
-  const { punch_details, pagination } = attendance || {};
-
-  const handleDateFilter = () => {
-    setCurrentPage(1); // Reset to the first page when filtering
-    // Trigger a new API call by updating the `date` state
-  };
+  const { results, pagination } = attendance || {};
 
   return (
     <div className="space-y-2 relative">
@@ -101,31 +101,43 @@ const Attendance = () => {
               selected={date}
               onSelect={(date) => {
                 setDate(date);
+                setCurrentPage(1);
               }}
               numberOfMonths={1}
             />
           </PopoverContent>
         </Popover>
-        <Button
-          onClick={() =>
-            setDate({
-              from: null,
-              to: null,
-            })
-          }
-          disabled={!date?.from && !date?.to}
-        >
-          <FilterX size={20} />
-        </Button>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger>
+              <Button
+                onClick={() => {
+                  setDate({
+                    from: null,
+                    to: null,
+                  })
+                  setCurrentPage(1);
+                }}
+                disabled={!date?.from && !date?.to}
+              >
+                <FilterX size={20} />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Clear filter</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       </div>
       <Table className="bg-background rounded">
         <TableHeader>
-          <TableRow>
-            <TableHead>Name</TableHead>
+          <TableRow className="bg-sky-100 text-nowrap">
+            {/* <TableHead>Name</TableHead> */}
             <TableHead>Date</TableHead>
             <TableHead>Entry</TableHead>
             <TableHead>Exit</TableHead>
-            <TableHead>Working Time</TableHead>
+            <TableHead>Duration</TableHead>
+            <TableHead>Status</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -140,21 +152,18 @@ const Attendance = () => {
                 ))}
               </TableCell>
             </TableRow>
-          ) : punch_details?.length > 0 ? (
-            punch_details.map((punch, index) => (
+          ) : results?.length > 0 ? (
+            results.map((punch, index) => (
               <TableRow
                 key={index}
-                className={index % 2 === 0 ? "bg-gray-100" : ""}
+                className={index % 2 === 0 ? "bg-gray-100 text-nowrap" : "text-nowrap"}
               >
-                <TableCell>{attendance?.name}</TableCell>
+                {/* <TableCell>{punch?.first_name}</TableCell> */}
                 <TableCell>{punch?.date}</TableCell>
-                <TableCell>
-                  {punch?.first_punch_time.split(" ")[1].split(".")[0]}
-                </TableCell>
-                <TableCell>
-                  {punch?.last_punch_time.split(" ")[1].split(".")[0]}
-                </TableCell>
-                <TableCell>{punch?.total_time.split(".")[0]}</TableCell>
+                <TableCell>{punch?.first_punch_time}</TableCell>
+                <TableCell>{punch?.last_punch_time}</TableCell>
+                <TableCell>{punch?.total_hour}</TableCell>
+                <TableCell>{punch?.status}</TableCell>
               </TableRow>
             ))
           ) : (
@@ -175,7 +184,7 @@ const Attendance = () => {
           ) : (
             <TableRow>
               <TableCell colSpan={5} className="text-right">
-                Showing {punch_details?.length} of {pagination?.total} entries
+                Showing {results?.length} of {pagination?.total} entries
               </TableCell>
             </TableRow>
           )}

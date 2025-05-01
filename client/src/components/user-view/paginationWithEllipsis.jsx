@@ -10,7 +10,7 @@ import {
 
 const generatePageNumbers = (currentPage, totalPages) => {
   const pageNumbers = [];
-  const delta = 2; // Number of pages to show around the current page
+  const delta = 1; // Number of pages to show around the current page
 
   for (let i = 1; i <= totalPages; i++) {
     if (
@@ -53,7 +53,7 @@ const PaginationWithEllipsis = ({ currentPage, totalPages, onPageChange }) => {
               <PaginationLink
                 href="#"
                 onClick={() => onPageChange(page)}
-                className={page === currentPage ? "font-bold" : "text-muted-foreground"}
+                className={`sm:w-9 w-5 ${page === currentPage ? "font-bold" : "text-muted-foreground"}`}
               >
                 {page}
               </PaginationLink>

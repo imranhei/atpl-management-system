@@ -7,7 +7,7 @@ import { useToast } from "../../hooks/use-toast";
 import { login } from "@/store/auth-slice";
 
 const initialState = {
-  email: "",
+  username: "",
   password: "",
 };
 
@@ -20,20 +20,30 @@ const AuthLogin = () => {
 
   const onSubmit = async (event) => {
     event.preventDefault();
-
-    dispatch(login(formData)).then((res) => {
-      if (res?.payload?.status) {
-        toast({title: res.message || "Login successful",});
+  
+    try {
+      const res = await dispatch(login(formData)); // ✅ Await is required
+  
+      if (res.meta.requestStatus === "fulfilled") {
+        toast({
+          title: "Login successful",
+        });
+        localStorage.setItem("access_token", res.payload.access);
         navigate("/employee/dashboard");
       } else {
         toast({
           variant: "destructive",
           title: "Login failed",
-          description: res?.payload?.message || res?.error?.message || "",
+          description: res.payload?.message || "An unexpected error occurred.",
         });
       }
-    });
-    return;
+    } catch (err) {
+      toast({
+        variant: "destructive",
+        title: "Login failed",
+        description: err.message || "Unexpected error occurred",
+      });
+    }
   };
 
   return (

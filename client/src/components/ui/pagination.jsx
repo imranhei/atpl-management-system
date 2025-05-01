@@ -18,7 +18,7 @@ Pagination.displayName = "Pagination"
 const PaginationContent = React.forwardRef(({ className, ...props }, ref) => (
   <ul
     ref={ref}
-    className={cn("flex flex-row flex-wrap items-center gap-1", className)}
+    className={cn("flex flex-row flex-wrap items-center gap-1 ", className)}
     {...props} />
 ))
 PaginationContent.displayName = "PaginationContent"
@@ -80,7 +80,7 @@ const PaginationEllipsis = ({
 }) => (
   <span
     aria-hidden
-    className={cn("flex h-9 w-9 items-center justify-center", className)}
+    className={cn("flex h-9 sm:w-9 w-5 items-center justify-center", className)}
     {...props}>
     <DotsHorizontalIcon className="h-4 w-4" />
     <span className="sr-only">More pages</span>

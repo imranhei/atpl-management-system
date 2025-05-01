@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { Outlet } from "react-router-dom";
-// import Navbar from './navbar'
 import EmployeeSidebar from "./sidebar";
-import EmployeeHeader from "./header";
+import EmployeeNavbar from "./employeeNavbar";
 
 const EmployeeLayout = () => {
   const [openSidebar, setOpenSidebar] = useState(false);
@@ -18,7 +17,7 @@ const EmployeeLayout = () => {
       <div className="flex flex-1 flex-col lg:ml-64 ml-0 overflow-x-auto">
         {/* Header */}
         <div className="flex-none">
-          <EmployeeHeader setOpenSidebar={setOpenSidebar} />
+          <EmployeeNavbar setOpenSidebar={setOpenSidebar} />
         </div>
 
         {/* Main Body */}

@@ -33,12 +33,12 @@ const adminSidebarMenuItems = [
     path: "/employee/attendance",
     icon: <FileChartColumn size={20} />,
   },
-  {
-    id: "meal",
-    label: "Meal",
-    path: "/employee/meal",
-    icon: <UtensilsCrossed size={20} />,
-  },
+  // {
+  //   id: "meal",
+  //   label: "Meal",
+  //   path: "/employee/meal",
+  //   icon: <UtensilsCrossed size={20} />,
+  // },
   {
     id: "leave",
     label: "Leave",
@@ -50,19 +50,19 @@ const adminSidebarMenuItems = [
     label: "Settings",
     path: "/employee/setting",
     icon: <Settings size={20} />,
-    submenu: [
-      {
-        id: "profile",
-        label: "Profile",
-        path: "/employee/setting",
-        icon: <CircleUser size={20} />,
-      },
-      {
-        id: "day-wise-meal",
-        label: "Day Wise Meal",
-        path: "/employee/day-wise-meal",
-      },
-    ],
+    // submenu: [
+    //   {
+    //     id: "profile",
+    //     label: "Profile",
+    //     path: "/employee/setting",
+    //     icon: <CircleUser size={20} />,
+    //   },
+    //   {
+    //     id: "day-wise-meal",
+    //     label: "Day Wise Meal",
+    //     path: "/employee/day-wise-meal",
+    //   },
+    // ],
   },
 ];
 

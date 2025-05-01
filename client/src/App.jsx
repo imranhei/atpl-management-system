@@ -24,11 +24,11 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const token = sessionStorage.getItem("token"); //if i don't have any subdomain pass this token
+    const token = localStorage.getItem("access_token");
     if (token) {
       try {
-        const parsedToken = JSON.parse(token);
-        dispatch(checkAuth(parsedToken));
+        // const parsedToken = JSON.parse(token);
+        dispatch(checkAuth(token));
       } catch (error) {
         console.error("Error parsing token:", error);
       }

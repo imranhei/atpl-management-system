@@ -17,12 +17,10 @@ export const getAttendance = createAsyncThunk(
       };
 
       const response = await axios.get(
-        `${import.meta.env.VITE_API_URL}/api/getPunchDetailsByToken`,
+        `${import.meta.env.VITE_API_URL}/api/employee/daily-punches/`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
-            "Cache-Control":
-              "no-store, no-cache, must-revalidate, proxy-revalidate",
           },
           params, // Pass the date range and page parameters
         }
@@ -45,7 +43,7 @@ const attendanceSlice = createSlice({
       })
       .addCase(getAttendance.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.attendance = action.payload.data;
+        state.attendance = action.payload;
       })
       .addCase(getAttendance.rejected, (state) => {
         state.isLoading = false;
