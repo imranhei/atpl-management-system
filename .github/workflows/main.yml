@@ -1,0 +1,49 @@
+name: Deploy to CPanel
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  web-deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    environment: "Production – atpl-dhaka"
+
+    defaults:
+      run:
+        working-directory: client
+
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22 # Use the Node.js version compatible with Vite
+
+      # Step 3: Install dependencies and build the project
+      - name: Inject .env from GitHub Environment
+        run: |
+          echo "VITE_API_URL=${{ vars.VITE_API_URL }}" > .env
+
+      - name: Install dependencies and build
+        run: |
+          npm install
+          npm run build
+
+      - name: 📂 Sync files using FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          port: ${{ secrets.FTP_PORT }}
+          protocol: ftps # Use "ftps" for secure FTP or "ftp" for regular FTP
+          local-dir: client/dist/ # The directory containing your Vite build files
+          server-dir: / # Path on your CPanel server
+          timeout: 600
