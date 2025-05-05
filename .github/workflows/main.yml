@@ -47,3 +47,5 @@ jobs:
           local-dir: client/dist/ # The directory containing your Vite build files
           server-dir: / # Path on your CPanel server
           timeout: 1200
+          exclude: |
+            .htaccess

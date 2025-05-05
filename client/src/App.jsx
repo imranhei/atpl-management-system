@@ -16,6 +16,7 @@ import { LoaderCircle } from "lucide-react";
 import Attendance from "./pages/user-view/attendance";
 import Dashboard from "./pages/user-view/dashboard";
 import Home from "./pages/shared/Home";
+import ResetPassword from "./pages/auth/reset-password";
 
 function App() {
   const { isAuthenticated, user, isLoadingAuth } = useSelector(
@@ -72,6 +73,7 @@ function App() {
           <Route path="leave" element={<EmployeeLeave />} />
           <Route path="setting" element={<EmployeeSetting />} />
           <Route path="day-wise-meal" element={<TodayMeals />} />
+          <Route path="reset-password" element={<ResetPassword />} />
         </Route>
       </Routes>
     </div>

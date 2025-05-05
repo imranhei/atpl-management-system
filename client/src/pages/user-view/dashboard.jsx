@@ -11,7 +11,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Separator } from "@radix-ui/react-dropdown-menu";
 
 const Dashboard = () => {
   const dispatch = useDispatch();
@@ -97,21 +96,29 @@ const Dashboard = () => {
     const seconds = (avgSeconds % 60).toString().padStart(2, "0");
   
     return `${hours}:${minutes}:${seconds}`;
-  };  
+  };
+
+  const formatDate = (dateString) => {
+    if (!dateString) return "";
+    return new Date(dateString).toLocaleString("en-US", {
+      month: "long",
+      day: "numeric",
+    });
+  };
 
   return (
     <div>
       <div className="shadow rounded-md bg-white p-4">
-        <p className="text-lg font-semibold">This Week Attendance</p>
+        <p className="text-lg font-semibold pb-2">This Week Attendance</p>
         <Table className="bg-background rounded">
           <TableHeader>
             <TableRow className="text-nowrap bg-sky-100">
               {/* <TableHead>Name</TableHead> */}
-              <TableHead>Date</TableHead>
-              <TableHead>Entry</TableHead>
-              <TableHead>Exit</TableHead>
-              <TableHead>Duration</TableHead>
-              <TableHead>Status</TableHead>
+              <TableHead className="text-center">Date</TableHead>
+              <TableHead className="text-center">Entry</TableHead>
+              <TableHead className="text-center">Exit</TableHead>
+              <TableHead className="text-center">Duration</TableHead>
+              <TableHead className="text-center">Status</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -131,17 +138,17 @@ const Dashboard = () => {
               results.map((punch, index) => (
                 <TableRow
                   key={index}
-                  className={index % 2 === 0 ? "bg-gray-100 text-nowrap" : "text-nowrap"}
+                  className={`text-nowrap text-center ${index % 2 === 0 ? "bg-gray-100" : ""}`}
                 >
                   {/* <TableCell>{punch?.first_name}</TableCell> */}
-                  <TableCell>{punch?.date}</TableCell>
+                  <TableCell>{formatDate(punch?.date)}</TableCell>
                   <TableCell>
                     {punch?.first_punch_time}
                   </TableCell>
                   <TableCell>
                     {punch?.last_punch_time}
                   </TableCell>
-                  <TableCell>{punch?.total_hour}</TableCell>
+                  <TableCell className="font-semibold">{punch?.total_hour}</TableCell>
                   <TableCell>{punch?.status}</TableCell>
                 </TableRow>
               ))
@@ -165,23 +172,23 @@ const Dashboard = () => {
                 <TableCell colSpan={5}>
                   <div className="flex sm:flex-row flex-col justify-between w-full gap-2 text-nowrap">
                     <div className="flex gap-1">
-                      <span className="font-semibold">Working Day:</span>
+                      <span className="font-semibold">Days:</span>
                       <span>{results?.length}</span>
                     </div>
                     <div className="flex gap-1">
-                      <span className="font-semibold">Avg entry:</span>
+                      <span className="font-semibold">Avg In:</span>
                       <span>
                         {calculateAvgTime(results, "first_punch_time")}
                       </span>
                     </div>
                     <div className="flex gap-1">
-                      <span className="font-semibold">Avg exit:</span>
+                      <span className="font-semibold">Avg Out:</span>
                       <span>
                         {calculateAvgTime(results, "last_punch_time")}
                       </span>
                     </div>
                     <div className="flex gap-1">
-                      <span className="font-semibold">Avg working time:</span>
+                      <span className="font-semibold">Avg Time:</span>
                       <span>
                         {calculateAvgTime(results, "total_hour")}
                       </span>

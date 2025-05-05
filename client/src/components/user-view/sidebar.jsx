@@ -9,6 +9,7 @@ import {
   UtensilsCrossed,
   TicketsPlane,
   FileChartColumn,
+  LockKeyholeOpen,
 } from "lucide-react";
 import {
   Sheet,
@@ -50,19 +51,20 @@ const adminSidebarMenuItems = [
     label: "Settings",
     path: "/employee/setting",
     icon: <Settings size={20} />,
-    // submenu: [
-    //   {
-    //     id: "profile",
-    //     label: "Profile",
-    //     path: "/employee/setting",
-    //     icon: <CircleUser size={20} />,
-    //   },
-    //   {
-    //     id: "day-wise-meal",
-    //     label: "Day Wise Meal",
-    //     path: "/employee/day-wise-meal",
-    //   },
-    // ],
+    submenu: [
+      {
+        id: "profile",
+        label: "Profile",
+        path: "/employee/setting",
+        icon: <CircleUser size={20} />,
+      },
+      {
+        id: "reset-password",
+        label: "Reset Password",
+        path: "/employee/reset-password",
+        icon: <LockKeyholeOpen size={20} />,
+      },
+    ],
   },
 ];
 

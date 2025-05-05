@@ -52,6 +52,33 @@ export const loginFormControls = [
   },
 ];
 
+export const resetPasswordFormControls = [
+  {
+    name: "old_password",
+    label: "Old Password",
+    placeholder: "Enter Your Old Password",
+    componentType: "input",
+    type: "password",
+    required: true,
+  },
+  {
+    name: "new_password",
+    label: "New Password",
+    placeholder: "Enter Your New Password",
+    componentType: "input",
+    type: "password",
+    required: true,
+  },
+  {
+    name: "confirm_password",
+    label: "Confirm Password",
+    placeholder: "Confirm New Password",
+    componentType: "input",
+    type: "password",
+    required: true,
+  },
+];
+
 export const employeeMenuItems = [
   {
     id: "home",
