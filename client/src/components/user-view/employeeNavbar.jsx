@@ -21,30 +21,31 @@ const EmployeeNavbar = ({ setOpenSidebar }) => {
   };
 
   return (
-    <header className="bg-blue-900 flex items-center justify-between px-4 py-1 border-b shadow-md">
+    <header className="bg-blue-900 flex items-center justify-between px-4 py-2 border-b shadow-md">
       <div className="flex justify-between flex-1 items-center">
-        <Button
+        <div
           onClick={() => setOpenSidebar(true)}
-          className="lg:hidden sm:block px-2 sm:px-4 h-10 sm:h-12 text-amber-300"
-          variant="white"
+          className="lg:hidden sm:block px-2 sm:px-4 text-amber-300"
         >
-          <AlignJustify size={24} />
+          <AlignJustify size={20} />
           <span className="sr-only">Toggle Menu</span>
-        </Button>
-        <Link to="/" className="flex flex-1 justify-start items-center">
-          <img
-            src="/atpldhaka.png"
-            className="lg:w-16 sm:w-14 w-12 lg:ml-0 ml-2"
-          />
-        </Link>
-        <Button
+        </div>
+        <div className="flex-1">
+          <Link to="/" className="flex w-fit justify-start items-center">
+            <img
+              src="/atpldhaka.png"
+              className="lg:w-16 sm:w-14 w-12 lg:ml-0 ml-2"
+            />
+          </Link>
+        </div>
+        <div
           onClick={handleLogout}
-          className="inline-flex lg:gap-2 sm:gap-1 items-center py-2 sm:text-sm text-xs font-medium px-3 sm:px-4 h-10 sm:h-12 text-amber-300"
+          className="inline-flex lg:gap-2 sm:gap-1 items-center py-2 sm:text-sm text-xs font-medium px-3 sm:px-4 text-amber-300"
           variant="white"
         >
-          <LogOut size={24} />
+          <LogOut size={20} />
           <span className="sm:block hidden">Log Out</span>
-        </Button>
+        </div>
       </div>
     </header>
   );

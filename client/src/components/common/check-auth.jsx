@@ -1,14 +1,15 @@
 import { Navigate, useLocation } from "react-router-dom";
 
-const CheckAuth = ({ isAuthenticated, user, children }) => {
+const CheckAuth = ({ isAuthenticated, role, children }) => {
   const location = useLocation();
   const { pathname } = location;
+  console.log(role)
 
   if (location.pathname === "/") {
     if (!isAuthenticated) {
       return <Navigate to="/auth/login" />;
     } else {
-      if (user?.role === "admin" || user?.role === "super-admin") {
+      if (role === "admin") {
         return <Navigate to="/admin/dashboard" />;
       } else {
         return <Navigate to="/employee/dashboard" />;
@@ -27,17 +28,18 @@ const CheckAuth = ({ isAuthenticated, user, children }) => {
     isAuthenticated &&
     (pathname.includes("auth/login") || pathname.includes("auth/register"))
   ) {
-    if (user?.role === "admin" || user?.role === "super-admin") {
+    if (role === "admin") {
       return <Navigate to="/admin/dashboard" />;
     } else {
       return <Navigate to="/employee/dashboard" />;
     }
   }
+  console.log(pathname.includes("employee"));
 
   if (
     isAuthenticated &&
-    (user?.role === "admin" || user?.role === "super-admin") &&
-    location.pathname === "/"
+    (role === "admin") &&
+    pathname.includes("employee")
   ) {
     return <Navigate to="/admin/dashboard" />;
   }

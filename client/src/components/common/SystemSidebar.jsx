@@ -6,7 +6,6 @@ import {
   Settings,
   CircleUser,
   SlidersHorizontal,
-  UtensilsCrossed,
   TicketsPlane,
   FileChartColumn,
   LockKeyholeOpen,
@@ -21,47 +20,47 @@ import {
 import { useSelector } from "react-redux";
 import { Label } from "@radix-ui/react-dropdown-menu";
 
-const adminSidebarMenuItems = [
+const employeeSidebarMenuItems = [
   {
     id: "dashboard",
     label: "Dashboard",
-    path: "/employee/dashboard",
+    path: "/dashboard",
     icon: <LayoutDashboard size={20} />,
   },
   {
     id: "attendance",
     label: "Attendance",
-    path: "/employee/attendance",
+    path: "/attendance",
     icon: <FileChartColumn size={20} />,
   },
   // {
   //   id: "meal",
   //   label: "Meal",
-  //   path: "/employee/meal",
+  //   path: "/meal",
   //   icon: <UtensilsCrossed size={20} />,
   // },
   {
     id: "leave",
     label: "Leave",
-    path: "/employee/leave",
+    path: "/leave",
     icon: <TicketsPlane size={20} />,
   },
   {
     id: "settings",
     label: "Settings",
-    path: "/employee/setting",
+    path: "/setting",
     icon: <Settings size={20} />,
     submenu: [
       {
         id: "profile",
         label: "Profile",
-        path: "/employee/setting",
+        path: "/setting",
         icon: <CircleUser size={20} />,
       },
       {
         id: "reset-password",
         label: "Reset Password",
-        path: "/employee/reset-password",
+        path: "/reset-password",
         icon: <LockKeyholeOpen size={20} />,
       },
     ],
@@ -69,6 +68,7 @@ const adminSidebarMenuItems = [
 ];
 
 function MenuItem({ setOpenSidebar }) {
+  const { role } = useSelector((state) => state.auth);
   const [openMenu, setOpenMenu] = useState(null);
   const location = useLocation();
 
@@ -77,8 +77,8 @@ function MenuItem({ setOpenSidebar }) {
   };
 
   return (
-    <nav className="mt-8 flex flex-col gap-2">
-      {adminSidebarMenuItems.map((item) => (
+    <div className="mt-8 flex flex-col gap-2">
+      {employeeSidebarMenuItems.map((item) => (
         <div key={item.id} className="flex flex-col">
           <div
             className={`flex justify-between items-center rounded-md ${
@@ -86,7 +86,7 @@ function MenuItem({ setOpenSidebar }) {
             }`}
           >
             <Link
-              to={item.path}
+              to={role === "admin" ? `/${role}${item.path}` : `/employee${item.path}`}
               onClick={() => {
                 setOpenSidebar && setOpenSidebar(false);
               }}
@@ -143,7 +143,7 @@ function MenuItem({ setOpenSidebar }) {
           )}
         </div>
       ))}
-    </nav>
+    </div>
   );
 }
 
@@ -177,7 +177,7 @@ const EmployeeSidebar = ({ open, setOpenSidebar }) => {
           <h1 className="text-2xl font-extrabold">User Panel</h1>
         </div>
         <MenuItem />
-        <Label className="absolute bottom-6 left-6">{user?.name}</Label>
+        <Label className="absolute bottom-6 left-6">{user?.first_name}</Label>
       </aside>
     </Fragment>
   );

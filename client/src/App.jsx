@@ -1,11 +1,10 @@
 import { useEffect } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import AuthLayout from "./components/auth/layout";
 import AuthLogin from "./pages/auth/login";
 import AuthRegister from "./pages/auth/register";
 import CheckAuth from "./components/common/check-auth";
 import UserLayout from "./components/user-view/layout";
-// import Home from "./pages/user-view/home";
 import TodayMeals from "./pages/user-view/day-wise-meal";
 import Meal from "./pages/user-view/meal";
 import EmployeeLeave from "./pages/user-view/leave";
@@ -17,24 +16,39 @@ import Attendance from "./pages/user-view/attendance";
 import Dashboard from "./pages/user-view/dashboard";
 import Home from "./pages/shared/Home";
 import ResetPassword from "./pages/auth/reset-password";
+import AdminDashboard from "./pages/admin/adminDashboard";
+import AdminAttendance from "./pages/admin/adminAttendance";
 
 function App() {
-  const { isAuthenticated, user, isLoadingAuth } = useSelector(
+  const { isAuthenticated, role, isLoadingAuth } = useSelector(
     (state) => state.auth
   );
   const dispatch = useDispatch();
+  const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem("access_token");
+    const lastPath = sessionStorage.getItem("last_path");
+
     if (token) {
-      try {
-        // const parsedToken = JSON.parse(token);
-        dispatch(checkAuth(token));
-      } catch (error) {
-        console.error("Error parsing token:", error);
-      }
+      dispatch(checkAuth(token)).then((res) => {
+        // After auth is confirmed, redirect to stored path if safe
+        if (
+          lastPath &&
+          lastPath !== "/" &&
+          lastPath !== "/auth/login" &&
+          !location.pathname.includes("dashboard") // avoid redirect loop
+        ) {
+          navigate(lastPath, { replace: true });
+        }
+      });
     }
-  }, [dispatch]);
+  }, []);
+
+  useEffect(() => {
+    sessionStorage.setItem("last_path", location.pathname);
+  }, [location.pathname]);
 
   if (isLoadingAuth) {
     return (
@@ -51,7 +65,7 @@ function App() {
         <Route
           path="/auth"
           element={
-            <CheckAuth isAuthenticated={isAuthenticated} user={user}>
+            <CheckAuth isAuthenticated={isAuthenticated} role={role}>
               <AuthLayout />
             </CheckAuth>
           }
@@ -62,13 +76,29 @@ function App() {
         <Route
           path="/employee"
           element={
-            <CheckAuth isAuthenticated={isAuthenticated} user={user}>
+            <CheckAuth isAuthenticated={isAuthenticated} role={role}>
               <UserLayout />
             </CheckAuth>
           }
         >
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="attendance" element={<Attendance />} />
+          <Route path="meal" element={<Meal />} />
+          <Route path="leave" element={<EmployeeLeave />} />
+          <Route path="setting" element={<EmployeeSetting />} />
+          <Route path="day-wise-meal" element={<TodayMeals />} />
+          <Route path="reset-password" element={<ResetPassword />} />
+        </Route>
+        <Route
+          path="/admin"
+          element={
+            <CheckAuth isAuthenticated={isAuthenticated} role={role}>
+              <UserLayout />
+            </CheckAuth>
+          }
+        >
+          <Route path="dashboard" element={<AdminDashboard />} />
+          <Route path="attendance" element={<AdminAttendance />} />
           <Route path="meal" element={<Meal />} />
           <Route path="leave" element={<EmployeeLeave />} />
           <Route path="setting" element={<EmployeeSetting />} />

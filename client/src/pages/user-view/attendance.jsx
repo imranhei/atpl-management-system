@@ -39,6 +39,7 @@ import PaginationWithEllipsis from "@/components/user-view/paginationWithEllipsi
 const Attendance = () => {
   const dispatch = useDispatch();
   const { attendance, isLoading } = useSelector((state) => state.attendance);
+  const { results, pagination } = attendance || {};
   const [currentPage, setCurrentPage] = useState(1);
   const [date, setDate] = useState({
     from: null,
@@ -67,8 +68,6 @@ const Attendance = () => {
       }
     }
   }, [dispatch, currentPage, date]);
-
-  const { results, pagination } = attendance || {};
 
   return (
     <div className="sm:space-y-4 space-y-2 relative">
@@ -125,7 +124,7 @@ const Attendance = () => {
                 onClick={() => {
                   setDate({
                     from: null,
-                    to: null,
+               to: null,
                   });
                   setCurrentPage(1);
                 }}
@@ -139,7 +138,7 @@ const Attendance = () => {
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
-      </div> */}
+      </div> */}     
       <div className="flex gap-2 justify-end flex-wrap">
         <Select
           defaultValue="7"
@@ -211,7 +210,7 @@ const Attendance = () => {
 
         <TooltipProvider>
           <Tooltip>
-            <TooltipTrigger>
+            <TooltipTrigger asChild>
               <Button
                 onClick={() => {
                   setDate({ from: null, to: null });

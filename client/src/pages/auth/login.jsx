@@ -29,7 +29,8 @@ const AuthLogin = () => {
           title: "Login successful",
         });
         localStorage.setItem("access_token", res.payload.access);
-        navigate("/employee/dashboard");
+        const role = res.payload.user.username === "frahman" || res.payload.user.username === "faisal";
+        navigate(`${role ? "/admin/dashboard" : "/employee/dashboard"}`);
       } else {
         toast({
           variant: "destructive",

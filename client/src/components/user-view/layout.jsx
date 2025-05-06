@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Outlet } from "react-router-dom";
-import EmployeeSidebar from "./sidebar";
+import EmployeeSidebar from "../common/SystemSidebar";
 import EmployeeNavbar from "./employeeNavbar";
 
 const EmployeeLayout = () => {
