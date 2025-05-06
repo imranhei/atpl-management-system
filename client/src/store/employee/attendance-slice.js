@@ -8,9 +8,10 @@ const initialState = {
 
 export const getAttendance = createAsyncThunk(
   "attendance/getAttendance",
-  async ({ token, page, per_page, start_date, end_date }) => {
+  async ({ token, emp_code, page, per_page, start_date, end_date }) => {
     try {
       const params = {
+        emp_code,
         page,
         per_page,
         ...(start_date && { start_date }),

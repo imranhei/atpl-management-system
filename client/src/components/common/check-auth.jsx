@@ -3,7 +3,6 @@ import { Navigate, useLocation } from "react-router-dom";
 const CheckAuth = ({ isAuthenticated, role, children }) => {
   const location = useLocation();
   const { pathname } = location;
-  console.log(role)
 
   if (location.pathname === "/") {
     if (!isAuthenticated) {
@@ -34,7 +33,6 @@ const CheckAuth = ({ isAuthenticated, role, children }) => {
       return <Navigate to="/employee/dashboard" />;
     }
   }
-  console.log(pathname.includes("employee"));
 
   if (
     isAuthenticated &&

@@ -149,7 +149,7 @@ const AdminDashboard = () => {
                   }`}
                 >
                   <TableCell className="text-left">
-                    {punch?.first_name}
+                    {punch?.first_name} {punch?.last_name}
                   </TableCell>
                   {/* <TableCell>{formatDate(punch?.date)}</TableCell> */}
                   <TableCell>{punch?.first_punch_time}</TableCell>
