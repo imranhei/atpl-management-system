@@ -6,7 +6,7 @@ const initialState = {
   isAuthenticated: false,
   user: null,
   isLoadingAuth: false,
-  role: null,
+  role: "employee",
 };
 
 export const login = createAsyncThunk(
@@ -85,13 +85,22 @@ export const deleteUser = createAsyncThunk("/auth/deleteUser", async (id) => {
 });
 
 export const resetPassword = createAsyncThunk(
-  "/auth/resetPassword",
-  async (data) => {
-    const response = await axios.put(
-      `${import.meta.env.VITE_API_URL}/api/auth/reset-password`,
-      data
-    );
-    return response.data;
+  "auth/resetPassword",
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/api/auth/change-password/`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err?.response?.data?.detail || { message: "Something went wrong" });
+    }
   }
 );
 
@@ -113,6 +122,8 @@ const authSlice = createSlice({
             action.payload.user.username === "faisal"
           ) {
             state.role = "admin";
+          } else {
+            state.role = "employee";
           }
         }
       })

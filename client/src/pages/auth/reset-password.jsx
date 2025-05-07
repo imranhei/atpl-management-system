@@ -3,11 +3,12 @@ import CommonForm from "../../components/common/form";
 import { resetPasswordFormControls } from "@/components/config";
 import { useDispatch, useSelector } from "react-redux";
 import { useToast } from "../../hooks/use-toast";
+import { resetPassword } from "@/store/auth-slice";
 
 const initialState = {
   old_password: "",
   new_password: "",
-  new_password_confirmation: "",
+  confirm_password: "",
 };
 
 const ResetPassword = () => {
@@ -19,7 +20,31 @@ const ResetPassword = () => {
   const onSubmit = async (event) => {
     event.preventDefault();
 
-    console.log(formData);
+    if (formData.new_password !== formData.confirm_password) {
+      toast({
+        title: "Password Mismatch",
+        description: "New password and confirm password do not match.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    dispatch(resetPassword(formData)).then((res) => {
+      if (res.error) {
+        toast({
+          title: res.error.message,
+          description: res?.payload,
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Success",
+          description: "Password changed successfully.",
+          variant: "default",
+        });
+        setFormData(initialState);
+      }
+    });
   };
 
   return (

@@ -4,6 +4,7 @@ import axios from "axios";
 const initialState = {
   isLoading: false,
   employeeDetails: [],
+  attendanceSummary: [],
 };
 
 export const getEmployeeDetails = createAsyncThunk(
@@ -29,6 +30,30 @@ export const getEmployeeDetails = createAsyncThunk(
   }
 );
 
+export const getAttendanceSummary = createAsyncThunk(
+  "employee/getAttendanceSummary",
+  async ({ token, start_date, end_date }) => {
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/api/employee/attendance-summary/`,
+        {
+          start_date,
+          end_date,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      return error.response?.data || error.message;
+    }
+  }
+);
+
 const employeeDetailsSlice = createSlice({
   name: "employeeDetails",
   initialState,
@@ -43,6 +68,16 @@ const employeeDetailsSlice = createSlice({
         state.employeeDetails = action.payload.data;
       })
       .addCase(getEmployeeDetails.rejected, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(getAttendanceSummary.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getAttendanceSummary.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.attendanceSummary = action.payload;
+      })
+      .addCase(getAttendanceSummary.rejected, (state) => {
         state.isLoading = false;
       });
   },

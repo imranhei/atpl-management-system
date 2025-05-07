@@ -1,3 +1,14 @@
+import {
+  LayoutDashboard,
+  FileChartColumn,
+  TicketsPlane,
+  Settings,
+  CircleUser,
+  LockKeyholeOpen,
+  LayoutDashboardIcon,
+  ReceiptText,
+} from "lucide-react";
+
 export const registerFormControls = [
   {
     name: "username",
@@ -79,3 +90,91 @@ export const resetPasswordFormControls = [
   },
 ];
 
+export const SIDEBAR_MENU = {
+  employee: [
+    {
+      id: "dashboard",
+      label: "Dashboard",
+      path: "/dashboard",
+      icon: LayoutDashboard,
+    },
+    {
+      id: "attendance",
+      label: "Attendance",
+      path: "/attendance",
+      icon: FileChartColumn,
+    },
+    {
+      id: "leave",
+      label: "Leave",
+      path: "/leave",
+      icon: TicketsPlane,
+    },
+    {
+      id: "settings",
+      label: "Settings",
+      path: "/setting",
+      icon: Settings,
+      submenu: [
+        {
+          id: "profile",
+          label: "Profile",
+          path: "/setting",
+          icon: CircleUser,
+        },
+        {
+          id: "reset-password",
+          label: "Reset Password",
+          path: "/reset-password",
+          icon: LockKeyholeOpen,
+        },
+      ],
+    },
+  ],
+  admin: [
+    {
+      id: "dashboard",
+      label: "Dashboard",
+      path: "/dashboard",
+      icon: LayoutDashboardIcon,
+    },
+    {
+      id: "attendance",
+      label: "Attendance",
+      path: "/attendance",
+      icon: FileChartColumn,
+    },
+    {
+      id: "reports",
+      label: "Reports",
+      path: "/reports",
+      icon: ReceiptText
+    },
+    {
+      id: "leave",
+      label: "Leave",
+      path: "/leave",
+      icon: TicketsPlane,
+    },
+    {
+      id: "settings",
+      label: "Settings",
+      path: "/setting",
+      icon: Settings,
+      submenu: [
+        {
+          id: "profile",
+          label: "Profile",
+          path: "/setting",
+          icon: CircleUser,
+        },
+        {
+          id: "reset-password",
+          label: "Reset Password",
+          path: "/reset-password",
+          icon: LockKeyholeOpen,
+        },
+      ],
+    },
+  ],
+};

@@ -249,7 +249,7 @@ const AdminAttendance = () => {
           </Popover>
           <TooltipProvider>
           <Tooltip>
-            <TooltipTrigger>
+            <TooltipTrigger asChild>
               <Button
                 onClick={handleClearDate}
                 disabled={!params.start_date && !params.end_date}

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Outlet } from "react-router-dom";
-import EmployeeSidebar from "../common/SystemSidebar";
+import Sidebar from "../common/SystemSidebar";
 import EmployeeNavbar from "./employeeNavbar";
 
 const EmployeeLayout = () => {
@@ -10,7 +10,7 @@ const EmployeeLayout = () => {
     <div className="flex min-h-screen w-full">
       {/* Sidebar */}
       <div className="fixed left-0 top-0 h-fit">
-        <EmployeeSidebar open={openSidebar} setOpenSidebar={setOpenSidebar} />
+        <Sidebar open={openSidebar} setOpenSidebar={setOpenSidebar} />
       </div>
 
       {/* Main Content */}
