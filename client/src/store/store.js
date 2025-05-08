@@ -7,6 +7,7 @@ import leaveSlice from "./leave/leave-slice";
 import placeOrderSlice from "./employee/place-order-slice";
 import attendanceSlice from "./employee/attendance-slice";
 import employeeDetailsSlice from "./admin/employee-details-slice";
+import profileSlice from "./employee/profile-slice";
 
 const store = configureStore({
   reducer: {
@@ -18,6 +19,7 @@ const store = configureStore({
     placeOrder: placeOrderSlice,
     attendance: attendanceSlice,
     employeeDetails: employeeDetailsSlice,
+    profile: profileSlice,
   },
 });
 
