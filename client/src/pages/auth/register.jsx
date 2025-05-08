@@ -24,56 +24,56 @@ const AuthResgister = () => {
     event.preventDefault();
 
     //form validation
-    if(formData.password !== formData.password_confirmation) {
-      toast({
-        variant: "destructive",
-        title: "Password and confirm password does not match",
-      });
-      return;
-    }
+    // if(formData.password !== formData.password_confirmation) {
+    //   toast({
+    //     variant: "destructive",
+    //     title: "Password and confirm password does not match",
+    //   });
+    //   return;
+    // }
 
-    //email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(formData.email)) {
-      toast({
-        variant: "destructive",
-        title: "Invalid email address",
-      });
-      return;
-    }
+    // //email validation
+    // const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    // if (!emailRegex.test(formData.email)) {
+    //   toast({
+    //     variant: "destructive",
+    //     title: "Invalid email address",
+    //   });
+    //   return;
+    // }
 
-    //all fields are required
-    if (!formData.name || !formData.email || !formData.password || !formData.password_confirmation) {
-      toast({
-        variant: "destructive",
-        title: "All fields are required",
-      });
-      return;
-    }
+    // //all fields are required
+    // if (!formData.name || !formData.email || !formData.password || !formData.password_confirmation) {
+    //   toast({
+    //     variant: "destructive",
+    //     title: "All fields are required",
+    //   });
+    //   return;
+    // }
 
-    //minimum password length check
-    if (formData.password.length < 6) {
-      toast({
-        variant: "destructive",
-        title: "Password must be at least 6 characters",
-      });
-      return;
-    }
+    // //minimum password length check
+    // if (formData.password.length < 6) {
+    //   toast({
+    //     variant: "destructive",
+    //     title: "Password must be at least 6 characters",
+    //   });
+    //   return;
+    // }
 
-    dispatch(registerUser(formData)).then((data) => {
-      if (data?.payload && data?.payload?.status) {
-        toast({
-          title: data.payload.message || "Registration success",
-        });
-        navigate("/auth/login");
-      } else {
-        toast({
-          variant: "destructive",
-          description: data?.payload?.message || data?.error?.message || "",
-          title:  "Registration failed",
-        });
-      }
-    });
+    // dispatch(registerUser(formData)).then((data) => {
+    //   if (data?.payload && data?.payload?.status) {
+    //     toast({
+    //       title: data.payload.message || "Registration success",
+    //     });
+    //     navigate("/auth/login");
+    //   } else {
+    //     toast({
+    //       variant: "destructive",
+    //       description: data?.payload?.message || data?.error?.message || "",
+    //       title:  "Registration failed",
+    //     });
+    //   }
+    // });
   }
 
   return (

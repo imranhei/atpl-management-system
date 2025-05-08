@@ -32,8 +32,11 @@ const ResetPassword = () => {
     dispatch(resetPassword(formData)).then((res) => {
       if (res.error) {
         toast({
-          title: res.error.message,
-          description: res?.payload,
+          title: "Error",
+          description:
+            typeof res.payload === "string"
+              ? res.payload
+              : res.payload?.message || "Something went wrong",
           variant: "destructive",
         });
       } else {

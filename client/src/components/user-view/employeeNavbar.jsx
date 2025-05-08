@@ -1,5 +1,4 @@
 import React from "react";
-import { Button } from "@/components/ui/button";
 import { AlignJustify, LogOut } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { logout } from "@/store/auth-slice";
@@ -40,8 +39,7 @@ const EmployeeNavbar = ({ setOpenSidebar }) => {
         </div>
         <div
           onClick={handleLogout}
-          className="inline-flex lg:gap-2 sm:gap-1 items-center py-2 sm:text-sm text-xs font-medium px-3 sm:px-4 text-amber-300"
-          variant="white"
+          className="inline-flex lg:gap-2 sm:gap-1 items-center py-2 sm:text-sm text-xs font-medium px-3 sm:px-4 text-amber-300 cursor-pointer"
         >
           <LogOut size={20} />
           <span className="sm:block hidden">Log Out</span>

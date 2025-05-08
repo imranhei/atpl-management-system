@@ -26,6 +26,7 @@ const AuthLogin = () => {
   
       if (res.meta.requestStatus === "fulfilled") {
         toast({
+          variant: "success",
           title: "Login successful",
         });
         localStorage.setItem("access_token", res.payload.access);

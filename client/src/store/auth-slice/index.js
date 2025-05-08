@@ -86,20 +86,22 @@ export const deleteUser = createAsyncThunk("/auth/deleteUser", async (id) => {
 
 export const resetPassword = createAsyncThunk(
   "auth/resetPassword",
-  async (data, { rejectWithValue }) => {
+  async (formData, { rejectWithValue }) => {
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/api/auth/change-password/`,
         formData,
         {
           headers: {
-            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
           },
         }
       );
       return response.data;
     } catch (err) {
-      return rejectWithValue(err?.response?.data?.detail || { message: "Something went wrong" });
+      return rejectWithValue(
+        err?.response?.data?.error || { message: "Something went wrong" }
+      );
     }
   }
 );
@@ -125,6 +127,7 @@ const authSlice = createSlice({
           } else {
             state.role = "employee";
           }
+          state.user = action.payload.user;
         }
       })
       .addCase(login.rejected, (state) => {
@@ -170,6 +173,15 @@ const authSlice = createSlice({
         state.isLoading = false;
       })
       .addCase(registerUser.rejected, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(resetPassword.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(resetPassword.fulfilled, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(resetPassword.rejected, (state, action) => {
         state.isLoading = false;
       });
   },

@@ -104,6 +104,7 @@ function MenuItem({ role, setOpenSidebar }) {
 const Sidebar = ({ open, setOpenSidebar }) => {
   const navigate = useNavigate();
   const { user, role } = useSelector((state) => state.auth);
+  console.log("user", user);
 
   return (
     <Fragment>
@@ -118,7 +119,7 @@ const Sidebar = ({ open, setOpenSidebar }) => {
               <SheetDescription></SheetDescription>
             </SheetHeader>
             <MenuItem role={role} setOpenSidebar={setOpenSidebar} />
-            <Label className="absolute bottom-6 left-6">{user?.first_name}</Label>
+            <Label className="absolute bottom-6 left-6">{user?.first_name} {user?.last_name}</Label>
           </div>
         </SheetContent>
       </Sheet>
@@ -128,10 +129,10 @@ const Sidebar = ({ open, setOpenSidebar }) => {
           className="flex items-center gap-2 cursor-pointer"
         >
           <SlidersHorizontal size={24} />
-          <h1 className="text-2xl font-extrabold">User Panel</h1>
+          <h1 className="text-2xl font-bold">User Panel</h1>
         </div>
         <MenuItem role={role} />
-        <Label className="absolute bottom-6 left-6">{user?.first_name}</Label>
+        <Label className="absolute bottom-6 left-6">{user?.first_name} {user?.last_name}</Label>
       </aside>
     </Fragment>
   );
