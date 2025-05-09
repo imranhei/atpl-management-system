@@ -7,19 +7,18 @@ import CheckAuth from "./components/common/check-auth";
 import UserLayout from "./components/user-view/layout";
 import TodayMeals from "./pages/user-view/day-wise-meal";
 import Meal from "./pages/user-view/meal";
-import EmployeeLeave from "./pages/user-view/leave";
-import EmployeeSetting from "./pages/user-view/setting";
+import EmployeeLeave from "./pages/user-view/leave"; 
 import { useDispatch, useSelector } from "react-redux";
 import { checkAuth } from "./store/auth-slice";
 import { LoaderCircle } from "lucide-react";
 import Attendance from "./pages/user-view/attendance";
 import Dashboard from "./pages/user-view/dashboard";
-import Home from "./pages/shared/Home";
+import Home from "./pages/common/Home";
 import ResetPassword from "./pages/auth/reset-password";
 import AdminDashboard from "./pages/admin/adminDashboard";
 import AdminAttendance from "./pages/admin/adminAttendance";
 import Reports from "./pages/admin/reports";
-import Profile from "./pages/admin/profile";
+import Profile from "./pages/common/profile";
 
 function App() {
   const { isAuthenticated, role, isLoadingAuth } = useSelector(
@@ -87,7 +86,7 @@ function App() {
           <Route path="attendance" element={<Attendance />} />
           <Route path="meal" element={<Meal />} />
           <Route path="leave" element={<EmployeeLeave />} />
-          <Route path="setting" element={<EmployeeSetting />} />
+          <Route path="setting" element={<Profile />} />
           <Route path="day-wise-meal" element={<TodayMeals />} />
           <Route path="reset-password" element={<ResetPassword />} />
         </Route>

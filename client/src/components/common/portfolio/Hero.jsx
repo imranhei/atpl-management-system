@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Element } from 'react-scroll';
-import bg from '../../assets/hero_banner.jpg';
+import bg from '../../../assets/hero_banner.jpg';
 import Aos from "aos";
 import "aos/dist/aos.css";
 

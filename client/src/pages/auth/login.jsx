@@ -54,7 +54,7 @@ const AuthLogin = () => {
         <h1 className="sm:text-3xl text-2xl font-bold tracking-tight text-primary">
           Sign in to ATPL Dhaka
         </h1>
-        <p className="mt-2">
+        {/* <p className="mt-2">
           Don&apos;t have an account?
           <Link
             className="font-medium ml-2 text-yellowDark hover:text-yellowDark hover:underline"
@@ -62,7 +62,7 @@ const AuthLogin = () => {
           >
             Register
           </Link>
-        </p>
+        </p> */}
       </div>
       <CommonForm
         formControls={loginFormControls}

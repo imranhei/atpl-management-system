@@ -104,7 +104,6 @@ function MenuItem({ role, setOpenSidebar }) {
 const Sidebar = ({ open, setOpenSidebar }) => {
   const navigate = useNavigate();
   const { user, role } = useSelector((state) => state.auth);
-  console.log("user", user);
 
   return (
     <Fragment>
