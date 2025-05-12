@@ -66,7 +66,7 @@ const Profile = () => {
   };
 
   return (
-    <div className="flex items-center gap-8 h-fit w-fit bg-background sm:p-10 p-4 rounded">
+    <div className="flex flex-col sm:flex-row items-center gap-8 h-fit sm:w-fit w-full bg-background sm:p-10 p-4 rounded">
       <div className="w-40 h-40 rounded-full bg-teal-300 relative ">
         <img src={Avatar} alt="" className="h-full w-full object-cover" />
         <div
@@ -76,12 +76,12 @@ const Profile = () => {
           <Pencil size={20} color="#000000" strokeWidth={2.25} />
         </div>
       </div>
-      <Separator orientation="vertical" className="h-40" />
+      <Separator orientation="vertical" className="h-40 sm:block hidden" />
       <div className="flex flex-col gap-2">
         <h1 className="font-medium text-lg">
           {user?.first_name} {user?.last_name}
         </h1>
-        <div className="flex gap-4 text-muted-foreground">
+        <div className="flex flex-col sm:flex-row sm:gap-4 gap-2 text-muted-foreground">
           <div className="flex items-center gap-2">
             <Phone size={16} />
             01500000000
@@ -141,7 +141,7 @@ const Profile = () => {
         <DialogTrigger asChild></DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>Edit profile</DialogTitle>
+            <DialogTitle>Edit Profile</DialogTitle>
             <DialogDescription>
               Make changes to your profile here. Click save when you're done.
             </DialogDescription>
@@ -153,8 +153,15 @@ const Profile = () => {
               </Label>
               <Input
                 id="contact"
-                defaultValue="01*********"
+                defaultValue={formData?.phone_number}
                 className="col-span-3"
+                placeholder="Phone Number"
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    phone_number: e.target.value,
+                  }))
+                }
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
@@ -182,7 +189,7 @@ const Profile = () => {
                   <Calendar
                     mode="single"
                     selected={formData?.birthday}
-                    onSelect={() =>
+                    onSelect={(date) =>
                       setFormData((prev) => ({
                         ...prev,
                         birthday: date,

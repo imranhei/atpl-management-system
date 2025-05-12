@@ -65,7 +65,6 @@ const AdminAttendance = () => {
   const formatDate = (date) => date ? format(date, "yyyy-MM-dd") : null;
 
   const fetchAttendance = (override = {}) => {
-    console.log(params)
     const token = localStorage.getItem("access_token");
     if (token) {
       dispatch(getAttendance({ token, ...params, ...override }));

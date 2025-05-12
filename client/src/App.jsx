@@ -4,7 +4,7 @@ import AuthLayout from "./components/auth/layout";
 import AuthLogin from "./pages/auth/login";
 import AuthRegister from "./pages/auth/register";
 import CheckAuth from "./components/common/check-auth";
-import UserLayout from "./components/user-view/layout";
+import SystemLayout from "./components/user-view/layout";
 import TodayMeals from "./pages/user-view/day-wise-meal";
 import Meal from "./pages/user-view/meal";
 import EmployeeLeave from "./pages/user-view/leave"; 
@@ -78,7 +78,7 @@ function App() {
           path="/employee"
           element={
             <CheckAuth isAuthenticated={isAuthenticated} role={role}>
-              <UserLayout />
+              <SystemLayout />
             </CheckAuth>
           }
         >
@@ -94,7 +94,7 @@ function App() {
           path="/admin"
           element={
             <CheckAuth isAuthenticated={isAuthenticated} role={role}>
-              <UserLayout />
+              <SystemLayout />
             </CheckAuth>
           }
         >

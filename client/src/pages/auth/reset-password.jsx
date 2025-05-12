@@ -51,7 +51,7 @@ const ResetPassword = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-full">
+    <div className="flex flex-col items-center justify-center min-h-full px-8 sm:px-12">
       <div className="mx-auto w-full max-w-md space-y-6">
         <div className="text-center">
           <h1 className="sm:text-3xl text-2xl font-bold tracking-tight text-primary">
