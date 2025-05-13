@@ -42,6 +42,7 @@ import {
   CommandItem,
 } from "@/components/ui/command";
 import PaginationWithEllipsis from "@/components/user-view/paginationWithEllipsis";
+import TextChangeAnimation from "@/components/common/TextChangeAnimation";
 
 const AdminAttendance = () => {
   const dispatch = useDispatch();
@@ -265,7 +266,7 @@ const AdminAttendance = () => {
       </div>
       <Table className="bg-background rounded">
         <TableHeader>
-          <TableRow className="bg-amber-200 text-nowrap">
+          <TableRow className="text-nowrap">
             <TableHead>Name</TableHead>
             <TableHead className="text-center">Date</TableHead>
             <TableHead className="text-center">Entry</TableHead>
@@ -299,7 +300,9 @@ const AdminAttendance = () => {
                 <TableCell>{punch?.first_punch_time}</TableCell>
                 <TableCell>{punch?.last_punch_time}</TableCell>
                 <TableCell>{punch?.total_hour}</TableCell>
-                <TableCell>{punch?.status}</TableCell>
+                <TableCell className="!p-1 min-w-[136px] w-44 sm:text-sm text-xs">
+                  <TextChangeAnimation punch={punch} />
+                </TableCell>
               </TableRow>
             ))
           ) : (

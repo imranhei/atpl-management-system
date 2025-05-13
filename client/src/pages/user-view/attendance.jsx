@@ -35,6 +35,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import PaginationWithEllipsis from "@/components/user-view/paginationWithEllipsis";
+import TextChangeAnimation from "@/components/common/TextChangeAnimation";
 
 const Attendance = () => {
   const dispatch = useDispatch();
@@ -87,7 +88,7 @@ const Attendance = () => {
       <div className="m-0 text-lg font-bold text-center">
         Atpl Dhaka Attendance
       </div>
-
+      
       <div className="flex gap-2 justify-end">
         <Popover>
           <PopoverTrigger asChild>
@@ -153,7 +154,7 @@ const Attendance = () => {
       </div>
       <Table className="bg-background rounded">
         <TableHeader>
-          <TableRow className="bg-amber-200 text-nowrap">
+          <TableRow className="text-nowrap">
             {/* <TableHead>Name</TableHead> */}
             <TableHead className="text-center">Date</TableHead>
             <TableHead className="text-center">Entry</TableHead>
@@ -188,16 +189,8 @@ const Attendance = () => {
                 <TableCell>{punch?.last_punch_time}</TableCell>
                 <TableCell>{punch?.total_hour}</TableCell>
                 {/* <TableCell>{punch?.status}</TableCell> */}
-                <TableCell className="p-1">
-                  <div class="relative h-7 overflow-hidden rounded-md bg-gray-200">
-                    <div class="absolute inset-0 flex items-center justify-center rounded-md bg-orange-400 text-white animate-slide-in">
-                    {punch?.status}
-                    </div>
-
-                    <div class="absolute inset-0 flex items-center justify-center rounded-md text-white animate-slide-out bg-destructive">
-                    {punch?.status}
-                    </div>
-                  </div>
+                <TableCell className="!p-1 min-w-32 w-44 sm:text-sm text-xs">
+                  <TextChangeAnimation punch={punch} />
                 </TableCell>
               </TableRow>
             ))

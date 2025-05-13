@@ -25,7 +25,7 @@ const SystemLayout = () => {
           </div>
 
           {/* Main Body */}
-          <main className="flex-1 overflow-y-auto bg-muted/40 p-4 md:p-6">
+          <main className="flex-1 overflow-y-auto bg-muted/40 p-3 sm:p-4 md:p-6">
             <SidebarTrigger className="absolute top-3.5 left-4 lg:hidden" />
             <Outlet />
           </main>

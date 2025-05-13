@@ -19,10 +19,11 @@ export default {
           "95%": { transform: "translateY(0)", opacity: "1" },
           "100%": { transform: "translateY(-40px)", opacity: "1" },
         },
+
       },
       animation: {
-        "slide-in": "slideIn 6s infinite ease-in-out",
-        "slide-out": "slideOut 6s infinite ease-in-out",
+        "slide-in": "slideIn 8s infinite ease-in-out",
+        "slide-out": "slideOut 8s infinite ease-in-out",
       },
       fontFamily: {
         arial: ["Arial", "sans-serif"],

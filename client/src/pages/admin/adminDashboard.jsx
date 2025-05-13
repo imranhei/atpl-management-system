@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/table";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ArrowUpDown } from "lucide-react";
+import TextChangeAnimation from "@/components/common/TextChangeAnimation";
 
 const formatDate = (dateString) => {
   if (!dateString) return "";
@@ -157,7 +158,9 @@ const AdminDashboard = () => {
                   <TableCell className="font-semibold">
                     {punch?.total_hour}
                   </TableCell>
-                  <TableCell>{punch?.status}</TableCell>
+                  <TableCell className="!p-1 min-w-[136px] w-44 sm:text-sm text-xs">
+                    <TextChangeAnimation punch={punch} />
+                  </TableCell>
                 </TableRow>
               ))
             ) : (
