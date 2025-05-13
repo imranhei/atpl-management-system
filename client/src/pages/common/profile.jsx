@@ -196,7 +196,7 @@ const Profile = () => {
               Upload a new profile picture here. Click save when you're done.
             </DialogDescription>
           </DialogHeader>
-          <div className="">
+          <div className="w-full overflow-hidden">
             <div className="w-40 h-40 rounded-full bg-gray-200 mx-auto">
               {imageFile ? (
                 <img

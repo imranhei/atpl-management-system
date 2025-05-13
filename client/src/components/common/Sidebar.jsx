@@ -29,7 +29,6 @@ const AppSidebar = () => {
   const location = useLocation();
 
   const menuItems = SIDEBAR_MENU[role] || [];
-  console.log(user);
 
   return (
     <Sidebar>

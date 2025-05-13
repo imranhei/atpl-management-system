@@ -4,7 +4,6 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { FileIcon, UploadCloudIcon, XIcon } from "lucide-react";
 import { Skeleton } from "../ui/skeleton";
-import { useToast } from "@/hooks/use-toast";
 
 const ProductImageUpload = ({
   imageFile,
@@ -12,7 +11,6 @@ const ProductImageUpload = ({
   imageLoadingState,
 }) => {
   const inputRef = useRef(null);
-  const { toast } = useToast();
 
   const handleImageFileChange = (e) => {
     const file = e.target.files?.[0];
