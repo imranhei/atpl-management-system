@@ -7,6 +7,8 @@ import {
   LockKeyholeOpen,
   LayoutDashboardIcon,
   ReceiptText,
+  ChartNoAxesCombined,
+  ChartColumnIncreasing
 } from "lucide-react";
 
 export const registerFormControls = [
@@ -148,7 +150,21 @@ export const SIDEBAR_MENU = {
       id: "reports",
       label: "Reports",
       path: "/reports",
-      icon: ReceiptText
+      icon: ReceiptText,
+      submenu: [
+        {
+          id: "overview",
+          label: "Overview",
+          path: "/overview",
+          icon: ChartNoAxesCombined,
+        },
+        {
+          id: "irregularities",
+          label: "Irregularities",
+          path: "/irregularities",
+          icon: ChartColumnIncreasing,
+        },
+      ],
     },
     {
       id: "leave",

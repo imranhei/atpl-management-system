@@ -1,4 +1,4 @@
-import { Cake, Mail, Pencil, Phone } from "lucide-react";
+import { Cake, Mail, Pencil, Phone, RotateCw } from "lucide-react";
 import React, { useState } from "react";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
@@ -14,61 +14,145 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { format } from "date-fns";
-import { CalendarIcon } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { Calendar } from "@/components/ui/calendar";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import Avatar from "/avatar.png";
+import Avatar1 from "/avatar.png";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useDispatch, useSelector } from "react-redux";
 import ImageUpload from "@/components/admin-view/ImageUpload";
-import {
-  getProfile,
-  updateProfileImage,
-  updateProfileData,
-} from "@/store/employee/profile-slice";
+import { updateProfileData } from "@/store/employee/profile-slice";
+import { useToast } from "@/hooks/use-toast";
+import { checkAuth } from "@/store/auth-slice";
 
 const initialFormData = {
-  profile_img: null,
   phone_number: "",
   birthday: null,
 };
 
 const Profile = () => {
+  const { toast } = useToast();
   const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.auth);
+  const { user, profile } = useSelector((state) => state.auth);
+  const { isLoading } = useSelector((state) => state.profile);
   const [open, setOpen] = useState(false);
   const [openUpload, setOpenUpload] = useState(false);
-  const [formData, setFormData] = useState(initialFormData);
+  const [profileData, setProfileData] = useState(initialFormData);
   const [imageFile, setImageFile] = useState(null);
   const [imageLoadingState, setImageLoadingState] = useState(false);
 
   const handleImageUpload = async () => {
-    if (imageFile) {
-      // const formData = new FormData();
-      // formData.append("profile_img", imageFile);
-      // setImageLoadingState(true);
-      // await dispatch(updateProfileImage({ token, formData }));
-      // setImageLoadingState(false);
-      setOpenUpload(false);
+    if (!imageFile) {
+      toast({
+        title: "No image selected",
+        description: "Please select an image to upload.",
+        variant: "warning",
+      });
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("profile_img", imageFile);
+
+    try {
+      setImageLoadingState(true);
+      const token = localStorage.getItem("access_token");
+
+      const res = await dispatch(
+        updateProfileData({ token, formData })
+      ).unwrap();
+
+      if (res.status === 200) {
+        dispatch(checkAuth(token));
+        toast({
+          title: "Updated successfully",
+          description: "Your profile picture has been updated.",
+          variant: "success",
+        });
+
+        setImageFile(null);
+        setOpenUpload(false);
+      } else {
+        toast({
+          title: "Upload failed",
+          description: "Unexpected response received.",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      console.log(error.profile_img);
+      toast({
+        title: "Upload failed",
+        description:
+          error?.profile_img[0] || "Something went wrong while uploading.",
+        variant: "destructive",
+      });
+    } finally {
+      setImageLoadingState(false);
     }
   };
 
   const handleProfileUpdate = async () => {
-    // const formData = new FormData();
-    // formData.append("phone_number", formData.phone_number);
-    // formData.append("birthday", formData.birthday);
-    // await dispatch(updateProfileData({ token, formData }));
-    setOpen(false);
+    const token = localStorage.getItem("access_token");
+    const formData = new FormData();
+
+    // Format birthday to 'yyyy-MM-dd' string before appending
+    const formattedBirthday = profileData.birthday
+      ? format(profileData.birthday, "yyyy-MM-dd")
+      : "";
+
+    formData.append("phone_number", profileData.phone_number);
+    formData.append("birthday", formattedBirthday);
+
+    try {
+      const res = await dispatch(
+        updateProfileData({ token, formData })
+      ).unwrap();
+      if (res.status === 200) {
+        dispatch(checkAuth(token));
+      }
+      toast({
+        title: "Updated successfully",
+        description: "Your profile has been updated.",
+        variant: "success",
+      });
+      setOpen(false);
+    } catch (error) {
+      toast({
+        title: "Update failed",
+        description:
+          error?.birthday ||
+          error?.phone_number ||
+          "Something went wrong while updating.",
+        variant: "destructive",
+      });
+    } finally {
+      // Optionally add any cleanup logic here
+    }
+  };
+
+  const handleDataEdit = () => {
+    setProfileData({
+      phone_number: profile?.phone_number || "",
+      birthday: profile?.birthday ? new Date(profile.birthday) : null,
+    });
+    setOpen(true);
   };
 
   return (
     <div className="flex flex-col sm:flex-row items-center gap-8 h-fit sm:w-fit w-full bg-background sm:p-10 p-4 rounded">
       <div className="w-40 h-40 rounded-full bg-teal-300 relative ">
-        <img src={Avatar} alt="" className="h-full w-full object-cover" />
+        <Avatar className="focus:outline-none focus-visible:outline-none focus-visible:ring-0 border-white w-full h-full">
+          <AvatarImage
+            src={
+              profile.profile_img
+                ? `https://djangoattendance.atpldhaka.com${profile.profile_img}`
+                : null
+            }
+            alt="Profile"
+            className="object-cover w-full h-full"
+          />
+          <AvatarFallback>
+            <img src={Avatar1} alt="" />
+          </AvatarFallback>
+        </Avatar>
         <div
           className="absolute bottom-[8%] right-[8%] h-8 w-8 bg-white cursor-pointer p-2 rounded-full flex items-center justify-center text-white shadow-md"
           onClick={() => setOpenUpload(true)}
@@ -84,7 +168,7 @@ const Profile = () => {
         <div className="flex flex-col sm:flex-row sm:gap-4 gap-2 text-muted-foreground">
           <div className="flex items-center gap-2">
             <Phone size={16} />
-            01500000000
+            {profile?.phone_number || "Not provided"}
           </div>
           <div className="flex items-center gap-2">
             <Mail size={16} /> {user?.email}
@@ -92,11 +176,13 @@ const Profile = () => {
         </div>
         <div className="flex items-center gap-2 text-muted-foreground">
           <Cake size={16} />
-          Birthday: 20-01-1998
+          {profile?.birthday
+            ? format(new Date(profile.birthday), "PPP")
+            : "Not provided"}
         </div>
         <Button
           className="bg-teal-400 hover:bg-teal-500 text-white mt-2"
-          onClick={() => setOpen(true)}
+          onClick={handleDataEdit}
         >
           Edit
         </Button>
@@ -131,8 +217,15 @@ const Profile = () => {
             />
           </div>
           <DialogFooter>
-            <Button type="submit" onClick={handleImageUpload}>
-              Upload Picture
+            <Button onClick={handleImageUpload}>
+              {isLoading ? (
+                <>
+                  <RotateCw className="mr-2 h-4 w-4 animate-spin" />
+                  Uploading...
+                </>
+              ) : (
+                "Upload"
+              )}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -153,11 +246,11 @@ const Profile = () => {
               </Label>
               <Input
                 id="contact"
-                defaultValue={formData?.phone_number}
+                defaultValue={profileData?.phone_number}
                 className="col-span-3"
                 placeholder="Phone Number"
                 onChange={(e) =>
-                  setFormData((prev) => ({
+                  setProfileData((prev) => ({
                     ...prev,
                     phone_number: e.target.value,
                   }))
@@ -168,42 +261,35 @@ const Profile = () => {
               <Label htmlFor="birthday" className="text-right">
                 Birthday
               </Label>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant={"outline"}
-                    className={cn(
-                      "col-span-3 justify-start text-left font-normal",
-                      !formData?.birthday && "text-muted-foreground"
-                    )}
-                  >
-                    <CalendarIcon />
-                    {formData?.birthday ? (
-                      format(formData.birthday, "PPP")
-                    ) : (
-                      <span>Pick a date</span>
-                    )}
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0">
-                  <Calendar
-                    mode="single"
-                    selected={formData?.birthday}
-                    onSelect={(date) =>
-                      setFormData((prev) => ({
-                        ...prev,
-                        birthday: date,
-                      }))
-                    }
-                    initialFocus
-                  />
-                </PopoverContent>
-              </Popover>
+              <Input
+                className="col-span-3"
+                type="date"
+                value={
+                  profileData?.birthday instanceof Date &&
+                  !isNaN(profileData.birthday)
+                    ? format(profileData.birthday, "yyyy-MM-dd")
+                    : ""
+                }
+                onChange={(e) => {
+                  const val = e.target.value;
+                  setProfileData((prev) => ({
+                    ...prev,
+                    birthday: val ? new Date(val) : null,
+                  }));
+                }}
+              />
             </div>
           </div>
           <DialogFooter>
             <Button type="submit" onClick={handleProfileUpdate}>
-              Save changes
+              {isLoading ? (
+                <>
+                  <RotateCw className="mr-2 h-4 w-4 animate-spin" />
+                  Saving changes...
+                </>
+              ) : (
+                "Save changes"
+              )}
             </Button>
           </DialogFooter>
         </DialogContent>

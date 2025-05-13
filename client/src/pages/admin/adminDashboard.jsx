@@ -183,7 +183,7 @@ const AdminDashboard = () => {
                 <TableCell colSpan={5}>
                   <div className="flex sm:flex-row flex-col justify-between w-full gap-2 text-nowrap">
                     <p>Present: {pagination?.total || 0}</p>
-                    <p>Absent: {15 - pagination?.total || 0}</p>
+                    <p>Absent: {16 - pagination?.total || 0}</p>
                   </div>
                 </TableCell>
               </TableRow>

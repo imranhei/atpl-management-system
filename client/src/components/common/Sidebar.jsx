@@ -13,6 +13,7 @@ import {
   SidebarMenuSub,
   SidebarMenuSubItem,
   SidebarHeader,
+  SidebarFooter,
 } from "@/components/ui/sidebar";
 import {
   Collapsible,
@@ -20,18 +21,23 @@ import {
   CollapsibleContent,
 } from "@/components/ui/collapsible";
 import { ChevronDown } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
+import avatar from "/avatar.png";
 
 const AppSidebar = () => {
-  const { role, user } = useSelector((state) => state.auth);
+  const { role, user, profile } = useSelector((state) => state.auth);
   const location = useLocation();
 
   const menuItems = SIDEBAR_MENU[role] || [];
+  console.log(user);
 
   return (
     <Sidebar>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarHeader className="text-lg font-semibold">User Panel</SidebarHeader>
+          <SidebarHeader className="text-lg font-semibold">
+            User Panel
+          </SidebarHeader>
           {/* <SidebarGroupLabel>User Panel</SidebarGroupLabel> */}
           <SidebarGroupContent>
             <SidebarMenu>
@@ -104,6 +110,28 @@ const AppSidebar = () => {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+      <SidebarFooter>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton>
+              <Avatar className="focus:outline-none focus-visible:outline-none focus-visible:ring-0 ring-1 ring-white h-8 w-8 border-white">
+                <AvatarImage
+                  src={profile.profile_img ? `https://djangoattendance.atpldhaka.com${profile.profile_img}` : null}
+                  alt="Profile"
+                  className="object-cover w-full h-full"
+                />
+                <AvatarFallback>
+                  <img src={avatar} alt="" />
+                </AvatarFallback>
+              </Avatar>
+              {`${(user?.first_name + " " + user?.last_name)
+                .split(" ")
+                .slice(0, 2)
+                .join(" ")}`}
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarFooter>
     </Sidebar>
   );
 };

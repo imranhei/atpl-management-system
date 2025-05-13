@@ -5,6 +5,7 @@ const initialState = {
   isLoading: false,
   isAuthenticated: false,
   user: null,
+  profile: null,
   isLoadingAuth: false,
   role: "employee",
 };
@@ -128,6 +129,7 @@ const authSlice = createSlice({
             state.role = "employee";
           }
           state.user = action.payload.user;
+          state.profile = action.payload.profile;
         }
       })
       .addCase(login.rejected, (state) => {
@@ -140,6 +142,7 @@ const authSlice = createSlice({
         state.isLoading = false;
         state.isAuthenticated = false;
         state.user = null;
+        state.profile = null;
         state.role = null;
       })
       .addCase(logout.rejected, (state) => {
@@ -152,6 +155,7 @@ const authSlice = createSlice({
         state.isLoadingAuth = false;
         if (action.payload.success) {
           state.user = action.payload.user;
+          state.profile = action.payload.profile;
           state.isAuthenticated = true;
           if (
             action.payload.user.username === "frahman" ||
@@ -164,6 +168,7 @@ const authSlice = createSlice({
       .addCase(checkAuth.rejected, (state) => {
         state.isLoadingAuth = false;
         state.user = null;
+        state.profile = null;
         state.isAuthenticated = false;
       })
       .addCase(registerUser.pending, (state) => {
@@ -181,7 +186,7 @@ const authSlice = createSlice({
       .addCase(resetPassword.fulfilled, (state) => {
         state.isLoading = false;
       })
-      .addCase(resetPassword.rejected, (state, action) => {
+      .addCase(resetPassword.rejected, (state) => {
         state.isLoading = false;
       });
   },

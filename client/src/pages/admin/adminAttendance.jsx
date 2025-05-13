@@ -295,7 +295,7 @@ const AdminAttendance = () => {
                   index % 2 === 0 ? "bg-gray-100" : ""
                 }`}
               >
-                <TableCell className="text-left">{`${punch?.first_name} ${punch?.last_name}`}</TableCell>
+                <TableCell className="text-left">{`${(punch?.first_name + " " + punch?.last_name).split(" ").slice(0, 2).join(" ")}`}</TableCell>
                 <TableCell>{formatDateToReadable(punch?.date)}</TableCell>
                 <TableCell>{punch?.first_punch_time}</TableCell>
                 <TableCell>{punch?.last_punch_time}</TableCell>

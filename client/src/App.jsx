@@ -17,8 +17,9 @@ import Home from "./pages/common/Home";
 import ResetPassword from "./pages/auth/reset-password";
 import AdminDashboard from "./pages/admin/adminDashboard";
 import AdminAttendance from "./pages/admin/adminAttendance";
-import Reports from "./pages/admin/reports";
+import Overview from "./pages/admin/overview";
 import Profile from "./pages/common/profile";
+import Irregularities from "./pages/admin/irregularities";
 
 function App() {
   const { isAuthenticated, role, isLoadingAuth } = useSelector(
@@ -100,7 +101,8 @@ function App() {
         >
           <Route path="dashboard" element={<AdminDashboard />} />
           <Route path="attendance" element={<AdminAttendance />} />
-          <Route path="reports" element={<Reports />} />
+          <Route path="overview" element={<Overview />} />
+          <Route path="irregularities" element={<Irregularities />} />
           <Route path="meal" element={<Meal />} />
           <Route path="leave" element={<EmployeeLeave />} />
           <Route path="setting" element={<Profile />} />
