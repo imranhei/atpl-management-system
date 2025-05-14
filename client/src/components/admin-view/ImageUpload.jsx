@@ -64,7 +64,7 @@ const ProductImageUpload = ({
             <div className="flex items-center">
               <FileIcon className="w-8 h-8 text-promary mr-2" />
             </div>
-            <p className="text-sm font-medium">{imageFile.name}</p>
+            <p className="text-sm font-medium w-5/6 border">{imageFile.name}</p>
             <Button
               variant="ghost"
               size="icon"

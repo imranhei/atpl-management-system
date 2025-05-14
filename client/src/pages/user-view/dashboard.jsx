@@ -5,12 +5,13 @@ import {
   Table,
   TableBody,
   TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
 import { Skeleton } from "@/components/ui/skeleton";
+import TextChangeAnimation from "@/components/common/TextChangeAnimation";
+import WorkCountdown from "@/components/user-view/Countdown";
 
 const Dashboard = () => {
   const dispatch = useDispatch();
@@ -66,27 +67,29 @@ const Dashboard = () => {
 
   const calculateAvgTime = (punchDetails, key) => {
     if (!punchDetails?.length) return "00:00:00";
-  
+
     const totalSeconds = punchDetails.reduce((total, punch) => {
       let timeString = punch[key];
-  
+
       if (!timeString || typeof timeString !== "string") return total;
-  
+
       const timeParts = timeString.split(":").map((t) => parseInt(t, 10));
-  
-      let hours = 0, minutes = 0, seconds = 0;
-  
+
+      let hours = 0,
+        minutes = 0,
+        seconds = 0;
+
       if (timeParts.length === 3) {
         [hours, minutes, seconds] = timeParts;
       } else if (timeParts.length === 2) {
         [hours, minutes] = timeParts;
       }
-  
+
       return total + hours * 3600 + minutes * 60 + seconds;
     }, 0);
-  
+
     const avgSeconds = Math.floor(totalSeconds / punchDetails.length);
-  
+
     const hours = Math.floor(avgSeconds / 3600)
       .toString()
       .padStart(2, "0");
@@ -94,7 +97,7 @@ const Dashboard = () => {
       .toString()
       .padStart(2, "0");
     const seconds = (avgSeconds % 60).toString().padStart(2, "0");
-  
+
     return `${hours}:${minutes}:${seconds}`;
   };
 
@@ -108,8 +111,11 @@ const Dashboard = () => {
 
   return (
     <div>
-      <div className="shadow rounded-md bg-white p-4">
-        <p className="text-lg font-semibold pb-2">This Week Attendance</p>
+      <div className="shadow rounded-md bg-white sm:p-4 p-2">
+        <div className="flex justify-between items-center pb-4">
+          <p className="text-lg font-semibold">This Week Attendance</p>
+          <WorkCountdown results={results} />
+        </div>
         <Table className="bg-background rounded">
           <TableHeader>
             <TableRow className="text-nowrap bg-sky-100">
@@ -138,18 +144,20 @@ const Dashboard = () => {
               results.map((punch, index) => (
                 <TableRow
                   key={index}
-                  className={`text-nowrap text-center ${index % 2 === 0 ? "bg-gray-100" : ""}`}
+                  className={`text-nowrap text-center ${
+                    index % 2 === 0 ? "bg-gray-100" : ""
+                  }`}
                 >
                   {/* <TableCell>{punch?.first_name}</TableCell> */}
                   <TableCell>{formatDate(punch?.date)}</TableCell>
-                  <TableCell>
-                    {punch?.first_punch_time}
+                  <TableCell>{punch?.first_punch_time}</TableCell>
+                  <TableCell>{punch?.last_punch_time}</TableCell>
+                  <TableCell className="font-semibold">
+                    {punch?.total_hour}
                   </TableCell>
-                  <TableCell>
-                    {punch?.last_punch_time}
+                  <TableCell className="!p-1 min-w-[136px] w-44 sm:text-sm text-xs">
+                    <TextChangeAnimation punch={punch} />
                   </TableCell>
-                  <TableCell className="font-semibold">{punch?.total_hour}</TableCell>
-                  <TableCell>{punch?.status}</TableCell>
                 </TableRow>
               ))
             ) : (
@@ -160,45 +168,31 @@ const Dashboard = () => {
               </TableRow>
             )}
           </TableBody>
-          <TableFooter className="bg-sky-100">
-            {isLoading ? (
-              <TableRow>
-                <TableCell colSpan={5}>
-                  <Skeleton className="w-full h-[28px] rounded-lg" />
-                </TableCell>
-              </TableRow>
-            ) : (
-              <TableRow>
-                <TableCell colSpan={5}>
-                  <div className="flex sm:flex-row flex-col justify-between w-full gap-2 text-nowrap">
-                    <div className="flex gap-1">
-                      <span className="font-semibold">Days:</span>
-                      <span>{results?.length}</span>
-                    </div>
-                    <div className="flex gap-1">
-                      <span className="font-semibold">Avg In:</span>
-                      <span>
-                        {calculateAvgTime(results, "first_punch_time")}
-                      </span>
-                    </div>
-                    <div className="flex gap-1">
-                      <span className="font-semibold">Avg Out:</span>
-                      <span>
-                        {calculateAvgTime(results, "last_punch_time")}
-                      </span>
-                    </div>
-                    <div className="flex gap-1">
-                      <span className="font-semibold">Avg Time:</span>
-                      <span>
-                        {calculateAvgTime(results, "total_hour")}
-                      </span>
-                    </div>
-                  </div>
-                </TableCell>
-              </TableRow>
-            )}
-          </TableFooter>
         </Table>
+        <div className="w-full grid grid-cols-2 grid-rows-2 pt-4 sm:text-xl text-base font-bold">
+          <div className="flex flex-col justify-center items-center gap-1 border-r border-b sm:h-20 h-16">
+            <span className="text-muted-foreground">Days</span>
+            <span className=" text-teal-400">{results?.length}</span>
+          </div>
+          <div className="flex flex-col justify-center items-center border-b gap-1 sm:h-20 h-16">
+            <span className="text-muted-foreground ">Avg Hour</span>
+            <span className=" text-teal-400">
+              {calculateAvgTime(results, "total_hour")}
+            </span>
+          </div>
+          <div className="flex flex-col justify-center items-center gap-1 border-r sm:h-20 h-16">
+            <span className="text-muted-foreground">Avg Sign-In</span>
+            <span className=" text-teal-400">
+              {calculateAvgTime(results, "first_punch_time")}
+            </span>
+          </div>
+          <div className="flex flex-col justify-center items-center gap-1 sm:h-20 h-16">
+            <span className="text-muted-foreground ">Avg Sign-Out</span>
+            <span className=" text-teal-400">
+              {calculateAvgTime(results, "last_punch_time")}
+            </span>
+          </div>
+        </div>
       </div>
     </div>
   );
