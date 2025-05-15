@@ -14,6 +14,8 @@ import {
   SidebarMenuSubItem,
   SidebarHeader,
   SidebarFooter,
+  SidebarMenuSubButton,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import {
   Collapsible,
@@ -26,9 +28,14 @@ import avatar from "/avatar.png";
 
 const AppSidebar = () => {
   const { role, user, profile } = useSelector((state) => state.auth);
+  const { setOpenMobile, isMobile } = useSidebar();
   const location = useLocation();
 
   const menuItems = SIDEBAR_MENU[role] || [];
+
+  const handleClick = () => {
+    if (isMobile) setOpenMobile(false);
+  };
 
   return (
     <Sidebar>
@@ -61,7 +68,7 @@ const AppSidebar = () => {
                       </SidebarMenuItem>
 
                       <CollapsibleContent className="pl-6">
-                        <SidebarMenuSub>
+                        <SidebarMenuSub asChild>
                           {item.submenu.map((subItem) => {
                             const SubIcon = subItem.icon;
                             const isSubActive = location.pathname.includes(
@@ -69,18 +76,20 @@ const AppSidebar = () => {
                             );
 
                             return (
-                              <SidebarMenuSubItem
-                                key={subItem.id}
-                                asChild
-                                active={isSubActive.toString()}
-                              >
-                                <Link
-                                  to={`/${role}${subItem.path}`}
-                                  className="flex items-center gap-2"
+                              <SidebarMenuSubItem key={subItem.id}>
+                                <SidebarMenuSubButton
+                                  asChild
+                                  isActive={isSubActive}
                                 >
-                                  <SubIcon size={16} />
-                                  {subItem.label}
-                                </Link>
+                                  <Link
+                                    to={`/${role}${subItem.path}`}
+                                    className="flex items-center gap-2 w-full"
+                                    onClick={handleClick}
+                                  >
+                                    <SubIcon size={16} />
+                                    {subItem.label}
+                                  </Link>
+                                </SidebarMenuSubButton>
                               </SidebarMenuSubItem>
                             );
                           })}
@@ -92,11 +101,12 @@ const AppSidebar = () => {
 
                 // Fallback for normal items
                 return (
-                  <SidebarMenuItem key={item.id} active={isActive.toString()}>
-                    <SidebarMenuButton asChild>
+                  <SidebarMenuItem key={item.id}>
+                    <SidebarMenuButton asChild data-active={isActive}>
                       <Link
                         to={`/${role}${item.path}`}
                         className="flex items-center gap-2"
+                        onClick={handleClick}
                       >
                         <Icon size={18} />
                         {item.label}
@@ -115,7 +125,11 @@ const AppSidebar = () => {
             <SidebarMenuButton>
               <Avatar className="focus:outline-none focus-visible:outline-none focus-visible:ring-0 ring-1 ring-white h-8 w-8 border-white">
                 <AvatarImage
-                  src={profile.profile_img ? `https://djangoattendance.atpldhaka.com${profile.profile_img}` : null}
+                  src={
+                    profile.profile_img
+                      ? `https://djangoattendance.atpldhaka.com${profile.profile_img}`
+                      : null
+                  }
                   alt="Profile"
                   className="object-cover w-full h-full"
                 />

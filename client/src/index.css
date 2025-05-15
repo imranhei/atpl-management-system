@@ -2,6 +2,39 @@
 @tailwind components;
 @tailwind utilities;
 
+@media print {
+  html, body {
+    height: auto !important;
+    overflow: visible !important;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Prevent scrollbars from appearing */
+  * {
+    overflow: visible !important;
+    box-shadow: none !important;
+  }
+
+  /* Page break support for long tables */
+  table {
+    page-break-inside: auto;
+  }
+
+  tr {
+    page-break-inside: avoid;
+    page-break-after: auto;
+  }
+
+  thead {
+    display: table-header-group;
+  }
+
+  tfoot {
+    display: table-footer-group;
+  }
+}
+
 @layer base {
   :root {
 

@@ -13,12 +13,12 @@ const PrintReport = ({ report, report_count, displayDate }) => {
   return (
     <div className="print:p-0 print:m-[1in] print:font-arial">
       <h2 className="text-lg font-semibold mb-4 text-center hidden print:block">
-        Attendance Report ({displayDate()})
+        Attendance Report for {displayDate()}
       </h2>
       <Table className="bg-background">
         <TableHeader>
           <TableRow className="text-nowrap print:text-nowrap print:text-xs bg-gray-50">
-            <TableHead className="text-center">Serial</TableHead>
+            {/* <TableHead className="text-center">Serial</TableHead> */}
             <TableHead>Name</TableHead>
             <TableHead className="text-center">Avg Hours</TableHead>
             <TableHead className="text-center">Working Days</TableHead>
@@ -36,7 +36,7 @@ const PrintReport = ({ report, report_count, displayDate }) => {
                 index % 2 === 0 ? "bg-gray-100" : ""
               }`}
             >
-              <TableCell>{punch?.serial_no}</TableCell>
+              {/* <TableCell>{punch?.serial_no}</TableCell> */}
               <TableCell className="text-left">
                 {punch?.employee_name?.split(" ").slice(0, 3).join(" ")}
               </TableCell>
@@ -52,8 +52,8 @@ const PrintReport = ({ report, report_count, displayDate }) => {
         <TableFooter>
           <TableRow>
             <TableCell
-              colSpan={8}
-              className="text-right print:text-xs font-medium print:text-gray-600"
+              colSpan={7}
+              className="text-right print:text-xs font-medium print:text-gray-600 print:hidden"
             >
               Total Entries: {report?.length || 0} / {report_count || 0}
             </TableCell>

@@ -132,7 +132,7 @@ const AdminAttendance = () => {
 
   const displayDate = () => {
     const { from, to } = customDate;
-    if (!from) return "Pick a date";
+    if (!from) return "Pick a date range";
     return to
       ? `${format(from, "LLL dd, y")} - ${format(to, "LLL dd, y")}`
       : format(from, "LLL dd, y");
@@ -162,11 +162,11 @@ const AdminAttendance = () => {
               variant="outline"
               aria-expanded={empListOpen}
               role="combobox"
-              className={`w-[180px] justify-between font-normal overflow-hidden p-2 ${
+              className={`max-w-[180px] sm:w-[180px] w-40 justify-between font-normal overflow-hidden sm:p-2 p-1 ${
                 selected ? "" : "text-muted-foreground"
               }`}
             >
-              {selected?.first_name ? `${selected?.first_name} ${selected?.last_name}` : "Select Employee"}
+              {selected?.first_name ? `${(selected?.first_name + " " + selected?.last_name).split(" ").slice(0, 2).join(" ")}` : "Select Employee"}
               <ChevronsUpDown className="opacity-50" />
             </Button>
           </PopoverTrigger>
@@ -177,14 +177,14 @@ const AdminAttendance = () => {
                 {employeeDetails?.map((person) => (
                   <CommandItem
                     key={person.emp_code}
-                    value={`${person?.first_name} ${person?.last_name}`}
+                    value={`${(person?.first_name + " " + person?.last_name).split(" ").slice(0, 3).join(" ")}`}
                     onSelect={(value) => {
                         handleEmployeeChange(value);
                         setEmpListOpen(false);
                         triggerRef.current?.focus();
                     }}
                   >
-                    {`${person?.first_name} ${person?.last_name}`}
+                    {`${(person?.first_name + " " + person?.last_name).split(" ").slice(0, 3).join(" ")}`}
                     <Check
                       className={cn(
                         "ml-auto",
@@ -199,7 +199,7 @@ const AdminAttendance = () => {
             </Command>
           </PopoverContent>
         </Popover>
-        <Select
+        {/* <Select
           value={dateRange || ""} // Fallback to empty string if null/undefined
           onValueChange={handleRangeSelect}
         >
@@ -218,7 +218,7 @@ const AdminAttendance = () => {
             <SelectItem value="15">Last 15 days</SelectItem>
             <SelectItem value="30">Last 30 days</SelectItem>
           </SelectContent>
-        </Select>
+        </Select> */}
         <div className="min-w-[200px] flex-1 flex items-center gap-1">
           <Popover>
             <PopoverTrigger asChild>
@@ -226,7 +226,7 @@ const AdminAttendance = () => {
                 id="date"
                 variant="outline"
                 className={cn(
-                  "flex-1 justify-start text-left font-normal",
+                  "flex-1 w-48 overflow-hidden justify-start text-left font-normal sm:p-4 p-2",
                   !params.start_date &&
                     !params.end_date &&
                     "text-muted-foreground"
@@ -253,6 +253,7 @@ const AdminAttendance = () => {
               <Button
                 onClick={handleClearDate}
                 disabled={!params.start_date && !params.end_date}
+                className="sm:p-4 p-2 shadow"
               >
                 <FilterX size={20} />
               </Button>

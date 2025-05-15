@@ -169,8 +169,8 @@ const Dashboard = () => {
             )}
           </TableBody>
         </Table>
-        <div className="w-full grid grid-cols-2 grid-rows-2 pt-4 sm:text-xl text-base font-bold">
-          <div className="flex flex-col justify-center items-center gap-1 border-r border-b sm:h-20 h-16">
+        <div className="w-full grid grid-cols-2 grid-rows-2 pt-4 sm:text-xl text-base font-bold sm:gap-4 gap-2">
+          {/* <div className="flex flex-col justify-center items-center gap-1 border-r border-b sm:h-20 h-16">
             <span className="text-muted-foreground">Days</span>
             <span className=" text-teal-400">{results?.length}</span>
           </div>
@@ -189,6 +189,28 @@ const Dashboard = () => {
           <div className="flex flex-col justify-center items-center gap-1 sm:h-20 h-16">
             <span className="text-muted-foreground ">Avg Sign-Out</span>
             <span className=" text-teal-400">
+              {calculateAvgTime(results, "last_punch_time")}
+            </span>
+          </div> */}
+          <div className="flex flex-col justify-center items-center gap-1 sm:h-20 h-16 rounded shadow-md bg-emerald-200">
+            <span className="text-muted-foreground">Days</span>
+            <span className=" text-emerald-500">{results?.length}</span>
+          </div>
+          <div className="flex flex-col justify-center items-center gap-1 sm:h-20 h-16 rounded shadow-md bg-emerald-200">
+            <span className="text-muted-foreground ">Avg Hour</span>
+            <span className=" text-emerald-500">
+              {calculateAvgTime(results, "total_hour")}
+            </span>
+          </div>
+          <div className="flex flex-col justify-center items-center gap-1 sm:h-20 h-16 rounded shadow-md bg-emerald-200">
+            <span className="text-muted-foreground">Avg Sign-In</span>
+            <span className=" text-emerald-500">
+              {calculateAvgTime(results, "first_punch_time")}
+            </span>
+          </div>
+          <div className="flex flex-col justify-center items-center gap-1 sm:h-20 h-16 rounded shadow-md bg-emerald-200">
+            <span className="text-muted-foreground ">Avg Sign-Out</span>
+            <span className=" text-emerald-500">
               {calculateAvgTime(results, "last_punch_time")}
             </span>
           </div>
