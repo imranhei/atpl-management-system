@@ -8,7 +8,8 @@ import {
   LayoutDashboardIcon,
   ReceiptText,
   ChartNoAxesCombined,
-  ChartColumnIncreasing
+  ChartColumnIncreasing,
+  UserPlus
 } from "lucide-react";
 
 export const registerFormControls = [
@@ -183,6 +184,12 @@ export const SIDEBAR_MENU = {
           label: "Profile",
           path: "/setting",
           icon: CircleUser,
+        },
+        {
+          id: "register",
+          label: "Register",
+          path: "/register",
+          icon: UserPlus,
         },
         {
           id: "reset-password",

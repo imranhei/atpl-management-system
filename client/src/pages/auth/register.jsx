@@ -4,7 +4,7 @@ import CommonForm from "../../components/common/form";
 import { registerFormControls } from "@/components/config";
 import { useDispatch, useSelector } from "react-redux";
 import { registerUser } from "@/store/auth-slice";
-import { useToast } from "../../hooks/use-toast"
+import { useToast } from "../../hooks/use-toast";
 
 const initialState = {
   name: "",
@@ -18,7 +18,7 @@ const AuthResgister = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isLoading } = useSelector((state) => state.auth);
-  const {toast} = useToast();
+  const { toast } = useToast();
 
   const onSubmit = (event) => {
     event.preventDefault();
@@ -74,33 +74,35 @@ const AuthResgister = () => {
     //     });
     //   }
     // });
-  }
+  };
 
   return (
-    <div className="mx-auto w-full max-w-md space-y-6">
-      <div className="text-center">
-        <h1 className="sm:text-3xl text-2xl font-bold tracking-tight text-foreground">
-          Create New Account
-        </h1>
-        <p className="mt-2">
-          Already have an account?
-          <Link
-            className="font-medium ml-2 text-yellowDark hover:text-yellowDark hover:underline"
-            to="/auth/login"
-          >
-            Login
-          </Link>
-        </p>
+    <div className="flex flex-col items-center justify-center min-h-full px-8 sm:px-12">
+      <div className="mx-auto w-full max-w-md space-y-6">
+        <div className="text-center">
+          <h1 className="sm:text-3xl text-2xl font-bold tracking-tight text-foreground">
+            Create New Account
+          </h1>
+          <p className="mt-2">
+            Already have an account?
+            <Link
+              className="font-medium ml-2 text-yellowDark hover:text-yellowDark hover:underline"
+              to="/auth/login"
+            >
+              Login
+            </Link>
+          </p>
+        </div>
+        <CommonForm
+          formControls={registerFormControls}
+          buttonText={"Sign Up"}
+          loadingText={"Signing Up..."}
+          formData={formData}
+          setFormData={setFormData}
+          onSubmit={onSubmit}
+          isLoading={isLoading}
+        />
       </div>
-      <CommonForm 
-        formControls={registerFormControls}
-        buttonText={'Sign Up'}
-        loadingText={"Signing Up..."}
-        formData={formData}
-        setFormData={setFormData}
-        onSubmit={onSubmit}
-        isLoading={isLoading}
-      />
     </div>
   );
 };

@@ -116,14 +116,14 @@ const Dashboard = () => {
           <p className="text-lg font-semibold">This Week Attendance</p>
           <WorkCountdown results={results} />
         </div>
-        <Table className="bg-background rounded">
+        <Table className="bg-background rounded border-b">
           <TableHeader>
             <TableRow className="text-nowrap bg-sky-100">
               {/* <TableHead>Name</TableHead> */}
               <TableHead className="text-center">Date</TableHead>
               <TableHead className="text-center">Entry</TableHead>
               <TableHead className="text-center">Exit</TableHead>
-              <TableHead className="text-center">Duration</TableHead>
+              <TableHead className="text-center">Hours</TableHead>
               <TableHead className="text-center">Status</TableHead>
             </TableRow>
           </TableHeader>

@@ -54,7 +54,7 @@ const WorkCountdown = ({ results }) => {
 
   return (
     <div className="sm:text-base text-sm flex items-center gap-2 text-rose-500">
-      <AlarmClockMinus size={20} color="#f91565" /><span className="font-semibold font-mono">{formatTime(remainingTime)}</span>
+      <AlarmClockMinus className="animate-skew-shake-x" size={20} color="#f91565" /><span className="font-semibold font-mono">{formatTime(remainingTime)}</span>
     </div>
   );
 };

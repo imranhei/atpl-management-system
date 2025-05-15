@@ -19,11 +19,19 @@ export default {
           "95%": { transform: "translateY(0)", opacity: "1" },
           "100%": { transform: "translateY(-40px)", opacity: "1" },
         },
-
+        "skew-x-shake": {
+          "0%": { transform: "skewX(-10deg) translateY(0)" },
+          "5%": { transform: "skewX(10deg) translateY(-3px)" },
+          "10%": { transform: "skewX(-10deg) translateY(-5px)" },
+          "15%": { transform: "skewX(10deg) translateY(-3px)"},
+          "20%": { transform: "skewX(0deg) translateY(0)" },
+          "100%": { transform: "skewX(0deg) translateY(0)" },
+        },
       },
       animation: {
         "slide-in": "slideIn 8s infinite ease-in-out",
         "slide-out": "slideOut 8s infinite ease-in-out",
+        "skew-shake-x": "skew-x-shake 1.3s infinite;",
       },
       fontFamily: {
         arial: ["Arial", "sans-serif"],

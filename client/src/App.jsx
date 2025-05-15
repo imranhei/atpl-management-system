@@ -73,7 +73,6 @@ function App() {
           }
         >
           <Route path="login" element={<AuthLogin />} />
-          <Route path="register" element={<AuthRegister />} />
         </Route>
         <Route
           path="/employee"
@@ -107,6 +106,7 @@ function App() {
           <Route path="leave" element={<EmployeeLeave />} />
           <Route path="setting" element={<Profile />} />
           <Route path="day-wise-meal" element={<TodayMeals />} />
+          <Route path="register" element={<AuthRegister />} />
           <Route path="reset-password" element={<ResetPassword />} />
         </Route>
       </Routes>
