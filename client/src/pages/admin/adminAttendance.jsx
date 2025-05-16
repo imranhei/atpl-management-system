@@ -300,7 +300,7 @@ const AdminAttendance = () => {
                 <TableCell>{formatDateToReadable(punch?.date)}</TableCell>
                 <TableCell>{punch?.first_punch_time}</TableCell>
                 <TableCell>{punch?.last_punch_time}</TableCell>
-                <TableCell>{punch?.total_hour}</TableCell>
+                <TableCell className="font-semibold">{punch?.total_hour}</TableCell>
                 <TableCell className="!p-1 min-w-[136px] w-44 sm:text-sm text-xs">
                   <TextChangeAnimation punch={punch} />
                 </TableCell>

@@ -12,6 +12,7 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import TextChangeAnimation from "@/components/common/TextChangeAnimation";
 import WorkCountdown from "@/components/user-view/Countdown";
+import { Separator } from "@radix-ui/react-dropdown-menu";
 
 const Dashboard = () => {
   const dispatch = useDispatch();
@@ -109,6 +110,27 @@ const Dashboard = () => {
     });
   };
 
+  function sumTotalHours(results) {
+    let totalMinutes = 0;
+
+    results?.forEach((item) => {
+      if (!item.total_hour) return;
+      const [hoursStr, minutesStr] = item.total_hour.split(":");
+      const hours = parseInt(hoursStr, 10) || 0;
+      const minutes = parseInt(minutesStr, 10) || 0;
+      totalMinutes += hours * 60 + minutes;
+    });
+
+    const worked = totalMinutes - results?.length * 9 * 60;
+
+    const totalHours = Math.floor(totalMinutes / 60);
+    const remainingMinutes = totalMinutes % 60;
+
+    return <span className={`${worked > 0 ? "text-emerald-500" : "text-rose-400"}`}>{`${String(totalHours).padStart(2, "0")}:${String(
+      remainingMinutes
+    ).padStart(2, "0")}`}</span>
+  }
+
   return (
     <div>
       <div className="shadow rounded-md bg-white sm:p-4 p-2">
@@ -170,49 +192,41 @@ const Dashboard = () => {
           </TableBody>
         </Table>
         <div className="w-full grid grid-cols-2 grid-rows-2 pt-4 sm:text-xl text-base font-bold sm:gap-4 gap-2">
-          {/* <div className="flex flex-col justify-center items-center gap-1 border-r border-b sm:h-20 h-16">
-            <span className="text-muted-foreground">Days</span>
-            <span className=" text-teal-400">{results?.length}</span>
-          </div>
-          <div className="flex flex-col justify-center items-center border-b gap-1 sm:h-20 h-16">
-            <span className="text-muted-foreground ">Avg Hour</span>
-            <span className=" text-teal-400">
-              {calculateAvgTime(results, "total_hour")}
-            </span>
-          </div>
-          <div className="flex flex-col justify-center items-center gap-1 border-r sm:h-20 h-16">
-            <span className="text-muted-foreground">Avg Sign-In</span>
-            <span className=" text-teal-400">
-              {calculateAvgTime(results, "first_punch_time")}
-            </span>
-          </div>
-          <div className="flex flex-col justify-center items-center gap-1 sm:h-20 h-16">
-            <span className="text-muted-foreground ">Avg Sign-Out</span>
-            <span className=" text-teal-400">
-              {calculateAvgTime(results, "last_punch_time")}
-            </span>
-          </div> */}
-          <div className="flex flex-col justify-center items-center gap-1 sm:h-20 h-16 rounded shadow-md bg-emerald-200">
+          <div className="flex flex-col justify-center items-center gap-1 sm:h-20 h-16 rounded shadow-lg shadow-emerald-200/50 border ">
             <span className="text-muted-foreground">Days</span>
             <span className=" text-emerald-500">{results?.length}</span>
           </div>
-          <div className="flex flex-col justify-center items-center gap-1 sm:h-20 h-16 rounded shadow-md bg-emerald-200">
+          <div className="flex flex-col justify-center items-center gap-1 sm:h-20 h-16 rounded shadow-lg shadow-emerald-200/50 border">
             <span className="text-muted-foreground ">Avg Hour</span>
             <span className=" text-emerald-500">
               {calculateAvgTime(results, "total_hour")}
             </span>
           </div>
-          <div className="flex flex-col justify-center items-center gap-1 sm:h-20 h-16 rounded shadow-md bg-emerald-200">
-            <span className="text-muted-foreground">Avg Sign-In</span>
-            <span className=" text-emerald-500">
-              {calculateAvgTime(results, "first_punch_time")}
-            </span>
+          <div className="flex items-center gap-2 sm:h-20 h-16 rounded shadow-lg shadow-emerald-200/50 border p-2">
+            <div className="flex flex-col items-center flex-1">
+              <span className="text-muted-foreground">Avg In</span>
+              <span className="text-emerald-500">
+                {calculateAvgTime(results, "first_punch_time")}
+              </span>
+            </div>
+            <div className="border-r border-muted-foreground h-full"></div>
+            <div className="flex flex-col items-center flex-1">
+              <span className="text-muted-foreground">Avg Out</span>
+              <span className="text-emerald-500">
+                {calculateAvgTime(results, "last_punch_time")}
+              </span>
+            </div>
           </div>
-          <div className="flex flex-col justify-center items-center gap-1 sm:h-20 h-16 rounded shadow-md bg-emerald-200">
-            <span className="text-muted-foreground ">Avg Sign-Out</span>
-            <span className=" text-emerald-500">
-              {calculateAvgTime(results, "last_punch_time")}
-            </span>
+          <div className="flex items-center gap-2 sm:h-20 h-16 rounded shadow-lg shadow-emerald-200/50 border p-2">
+            <div className="flex flex-col items-center flex-1">
+              <span className="text-muted-foreground">Committed</span>
+              <span className="text-emerald-500">{results?.length * 9}:00</span>
+            </div>
+            <div className="border-r border-muted-foreground h-full"></div>
+            <div className="flex flex-col items-center flex-1">
+              <span className="text-muted-foreground">Worked</span>
+              <span>{sumTotalHours(results)}</span>
+            </div>
           </div>
         </div>
       </div>

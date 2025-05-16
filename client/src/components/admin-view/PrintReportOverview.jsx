@@ -9,14 +9,14 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-const PrintReport = ({ report, report_count, displayDate }) => {
+const PrintReportOverview = ({ report, report_count, displayDate }) => {
   return (
     <div className="print:p-0 print:m-[1in] print:font-arial">
       <h2 className="text-lg font-semibold mb-4 text-center hidden print:block">
-        Attendance Report for {displayDate()}
+        Attendance Report for {typeof displayDate === 'function' ? displayDate() : ''}
       </h2>
       <Table className="bg-background">
-        <TableHeader>
+        <TableHeader> 
           <TableRow className="text-nowrap print:text-nowrap print:text-xs bg-gray-50">
             {/* <TableHead className="text-center">Serial</TableHead> */}
             <TableHead>Name</TableHead>
@@ -64,4 +64,4 @@ const PrintReport = ({ report, report_count, displayDate }) => {
   );
 };
 
-export default PrintReport;
+export default PrintReportOverview;

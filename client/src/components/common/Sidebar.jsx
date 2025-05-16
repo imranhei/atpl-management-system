@@ -68,7 +68,7 @@ const AppSidebar = () => {
                       </SidebarMenuItem>
 
                       <CollapsibleContent className="pl-6">
-                        <SidebarMenuSub asChild>
+                        <SidebarMenuSub>
                           {item.submenu.map((subItem) => {
                             const SubIcon = subItem.icon;
                             const isSubActive = location.pathname.includes(

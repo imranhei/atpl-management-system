@@ -32,13 +32,14 @@ export const getEmployeeDetails = createAsyncThunk(
 
 export const getAttendanceSummary = createAsyncThunk(
   "employee/getAttendanceSummary",
-  async ({ token, start_date, end_date }) => {
+  async ({ token, start_date, end_date, per_page }) => {
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/api/employee/attendance-summary/`,
         {
           start_date,
           end_date,
+          per_page
         },
         {
           headers: {

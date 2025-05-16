@@ -13,7 +13,7 @@ import { getAttendanceSummary } from "@/store/admin/employee-details-slice";
 import { format, subDays } from "date-fns";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useReactToPrint } from "react-to-print";
-import PrintReport from "@/components/admin-view/PrintReport";
+import PrintReportOverview from "@/components/admin-view/PrintReportOverview";
 
 const Reports = () => {
   const printRef = useRef(null);
@@ -109,7 +109,7 @@ const Reports = () => {
         </Button>
       </div>
       <div ref={printRef}>
-        <PrintReport report={report} report_count={report_count} displayDate={displayDate} />
+        <PrintReportOverview report={report} report_count={report_count} displayDate={displayDate} />
       </div>
     </div>
   );

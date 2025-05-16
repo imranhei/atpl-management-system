@@ -7,10 +7,12 @@ import { registerUser } from "@/store/auth-slice";
 import { useToast } from "../../hooks/use-toast";
 
 const initialState = {
-  name: "",
+  emp_code: "",
+  username: "",
+  first_name: "",
+  last_name: "",
   email: "",
   password: "",
-  password_confirmation: "",
 };
 
 const AuthResgister = () => {
@@ -22,15 +24,9 @@ const AuthResgister = () => {
 
   const onSubmit = (event) => {
     event.preventDefault();
+    console.log("formData", formData);
 
     //form validation
-    // if(formData.password !== formData.password_confirmation) {
-    //   toast({
-    //     variant: "destructive",
-    //     title: "Password and confirm password does not match",
-    //   });
-    //   return;
-    // }
 
     // //email validation
     // const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -43,37 +39,37 @@ const AuthResgister = () => {
     // }
 
     // //all fields are required
-    // if (!formData.name || !formData.email || !formData.password || !formData.password_confirmation) {
-    //   toast({
-    //     variant: "destructive",
-    //     title: "All fields are required",
-    //   });
-    //   return;
-    // }
+    if (Object.values(formData).some(value => !value)) {
+      toast({
+        variant: "destructive",
+        title: "All fields are required",
+      });
+      return;
+    }
 
     // //minimum password length check
-    // if (formData.password.length < 6) {
-    //   toast({
-    //     variant: "destructive",
-    //     title: "Password must be at least 6 characters",
-    //   });
-    //   return;
-    // }
+    if (formData.password.length < 6) {
+      toast({
+        variant: "destructive",
+        title: "Password must be at least 6 characters",
+      });
+      return;
+    }
 
-    // dispatch(registerUser(formData)).then((data) => {
-    //   if (data?.payload && data?.payload?.status) {
-    //     toast({
-    //       title: data.payload.message || "Registration success",
-    //     });
-    //     navigate("/auth/login");
-    //   } else {
-    //     toast({
-    //       variant: "destructive",
-    //       description: data?.payload?.message || data?.error?.message || "",
-    //       title:  "Registration failed",
-    //     });
-    //   }
-    // });
+    dispatch(registerUser(formData)).then((data) => {
+      if (data?.payload && data?.payload?.status) {
+        toast({
+          title: data.payload.message || "Registration success",
+        });
+        setFormData(initialState);
+      } else {
+        toast({
+          variant: "destructive",
+          description: data?.payload?.message || data?.error?.message || "",
+          title:  "Registration failed",
+        });
+      }
+    });
   };
 
   return (
@@ -81,9 +77,9 @@ const AuthResgister = () => {
       <div className="mx-auto w-full max-w-md space-y-6">
         <div className="text-center">
           <h1 className="sm:text-3xl text-2xl font-bold tracking-tight text-foreground">
-            Create New Account
+            Add New User
           </h1>
-          <p className="mt-2">
+          {/* <p className="mt-2">
             Already have an account?
             <Link
               className="font-medium ml-2 text-yellowDark hover:text-yellowDark hover:underline"
@@ -91,12 +87,12 @@ const AuthResgister = () => {
             >
               Login
             </Link>
-          </p>
+          </p> */}
         </div>
         <CommonForm
           formControls={registerFormControls}
-          buttonText={"Sign Up"}
-          loadingText={"Signing Up..."}
+          buttonText={"Register"}
+          loadingText={"Registering..."}
           formData={formData}
           setFormData={setFormData}
           onSubmit={onSubmit}

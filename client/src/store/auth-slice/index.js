@@ -57,7 +57,7 @@ export const logout = createAsyncThunk("auth/logout", async () => {
 export const registerUser = createAsyncThunk("/auth/register", async (data) => {
   try {
     const response = await axios.post(
-      `${import.meta.env.VITE_API_URL}/api/register`,
+      `${import.meta.env.VITE_API_URL}/api/auth/register/`,
       data
     );
     return response.data;
