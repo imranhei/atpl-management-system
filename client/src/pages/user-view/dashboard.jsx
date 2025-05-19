@@ -12,7 +12,7 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import TextChangeAnimation from "@/components/common/TextChangeAnimation";
 import WorkCountdown from "@/components/user-view/Countdown";
-import { Separator } from "@radix-ui/react-dropdown-menu";
+import ProgressAnimation from "@/components/user-view/ProgressAnimation";
 
 const Dashboard = () => {
   const dispatch = useDispatch();
@@ -121,14 +121,38 @@ const Dashboard = () => {
       totalMinutes += hours * 60 + minutes;
     });
 
-    const worked = totalMinutes - results?.length * 9 * 60;
+    const remain = results?.length * 9 * 60 - totalMinutes;
 
     const totalHours = Math.floor(totalMinutes / 60);
     const remainingMinutes = totalMinutes % 60;
 
-    return <span className={`${worked > 0 ? "text-emerald-500" : "text-rose-400"}`}>{`${String(totalHours).padStart(2, "0")}:${String(
-      remainingMinutes
-    ).padStart(2, "0")}`}</span>
+    return (
+      <span
+        className={`${remain > 0 ? "text-rose-400" : "text-emerald-500"}`}
+      >{`${String(totalHours).padStart(2, "0")}:${String(
+        remainingMinutes
+      ).padStart(2, "0")}`}</span>
+    );
+  }
+
+  function calculateWorkProgressPercentage(results, committedHoursPerDay = 9) {
+    let totalMinutesWorked = 0;
+
+    results?.forEach((item) => {
+      if (!item.total_hour) return;
+      const [hoursStr, minutesStr] = item.total_hour.split(":");
+      const hours = parseInt(hoursStr, 10) || 0;
+      const minutes = parseInt(minutesStr, 10) || 0;
+      totalMinutesWorked += hours * 60 + minutes;
+    });
+
+    const totalCommittedMinutes = committedHoursPerDay * 60 * results?.length;
+
+    const percentage = totalCommittedMinutes
+      ? Math.round((totalMinutesWorked / totalCommittedMinutes) * 100)
+      : 0;
+
+    return percentage;
   }
 
   return (
@@ -209,7 +233,7 @@ const Dashboard = () => {
                 {calculateAvgTime(results, "first_punch_time")}
               </span>
             </div>
-            <div className="border-r border-muted-foreground h-full"></div>
+            <div className="border-r border-muted-foreground/50 rotate-12 h-full"></div>
             <div className="flex flex-col items-center flex-1">
               <span className="text-muted-foreground">Avg Out</span>
               <span className="text-emerald-500">
@@ -217,13 +241,16 @@ const Dashboard = () => {
               </span>
             </div>
           </div>
-          <div className="flex items-center gap-2 sm:h-20 h-16 rounded shadow-lg shadow-emerald-200/50 border p-2">
-            <div className="flex flex-col items-center flex-1">
-              <span className="text-muted-foreground">Committed</span>
+          <div className="flex items-center gap-2 sm:h-20 h-16 rounded shadow-lg shadow-emerald-200/50 border p-2 relative">
+            <div className="absolute top-0 left-0 w-full h-full">
+              <ProgressAnimation value={calculateWorkProgressPercentage(results)} aamplitude={40} />
+            </div>
+            <div className="flex flex-col items-center flex-1 z-10">
+              <span className="text-muted-foreground mix-blend-difference">Committed</span>
               <span className="text-emerald-500">{results?.length * 9}:00</span>
             </div>
-            <div className="border-r border-muted-foreground h-full"></div>
-            <div className="flex flex-col items-center flex-1">
+            <div className="border-r border-muted-foreground/50 rotate-12 h-full"></div>
+            <div className="flex flex-col items-center flex-1 z-10">
               <span className="text-muted-foreground">Worked</span>
               <span>{sumTotalHours(results)}</span>
             </div>

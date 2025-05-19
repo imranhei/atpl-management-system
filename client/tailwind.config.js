@@ -6,16 +6,16 @@ export default {
     extend: {
       keyframes: {
         slideIn: {
-          "-5%": { transform: "translateY(40px)", opacity: "1" },
-          "10%": { transform: "translateY(0)", opacity: "1" },
-          "40%": { transform: "translateY(0)", opacity: "1" },
-          "50%": { transform: "translateY(-40px)", opacity: "0" },
-          "100%": { transform: "translateY(-40px)", opacity: "0" },
+          "0%": { transform: "translateY(40px)", opacity: "0" },
+          "5%": { transform: "translateY(0)", opacity: "1" },
+          "47%": { transform: "translateY(0)", opacity: "1" },
+          "52%": { transform: "translateY(-40px)", opacity: "0" },
+          "100%": { transform: "translateY(0)", opacity: "0" },
         },
         slideOut: {
-          "0%": { transform: "translateY(0)", opacity: "0" },
-          "40%": { transform: "translateY(40px)", opacity: "0" },
-          "50%": { transform: "translateY(0)", opacity: "1" },
+          "0%": { transform: "translateY(40px)", opacity: "0" },
+          "45%": { transform: "translateY(40px)", opacity: "0" },
+          "53%": { transform: "translateY(0)", opacity: "1" },
           "95%": { transform: "translateY(0)", opacity: "1" },
           "100%": { transform: "translateY(-40px)", opacity: "1" },
         },
@@ -27,11 +27,16 @@ export default {
           "20%": { transform: "skewX(0deg) translateY(0)" },
           "100%": { transform: "skewX(0deg) translateY(0)" },
         },
+        waveMove: {
+          "0%": { transform: "translateY(0)" },
+          "100%": { transform: "translateY(-50%)" },
+        },
       },
       animation: {
         "slide-in": "slideIn 8s infinite ease-in-out",
         "slide-out": "slideOut 8s infinite ease-in-out",
         "skew-shake-x": "skew-x-shake 1.3s infinite;",
+        wave: "waveMove 3s linear infinite"
       },
       fontFamily: {
         arial: ["Arial", "sans-serif"],

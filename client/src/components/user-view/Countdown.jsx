@@ -53,10 +53,11 @@ const WorkCountdown = ({ results }) => {
   };
 
   return (
-    <div className="sm:text-base text-sm flex items-center gap-2 text-rose-500">
-      <AlarmClockMinus className="animate-skew-shake-x" size={20} color="#f91565" /><span className="font-semibold font-mono">{formatTime(remainingTime)}</span>
+    <div className="sm:text-base text-sm flex items-center gap-2 text-white bg-gray-700 p-2 rounded-md shadow-md">
+      <AlarmClockMinus className="animate-skew-shake-x" size={20} color="#ffffff" /><span className="font-semibold font-mono">{formatTime(remainingTime)}</span>
     </div>
   );
 };
 
 export default WorkCountdown;
+// f91565
