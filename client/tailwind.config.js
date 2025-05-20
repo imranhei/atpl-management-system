@@ -4,6 +4,8 @@ export default {
   content: ["./index.html", "./src/**/*.{ts,tsx,js,jsx}"],
   theme: {
     extend: {
+      fontFamily: {
+      },
       keyframes: {
         slideIn: {
           "0%": { transform: "translateY(40px)", opacity: "0" },
@@ -31,12 +33,17 @@ export default {
           "0%": { transform: "translateY(0)" },
           "100%": { transform: "translateY(-50%)" },
         },
+        "slide-horizontal": {
+          '0%': { left: '-16px' },
+          '100%': { left: '100%' },
+        },
       },
       animation: {
         "slide-in": "slideIn 8s infinite ease-in-out",
         "slide-out": "slideOut 8s infinite ease-in-out",
         "skew-shake-x": "skew-x-shake 1.3s infinite;",
-        wave: "waveMove 3s linear infinite"
+        wave: "waveMove 3s linear infinite",
+        "slide-horizontal": "slide-horizontal 2s linear infinite",
       },
       fontFamily: {
         arial: ["Arial", "sans-serif"],

@@ -8,6 +8,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { format } from "date-fns";
 
 const PrintReportIrregularities = ({ report, report_count, displayDate }) => {
   function getHourDifferenceFormatted(punch) {
@@ -30,14 +31,30 @@ const PrintReportIrregularities = ({ report, report_count, displayDate }) => {
       2,
       "0"
     )}:${String(resultMinutes).padStart(2, "0")}`;
-    return <span className={`${diff < 0 ? "text-rose-400" : "text-emerald-600"} font-semibold`}>{formatted}</span>;
+    return (
+      <span
+        className={`${
+          diff < 0 ? "text-rose-400" : "text-emerald-600"
+        } font-semibold`}
+      >
+        {formatted}
+      </span>
+    );
   }
 
   return (
     <div className="print:p-0 print:m-[1in] print:font-arial">
       <h2 className="text-lg font-semibold mb-4 text-center hidden print:block">
         Irregularities Report for{" "}
-        {typeof displayDate === "function" ? displayDate() : ""}
+        {displayDate?.from && (
+          <span>
+            {format(new Date(displayDate?.from), "LLL dd, y")}
+            {displayDate?.to && " to "}
+          </span>
+        )}
+        {displayDate?.to && (
+          <span>{format(new Date(displayDate?.to), "LLL dd, y")}</span>
+        )}
       </h2>
       <Table className="bg-background">
         <TableHeader>
@@ -46,12 +63,15 @@ const PrintReportIrregularities = ({ report, report_count, displayDate }) => {
             <TableHead>Name</TableHead>
             <TableHead className="text-center">Avg Hours</TableHead>
             <TableHead className="text-center">
-              <span className="text-rose-400">&lt;</span> 9hrs Days
+              <span className="text-rose-400">&lt;</span>8:30 hrs
+            </TableHead>
+            <TableHead className="text-center">(8:30 - 9:00) hrs</TableHead>
+            <TableHead className="text-center">
+              <span className="text-rose-400">&gt;</span>9 hrs
             </TableHead>
             <TableHead className="text-center">After 7:00</TableHead>
             <TableHead className="text-center">Status</TableHead>
             <TableHead className="text-center">Worked Hrs</TableHead>
-            <TableHead className="text-center">Committed Hrs</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -67,20 +87,21 @@ const PrintReportIrregularities = ({ report, report_count, displayDate }) => {
                 {punch?.employee_name?.split(" ").slice(0, 3).join(" ")}
               </TableCell>
               <TableCell>{punch?.avg_hours_per_day}</TableCell>
-              <TableCell>
-                {punch?.between_8_30_and_9_00 + punch?.less_8_30}
-              </TableCell>
+              <TableCell>{punch?.less_8_30}</TableCell>
+              <TableCell>{punch?.between_8_30_and_9_00}</TableCell>
+              <TableCell>{punch?.greater_9_00}</TableCell>
               <TableCell></TableCell>
               <TableCell>{getHourDifferenceFormatted(punch)}</TableCell>
-              <TableCell>{punch?.total_working_hours}</TableCell>
-              <TableCell>{punch?.total_working_days * 9}</TableCell>
+              <TableCell>
+                {punch?.total_working_hours}/{punch?.total_working_days * 9}
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
         <TableFooter>
           <TableRow>
             <TableCell
-              colSpan={7}
+              colSpan={8}
               className="text-right print:text-xs font-medium print:text-gray-600 print:hidden"
             >
               Total Entries: {report?.length || 0} / {report_count || 0}

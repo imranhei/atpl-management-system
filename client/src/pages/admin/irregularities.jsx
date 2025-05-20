@@ -112,7 +112,7 @@ const Irregularities = () => {
         <PrintReportIrregularities
           report={report}
           report_count={report_count}
-          // displayDate={displayDate}
+          displayDate={customDate}
         />
       </div>
     </div>
