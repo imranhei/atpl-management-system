@@ -61,7 +61,7 @@ function App() {
   }
 
   return (
-    <div className="flex flex-col bg-gradient-to-tl overflow-x-hidden from-amber-100 to-cyan-100">
+    <div className="flex flex-col bg-gradient-to-tl overflow-x-hidden from-amber-100 to-cyan-100 dark:from-zinc-900">
       <Routes>
         <Route path="/" element={<Home />} />
         <Route

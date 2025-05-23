@@ -1,4 +1,4 @@
-import { Cake, Mail, Pencil, Phone, RotateCw } from "lucide-react";
+import { Cake, Camera, Mail, Pencil, Phone, RotateCw } from "lucide-react";
 import React, { useState } from "react";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
@@ -157,7 +157,7 @@ const Profile = () => {
           className="absolute bottom-[8%] right-[8%] h-8 w-8 bg-white cursor-pointer p-2 rounded-full flex items-center justify-center text-white shadow-md"
           onClick={() => setOpenUpload(true)}
         >
-          <Pencil size={20} color="#000000" strokeWidth={2.25} />
+          <Camera size={20} color="#000000" strokeWidth={2.25} />
         </div>
       </div>
       <Separator orientation="vertical" className="h-40 sm:block hidden" />
@@ -181,7 +181,7 @@ const Profile = () => {
             : "Not provided"}
         </div>
         <Button
-          className="bg-teal-400 hover:bg-teal-500 text-white mt-2"
+          className="bg-teal-400 hover:bg-teal-500 dark:bg-violet-600 dark:hover:bg-violet-700 !text-white mt-2"
           onClick={handleDataEdit}
         >
           Edit
@@ -197,7 +197,7 @@ const Profile = () => {
             </DialogDescription>
           </DialogHeader>
           <div className="w-full overflow-hidden">
-            <div className="w-40 h-40 rounded-full bg-gray-200 mx-auto">
+            <div className="w-40 h-40 rounded-full bg-gray-200 dark:bg-slate-800 mx-auto">
               {imageFile ? (
                 <img
                   src={URL.createObjectURL(imageFile)}
@@ -217,7 +217,7 @@ const Profile = () => {
             />
           </div>
           <DialogFooter>
-            <Button onClick={handleImageUpload}>
+            <Button onClick={handleImageUpload} className="dark:bg-violet-600 dark:hover:bg-violet-700 dark:text-white">
               {isLoading ? (
                 <>
                   <RotateCw className="mr-2 h-4 w-4 animate-spin" />
@@ -281,7 +281,7 @@ const Profile = () => {
             </div>
           </div>
           <DialogFooter>
-            <Button type="submit" onClick={handleProfileUpdate}>
+            <Button type="submit" onClick={handleProfileUpdate} className="dark:bg-violet-600 dark:hover:bg-violet-700 dark:text-white"> 
               {isLoading ? (
                 <>
                   <RotateCw className="mr-2 h-4 w-4 animate-spin" />

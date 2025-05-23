@@ -22,7 +22,7 @@ const TextChangeAnimation = ({ punch }) => {
   if (segments.length === 1) {
     // ✅ Single status — no animation
     const bg = segments[0].toLowerCase().includes("late")
-      ? "bg-orange-400"
+      ? "bg-violet-600"
       : "bg-rose-500";
 
     return (
@@ -39,7 +39,7 @@ const TextChangeAnimation = ({ punch }) => {
 
   return (
     <div className="relative h-7 overflow-hidden sm:rounded-md rounded-sm">
-      <div className="absolute inset-0 flex items-center justify-center sm:rounded-md rounded-sm bg-orange-400 text-white animate-slide-in">
+      <div className="absolute inset-0 flex items-center justify-center sm:rounded-md rounded-sm bg-violet-600 text-white animate-slide-in">
         {segments[0]}
       </div>
       <div className="absolute inset-0 flex items-center justify-center sm:rounded-md rounded-sm bg-rose-500 text-white animate-slide-out">

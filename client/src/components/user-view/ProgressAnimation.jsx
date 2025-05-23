@@ -20,7 +20,7 @@ const ProgressAnimation = ({ value, aamplitude }) => {
   }
 
   return (
-    <div className="relative w-full h-full overflow-hidden opacity-50">
+    <div className="relative w-full h-full overflow-hidden opacity-50 dark:opacity-100">
       <div
         className="absolute w-full h-[220%] animate-wave -mt-2 ml-1"
         style={{
@@ -35,7 +35,7 @@ const ProgressAnimation = ({ value, aamplitude }) => {
         >
           <path d={generateWave(2, aamplitude)} fill="#6ee7b7" />
         </svg>
-        <div className="w-full h-full bg-emerald-300 absolute top-0 -left-[100%]"></div>
+        <div className="w-full h-full bg-gradient-to-l to-rose-400 via-orange-300 from-emerald-500 absolute top-0 -left-[100%]"></div>
       </div>
       <div
         className="absolute w-full h-[200%] animate-wave"
@@ -51,7 +51,7 @@ const ProgressAnimation = ({ value, aamplitude }) => {
         >
           <path d={generateWave(2, aamplitude)} fill="#10b981" />
         </svg>
-        <div className="w-full h-full bg-emerald-500 absolute top-0 -left-[100%]"></div>
+        <div className="w-full h-full bg-gradient-to-l to-rose-400 via-orange-300 from-emerald-500 absolute top-0 -left-[100%]"></div>
       </div>
     </div>
   );

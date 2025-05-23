@@ -17,7 +17,7 @@ const PrintReportOverview = ({ report, report_count, displayDate }) => {
       </h2>
       <Table className="bg-background">
         <TableHeader> 
-          <TableRow className="text-nowrap print:text-nowrap print:text-xs bg-gray-50">
+          <TableRow className="text-nowrap print:text-nowrap print:text-xs bg-gray-50 dark:bg-slate-900">
             {/* <TableHead className="text-center">Serial</TableHead> */}
             <TableHead>Name</TableHead>
             <TableHead className="text-center">Avg Hours</TableHead>
@@ -32,9 +32,7 @@ const PrintReportOverview = ({ report, report_count, displayDate }) => {
           {report?.map((punch, index) => (
             <TableRow
               key={index}
-              className={`text-nowrap text-center border-none print:text-xs print:text-gray-600 ${
-                index % 2 === 0 ? "bg-gray-100" : ""
-              }`}
+              className={`text-nowrap text-center border-none print:text-xs print:text-gray-600 even:bg-gray-100 even:dark:bg-slate-900 dark:text-muted-foreground`}
             >
               {/* <TableCell>{punch?.serial_no}</TableCell> */}
               <TableCell className="text-left">

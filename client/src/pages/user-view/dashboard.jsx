@@ -13,6 +13,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import TextChangeAnimation from "@/components/common/TextChangeAnimation";
 import WorkCountdown from "@/components/user-view/Countdown";
 import ProgressAnimation from "@/components/user-view/ProgressAnimation";
+import { Card } from "@/components/ui/card";
 
 const Dashboard = () => {
   const dispatch = useDispatch();
@@ -128,7 +129,7 @@ const Dashboard = () => {
 
     return (
       <span
-        className={`${remain > 0 ? "text-rose-400" : "text-emerald-500"}`}
+        className={`${remain > 0 ? "text-rose-400 dark:text-rose-400" : "text-emerald-500 dark:text-emerald-300"}`}
       >{`${String(totalHours).padStart(2, "0")}:${String(
         remainingMinutes
       ).padStart(2, "0")}`}</span>
@@ -156,108 +157,111 @@ const Dashboard = () => {
   }
 
   return (
-    <div>
-      <div className="shadow rounded-md bg-white sm:p-4 p-2">
-        <div className="flex justify-between items-center pb-4">
-          <p className="text-lg font-semibold">This Week Attendance</p>
-          <WorkCountdown results={results} />
+    <Card className="shadow rounded-md sm:p-4 p-2">
+      <div className="flex justify-between items-center">
+        <p className="text-lg font-semibold">Weekly Summary</p>
+        <WorkCountdown results={results} />
+      </div>
+      <div className="w-full grid grid-cols-2 grid-rows-2 pt-2 sm:text-lg text-sm font-bold sm:gap-3 gap-2">
+        <Card className="flex flex-col justify-center items-center gap-1 sm:h-[72px] h-14 rounded dark:shadow-none shadow-md shadow-emerald-200/50 border">
+          <span className="text-muted-foreground dark:text-slate-300">Days</span>
+          <span className=" text-emerald-500 dark:text-emerald-300">{results?.length}</span>
+        </Card>
+        <div className="flex flex-col justify-center items-center gap-1 sm:h-[72px] h-14 rounded dark:shadow-none shadow-md shadow-emerald-200/50 border">
+          <span className="text-muted-foreground dark:text-slate-300">Avg Hour</span>
+          <span className=" text-emerald-500 dark:text-emerald-300">
+            {calculateAvgTime(results, "total_hour")}
+          </span>
         </div>
-        <Table className="bg-background rounded border-b">
-          <TableHeader>
-            <TableRow className="text-nowrap bg-sky-100">
-              {/* <TableHead>Name</TableHead> */}
-              <TableHead className="text-center">Date</TableHead>
-              <TableHead className="text-center">Entry</TableHead>
-              <TableHead className="text-center">Exit</TableHead>
-              <TableHead className="text-center">Hours</TableHead>
-              <TableHead className="text-center">Status</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {isLoading ? (
-              // <<TableRow>
-              //   <TableCell colSpan={5} className="text-center space-y-2">
-              //     {Array.from({ length: 10 }).map((_, index) => (
-              //       <Skeleton
-              //         key={index}
-              //         className="w-full h-[29px] rounded-lg"
-              //       />
-              //     ))}
-              //   </TableCell>
-              // </TableRow>>
-              <></>
-            ) : results?.length > 0 ? (
-              results.map((punch, index) => (
-                <TableRow
-                  key={index}
-                  className={`text-nowrap text-center ${
-                    index % 2 === 0 ? "bg-gray-100" : ""
-                  }`}
-                >
-                  {/* <TableCell>{punch?.first_name}</TableCell> */}
-                  <TableCell>{formatDate(punch?.date)}</TableCell>
-                  <TableCell>{punch?.first_punch_time}</TableCell>
-                  <TableCell>{punch?.last_punch_time}</TableCell>
-                  <TableCell className="font-semibold">
-                    {punch?.total_hour}
-                  </TableCell>
-                  <TableCell className="!p-1 min-w-[136px] w-44 sm:text-sm text-xs">
-                    <TextChangeAnimation punch={punch} />
-                  </TableCell>
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell colSpan={5} className="text-center">
-                  No attendance data found.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-        <div className="w-full grid grid-cols-2 grid-rows-2 pt-4 sm:text-xl text-base font-bold sm:gap-4 gap-2">
-          <div className="flex flex-col justify-center items-center gap-1 sm:h-20 h-16 rounded shadow-lg shadow-emerald-200/50 border ">
-            <span className="text-muted-foreground">Days</span>
-            <span className=" text-emerald-500">{results?.length}</span>
-          </div>
-          <div className="flex flex-col justify-center items-center gap-1 sm:h-20 h-16 rounded shadow-lg shadow-emerald-200/50 border">
-            <span className="text-muted-foreground ">Avg Hour</span>
-            <span className=" text-emerald-500">
-              {calculateAvgTime(results, "total_hour")}
+        <div className="flex items-center gap-2 sm:h-[72px] h-14 rounded dark:shadow-none shadow-md shadow-emerald-200/50 border p-2">
+          <div className="flex flex-col items-center flex-1">
+            <span className="text-muted-foreground dark:text-slate-300">Avg In</span>
+            <span className="text-emerald-500 dark:text-emerald-300">
+              {calculateAvgTime(results, "first_punch_time")}
             </span>
           </div>
-          <div className="flex items-center gap-2 sm:h-20 h-16 rounded shadow-lg shadow-emerald-200/50 border p-2">
-            <div className="flex flex-col items-center flex-1">
-              <span className="text-muted-foreground">Avg In</span>
-              <span className="text-emerald-500">
-                {calculateAvgTime(results, "first_punch_time")}
-              </span>
-            </div>
-            <div className="border-r border-muted-foreground/50 rotate-12 h-full"></div>
-            <div className="flex flex-col items-center flex-1">
-              <span className="text-muted-foreground">Avg Out</span>
-              <span className="text-emerald-500">
-                {calculateAvgTime(results, "last_punch_time")}
-              </span>
-            </div>
+          <div className="border-r border-muted-foreground/50 rotate-12 h-full"></div>
+          <div className="flex flex-col items-center flex-1">
+            <span className="text-muted-foreground dark:text-slate-300">Avg Out</span>
+            <span className="text-emerald-500 dark:text-emerald-300">
+              {calculateAvgTime(results, "last_punch_time")}
+            </span>
           </div>
-          <div className="flex items-center gap-2 sm:h-20 h-16 rounded shadow-lg shadow-emerald-200/50 border p-2 relative">
-            <div className="absolute top-0 left-0 w-full h-full">
-              <ProgressAnimation value={calculateWorkProgressPercentage(results)} aamplitude={40} />
-            </div>
-            <div className="flex flex-col items-center flex-1 z-10">
-              <span className="text-muted-foreground mix-blend-difference">Committed</span>
-              <span className="text-emerald-500">{results?.length * 9}:00</span>
-            </div>
-            <div className="border-r border-muted-foreground/50 rotate-12 h-full"></div>
-            <div className="flex flex-col items-center flex-1 z-10">
-              <span className="text-muted-foreground">Worked</span>
-              <span>{sumTotalHours(results)}</span>
-            </div>
+        </div>
+        <div className="flex items-center gap-2 sm:h-[72px] h-14 rounded dark:shadow-none shadow-md shadow-emerald-200/50 border p-2 relative">
+          <div className="absolute top-0 left-0 w-full h-full">
+            <ProgressAnimation
+              value={calculateWorkProgressPercentage(results)}
+              aamplitude={40}
+            />
+          </div>
+          <div className="flex flex-col items-center flex-1 z-10">
+            <span className="text-muted-foreground mix-blend-difference dark:text-slate-300">
+              Committed
+            </span>
+            <span className="text-emerald-500 dark:text-emerald-300">{results?.length * 9}:00</span>
+          </div>
+          <div className="border-r border-muted-foreground/50 rotate-12 h-full"></div>
+          <div className="flex flex-col items-center flex-1 z-10">
+            <span className="text-muted-foreground dark:text-slate-300">Worked</span>
+            <span>{sumTotalHours(results)}</span>
           </div>
         </div>
       </div>
-    </div>
+
+      <h1 className="text-lg font-semibold pt-4 pb-2">Daily Attendance</h1>
+      <Table className="bg-background rounded border-b">
+        <TableHeader>
+          <TableRow className="text-nowrap bg-gray-100 dark:bg-slate-900">
+            {/* <TableHead>Name</TableHead> */}
+            <TableHead className="text-center">Date</TableHead>
+            <TableHead className="text-center">Entry</TableHead>
+            <TableHead className="text-center">Exit</TableHead>
+            <TableHead className="text-center">Hours</TableHead>
+            <TableHead className="text-center">Status</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {isLoading ? (
+            // <<TableRow>
+            //   <TableCell colSpan={5} className="text-center space-y-2">
+            //     {Array.from({ length: 10 }).map((_, index) => (
+            //       <Skeleton
+            //         key={index}
+            //         className="w-full h-[29px] rounded-lg"
+            //       />
+            //     ))}
+            //   </TableCell>
+            // </TableRow>>
+            <></>
+          ) : results?.length > 0 ? (
+            results.map((punch, index) => (
+              <TableRow
+                key={index}
+                className="even:bg-gray-100 text-center even:dark:bg-slate-900 text-nowrap dark:text-muted-foreground"
+              >
+                {/* <TableCell>{punch?.first_name}</TableCell> */}
+                <TableCell>{formatDate(punch?.date)}</TableCell>
+                <TableCell>{punch?.first_punch_time}</TableCell>
+                <TableCell>{punch?.last_punch_time}</TableCell>
+                <TableCell className="font-semibold">
+                  {punch?.total_hour}
+                </TableCell>
+                <TableCell className="!p-1 min-w-[136px] w-44 sm:text-sm text-xs">
+                  <TextChangeAnimation punch={punch} />
+                </TableCell>
+              </TableRow>
+            ))
+          ) : (
+            <TableRow>
+              <TableCell colSpan={5} className="text-center">
+                No attendance data found.
+              </TableCell>
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
+    </Card>
   );
 };
 

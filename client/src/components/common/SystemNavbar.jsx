@@ -13,12 +13,15 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Moon, Sun } from "lucide-react"
+import { useTheme } from "@/components/theme-provider"
 
 const SystemNavbar = () => {
+  const { theme, setTheme } = useTheme()
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { profile } = useSelector((state) => state.auth);
-
+  console.log(theme)
   const handleLogout = () => {
     dispatch(logout()).then((res) => {
       if (res.meta.requestStatus === "fulfilled") {
@@ -31,9 +34,9 @@ const SystemNavbar = () => {
   };
 
   return (
-    <header className="bg-blue-900 flex items-center justify-between px-4 py-2 border-b shadow-md">
-      <div className="flex justify-between flex-1 items-center">
-        <div className="flex-1 lg:ml-0 ml-8">
+    <header className="bg-blue-900 dark:bg-slate-800 dark:border-b dark:border-slate-900 flex items-center justify-between px-4 py-2 border-b shadow-md">
+      <div className="flex justify-between flex-1 items-center gap-2">
+        <div className="flex-1 lg:ml-0 ml-6">
           <Link to="/" className="flex w-fit justify-start items-center">
             <img
               src="/atpldhaka.png"
@@ -41,6 +44,7 @@ const SystemNavbar = () => {
             />
           </Link>
         </div>
+        <div className="sm:px-4 px-2 py-0 hover:bg-transparent cursor-pointer" variant="ghost" onClick={() => setTheme(theme === "light" ? "dark" : "light")}>{theme === "light" ? <Moon size={20} color="#ffffff" /> : <Sun size={20} />}</div>
         <DropdownMenu>
           <DropdownMenuTrigger>
             <Avatar className="focus:outline-none focus-visible:outline-none focus-visible:ring-0 ring-1 ring-white h-8 w-8 border-white">

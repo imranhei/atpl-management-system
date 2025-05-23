@@ -14,6 +14,7 @@ import { format, subDays } from "date-fns";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useReactToPrint } from "react-to-print";
 import PrintReportIrregularities from "@/components/admin-view/PrintReportIrregularities";
+import { Card } from "@/components/ui/card";
 
 const Irregularities = () => {
   const printRef = useRef(null);
@@ -69,8 +70,8 @@ const Irregularities = () => {
   }, [dispatch]);
 
   return (
-    <div className="sm:space-y-4 space-y-2">
-      <h1 className="sm:text-xl text-base font-semibold text-center">
+    <Card className="sm:space-y-4 space-y-2 p-2">
+      <h1 className="sm:text-xl text-base font-semibold text-center pt-2">
         Irregularities Report
       </h1>
       <div className="flex gap-2 flex-wrap rounded-sm justify-end">
@@ -115,7 +116,7 @@ const Irregularities = () => {
           displayDate={customDate}
         />
       </div>
-    </div>
+    </Card>
   );
 };
 

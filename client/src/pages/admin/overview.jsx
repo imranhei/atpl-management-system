@@ -14,6 +14,7 @@ import { format, subDays } from "date-fns";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useReactToPrint } from "react-to-print";
 import PrintReportOverview from "@/components/admin-view/PrintReportOverview";
+import { Card } from "@/components/ui/card";
 
 const Reports = () => {
   const printRef = useRef(null);
@@ -69,8 +70,8 @@ const Reports = () => {
   }, [dispatch]);
 
   return (
-    <div className="sm:space-y-4 space-y-2">
-      <h1 className="sm:text-xl text-base font-semibold text-center">
+    <Card className="sm:space-y-4 space-y-2 p-2">
+      <h1 className="sm:text-xl text-base font-semibold text-center pt-2">
         Attendance Report for {displayDate()}
       </h1>
       <div className="flex gap-2 flex-wrap rounded-sm justify-end">
@@ -111,7 +112,7 @@ const Reports = () => {
       <div ref={printRef}>
         <PrintReportOverview report={report} report_count={report_count} displayDate={displayDate} />
       </div>
-    </div>
+    </Card>
   );
 };
 

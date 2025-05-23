@@ -13,6 +13,7 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { ArrowUpDown } from "lucide-react";
 import TextChangeAnimation from "@/components/common/TextChangeAnimation";
+import { Card } from "@/components/ui/card";
 
 const formatDate = (dateString) => {
   if (!dateString) return "";
@@ -85,14 +86,13 @@ const AdminDashboard = () => {
   }, [results]);
 
   return (
-    <div>
-      <div className="shadow rounded-md bg-white p-4">
+      <Card className="shadow rounded-md p-4">
         <p className="text-lg font-semibold pb-2">
           Attendance for {todayLabel}
         </p>
-        <Table className="bg-background rounded">
+        <Table className="bg-background rounded border-b">
           <TableHeader>
-            <TableRow className="text-nowrap bg-sky-100">
+            <TableRow className="text-nowrap bg-gray-100 dark:bg-slate-900">
               <TableHead>Name</TableHead>
               {/* <TableHead className="text-center">Date</TableHead> */}
               <TableHead className="text-center">
@@ -145,9 +145,7 @@ const AdminDashboard = () => {
               sortedResults.map((punch, index) => (
                 <TableRow
                   key={index}
-                  className={`text-nowrap text-center ${
-                    index % 2 === 0 ? "bg-gray-100" : ""
-                  }`}
+                  className="even:bg-gray-100 even:dark:bg-slate-900 text-nowrap dark:text-muted-foreground text-center"
                 >
                   <TableCell className="text-left">
                     {`${(punch?.first_name + " " + punch?.last_name).split(" ").slice(0, 2).join(" ")}`}
@@ -171,7 +169,7 @@ const AdminDashboard = () => {
               </TableRow>
             )}
           </TableBody>
-          <TableFooter className="bg-sky-100">
+          <TableFooter className="">
             {isLoading ? (
               <TableRow>
                 <TableCell colSpan={5}>
@@ -190,8 +188,7 @@ const AdminDashboard = () => {
             )}
           </TableFooter>
         </Table>
-      </div>
-    </div>
+      </Card>
   );
 };
 

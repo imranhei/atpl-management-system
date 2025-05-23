@@ -36,6 +36,7 @@ import {
 } from "@/components/ui/select";
 import PaginationWithEllipsis from "@/components/user-view/paginationWithEllipsis";
 import TextChangeAnimation from "@/components/common/TextChangeAnimation";
+import { Card } from "@/components/ui/card";
 
 const Attendance = () => {
   const dispatch = useDispatch();
@@ -84,7 +85,7 @@ const Attendance = () => {
   };
 
   return (
-    <div className="sm:space-y-4 space-y-2 relative">
+    <Card className="sm:space-y-4 space-y-2 relative p-2">
       <div className="m-0 text-lg font-bold text-center">
         Atpl Dhaka Attendance
       </div>
@@ -154,7 +155,7 @@ const Attendance = () => {
       </div>
       <Table className="bg-background rounded">
         <TableHeader>
-          <TableRow className="text-nowrap">
+          <TableRow className="text-nowrap bg-gray-100 dark:bg-slate-900">
             <TableHead className="text-center">Date</TableHead>
             <TableHead className="text-center">Entry</TableHead>
             <TableHead className="text-center">Exit</TableHead>
@@ -178,9 +179,7 @@ const Attendance = () => {
             results.map((punch, index) => (
               <TableRow
                 key={index}
-                className={`text-nowrap text-center ${
-                  index % 2 === 0 ? "bg-gray-100" : ""
-                }`}
+                className="even:bg-gray-100 even:dark:bg-slate-900 text-nowrap dark:text-muted-foreground text-center"
               >
                 {/* <TableCell>{punch?.first_name}</TableCell> */}
                 <TableCell>{formatDate(punch?.date)}</TableCell>
@@ -255,7 +254,7 @@ const Attendance = () => {
           onPageChange={(page) => setParams((prev) => ({ ...prev, page }))}
         />
       )}
-    </div>
+    </Card>
   );
 };
 

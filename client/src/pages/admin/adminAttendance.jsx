@@ -43,6 +43,7 @@ import {
 } from "@/components/ui/command";
 import PaginationWithEllipsis from "@/components/user-view/paginationWithEllipsis";
 import TextChangeAnimation from "@/components/common/TextChangeAnimation";
+import { Card } from "@/components/ui/card";
 
 const AdminAttendance = () => {
   const dispatch = useDispatch();
@@ -150,7 +151,7 @@ const AdminAttendance = () => {
   };
 
   return (
-    <div className="sm:space-y-4 space-y-2 relative">
+    <Card className="sm:space-y-4 space-y-2 relative p-2">
       <div className="m-0 text-lg font-bold text-center">
         Atpl Dhaka Attendance
       </div>
@@ -267,7 +268,7 @@ const AdminAttendance = () => {
       </div>
       <Table className="bg-background rounded">
         <TableHeader>
-          <TableRow className="text-nowrap">
+          <TableRow className="text-nowrap bg-gray-100 dark:bg-slate-900">
             <TableHead>Name</TableHead>
             <TableHead className="text-center">Date</TableHead>
             <TableHead className="text-center">Entry</TableHead>
@@ -292,12 +293,10 @@ const AdminAttendance = () => {
             results.map((punch, index) => (
               <TableRow
                 key={index}
-                className={`text-nowrap text-center ${
-                  index % 2 === 0 ? "bg-gray-100" : ""
-                }`}
+                className="even:bg-gray-100 even:dark:bg-slate-900 text-nowrap dark:text-muted-foreground text-center"
               >
                 <TableCell className="text-left">{`${(punch?.first_name + " " + punch?.last_name).split(" ").slice(0, 2).join(" ")}`}</TableCell>
-                <TableCell>{formatDateToReadable(punch?.date)}</TableCell>
+                <TableCell >{formatDateToReadable(punch?.date)}</TableCell>
                 <TableCell>{punch?.first_punch_time}</TableCell>
                 <TableCell>{punch?.last_punch_time}</TableCell>
                 <TableCell className="font-semibold">{punch?.total_hour}</TableCell>
@@ -362,7 +361,7 @@ const AdminAttendance = () => {
           onPageChange={handlePageChange}
         />
       )}
-    </div>
+    </Card>
   );
 };
 

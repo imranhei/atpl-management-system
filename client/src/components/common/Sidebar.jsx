@@ -123,7 +123,7 @@ const AppSidebar = () => {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton>
-              <Avatar className="focus:outline-none focus-visible:outline-none focus-visible:ring-0 ring-1 ring-white h-8 w-8 border-white">
+              <Avatar className="focus:outline-none focus-visible:outline-none focus-visible:ring-0 h-8 w-8 border-white rounded-full">
                 <AvatarImage
                   src={
                     profile.profile_img

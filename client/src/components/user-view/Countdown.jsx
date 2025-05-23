@@ -63,7 +63,7 @@ const WorkCountdown = ({ results }) => {
   );
 
   return (
-    <div className="sm:text-base text-sm flex items-center gap-2 text-white bg-gray-700 p-2 px-4 rounded-md shadow-md overflow-hidden relative">
+    <div className="sm:text-base text-sm flex items-center gap-2 text-white bg-slate-800 dark:bg-slate-800 p-2 px-4 rounded-md shadow-md overflow-hidden relative">
       <div className="absolute bottom-0 left-0 w-full h-1">
         <div
           className={`h-full relative overflow-hidden ${
@@ -92,9 +92,6 @@ const WorkCountdown = ({ results }) => {
       </div>
 
       <AlarmClockMinus className="animate-skew-shake-x text-white" size={20} />
-      {/* <span className="font-mono text-shadow-lg/30">
-        {formatTime(remainingTime)}
-      </span> */}
       <span className="text-shadow-lg/30 flex gap-[0.1em] items-center">
         {remainingTime == null || isNaN(remainingTime)
           ? null
