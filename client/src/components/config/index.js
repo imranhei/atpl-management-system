@@ -9,7 +9,9 @@ import {
   ReceiptText,
   ChartNoAxesCombined,
   ChartColumnIncreasing,
-  UserPlus
+  UserPlus,
+  MessagesSquare,
+  MessageCircleMore
 } from "lucide-react";
 
 export const registerFormControls = [
@@ -149,6 +151,12 @@ export const SIDEBAR_MENU = {
         },
       ],
     },
+    {
+      id: "messages",
+      label: "Chat",
+      path: "/chat",
+      icon: MessageCircleMore,
+    },
   ],
   admin: [
     {
@@ -214,6 +222,12 @@ export const SIDEBAR_MENU = {
           icon: LockKeyholeOpen,
         },
       ],
+    },
+    {
+      id: "messages",
+      label: "Chat",
+      path: "/chat",
+      icon: MessagesSquare,
     },
   ],
 };

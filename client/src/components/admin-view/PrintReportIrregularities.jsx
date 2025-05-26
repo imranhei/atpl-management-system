@@ -37,6 +37,7 @@ const PrintReportIrregularities = ({ report, report_count, displayDate }) => {
           diff < 0 ? "text-rose-400" : "text-emerald-600"
         } font-semibold`}
       >
+        <span className={`${diff < 0 ? "hidden" : ""}`}>+</span>
         {formatted}
       </span>
     );
@@ -63,15 +64,21 @@ const PrintReportIrregularities = ({ report, report_count, displayDate }) => {
             <TableHead>Name</TableHead>
             <TableHead className="text-center">Avg Hours</TableHead>
             <TableHead className="text-center">
-              <span className="text-rose-400">&lt;</span>8:30 hrs
+              <span className="text-rose-400">&lt;</span>7:00
             </TableHead>
-            <TableHead className="text-center">(8:30 - 9:00) hrs</TableHead>
+            <TableHead className="text-center">(7:00 - 7:15)</TableHead>
             <TableHead className="text-center">
-              <span className="text-rose-400">&gt;</span>9 hrs
+              <span className="text-rose-400">&gt;</span>7:15
             </TableHead>
-            <TableHead className="text-center">After 7:00</TableHead>
+            <TableHead className="text-center">
+              <span className="text-rose-400">&lt;</span>8:30
+            </TableHead>
+            <TableHead className="text-center">(8:30 - 9:00)</TableHead>
+            <TableHead className="text-center">
+              <span className="text-rose-400">&gt;</span>9:00
+            </TableHead>
             <TableHead className="text-center">Status</TableHead>
-            <TableHead className="text-center">Worked Hrs</TableHead>
+            <TableHead className="text-center">Worked</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -85,10 +92,12 @@ const PrintReportIrregularities = ({ report, report_count, displayDate }) => {
                 {punch?.employee_name?.split(" ").slice(0, 3).join(" ")}
               </TableCell>
               <TableCell>{punch?.avg_hours_per_day}</TableCell>
+              <TableCell>{punch?.before_7am}</TableCell>
+              <TableCell>{punch?.between_7_and_7_15_59}</TableCell>
+              <TableCell>{punch?.after_7_15_59}</TableCell>
               <TableCell>{punch?.less_8_30}</TableCell>
               <TableCell>{punch?.between_8_30_and_9_00}</TableCell>
               <TableCell>{punch?.greater_9_00}</TableCell>
-              <TableCell></TableCell>
               <TableCell>{getHourDifferenceFormatted(punch)}</TableCell>
               <TableCell>
                 {punch?.total_working_hours}/{punch?.total_working_days * 9}
@@ -99,7 +108,7 @@ const PrintReportIrregularities = ({ report, report_count, displayDate }) => {
         <TableFooter>
           <TableRow>
             <TableCell
-              colSpan={8}
+              colSpan={10}
               className="text-right print:text-xs font-medium print:text-gray-600 print:hidden"
             >
               Total Entries: {report?.length || 0} / {report_count || 0}

@@ -20,6 +20,7 @@ import AdminAttendance from "./pages/admin/adminAttendance";
 import Overview from "./pages/admin/overview";
 import Profile from "./pages/common/profile";
 import Irregularities from "./pages/admin/irregularities";
+import Chat from "./pages/common/Chat";
 
 function App() {
   const { isAuthenticated, role, isLoadingAuth } = useSelector(
@@ -89,6 +90,7 @@ function App() {
           <Route path="setting" element={<Profile />} />
           <Route path="day-wise-meal" element={<TodayMeals />} />
           <Route path="reset-password" element={<ResetPassword />} />
+          <Route path="chat" element={<Chat />} />
         </Route>
         <Route
           path="/admin"
@@ -108,6 +110,7 @@ function App() {
           <Route path="day-wise-meal" element={<TodayMeals />} />
           <Route path="register" element={<AuthRegister />} />
           <Route path="reset-password" element={<ResetPassword />} />
+          <Route path="chat" element={<Chat />} />
         </Route>
       </Routes>
     </div>
