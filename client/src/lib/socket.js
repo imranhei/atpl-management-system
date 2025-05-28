@@ -5,7 +5,7 @@ let socket = null;
 
 export const connectSocket = (userId, dispatch) => {
   if (!socket || !socket.connected) {
-    socket = io(import.meta.env.VITE_API_URL_MONGO, {
+    socket = io(import.meta.env.VITE_API_URL_CHAT, {
       query: { userId },
         transports: ['websocket'],
     });
