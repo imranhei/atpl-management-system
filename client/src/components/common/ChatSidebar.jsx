@@ -18,7 +18,6 @@ const ChatSidebar = ({ setChat = () => {} }) => {
   const { selectedUser, isUserLoading, onlineUsers } = useSelector((state) => state.chat);
   const { employeeDetails } = useSelector((state) => state.employeeDetails);
 
-  console.log(employeeDetails)
   if (isUserLoading) {
     return <div>Loading...</div>;
   }
