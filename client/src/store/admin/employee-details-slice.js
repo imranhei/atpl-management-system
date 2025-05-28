@@ -9,7 +9,7 @@ const initialState = {
 
 export const getEmployeeDetails = createAsyncThunk(
   "employee/getEmployeeDetails",
-  async ({ token, page, per_page }) => {
+  async ({ token }) => {
     try {
       const response = await axios.get(
         `${import.meta.env.VITE_API_URL}/api/employee/info`,
@@ -17,10 +17,10 @@ export const getEmployeeDetails = createAsyncThunk(
           headers: {
             Authorization: `Bearer ${token}`,
           },
-          params: {
-            page,
-            per_page,
-          },
+          // params: {
+          //   page,
+          //   per_page,
+          // },
         }
       );
       return response.data;

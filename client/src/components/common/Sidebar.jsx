@@ -125,11 +125,7 @@ const AppSidebar = () => {
             <SidebarMenuButton>
               <Avatar className="focus:outline-none focus-visible:outline-none focus-visible:ring-0 h-8 w-8 border-white rounded-full">
                 <AvatarImage
-                  src={
-                    profile.profile_img
-                      ? `https://djangoattendance.atpldhaka.com${profile.profile_img}`
-                      : null
-                  }
+                  src={`https://djangoattendance.atpldhaka.com${profile.profile_img}`}
                   alt="Profile"
                   className="object-cover w-full h-full"
                 />

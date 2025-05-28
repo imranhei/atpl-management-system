@@ -141,11 +141,7 @@ const Profile = () => {
       <div className="w-40 h-40 rounded-full bg-teal-300 relative ">
         <Avatar className="focus:outline-none focus-visible:outline-none focus-visible:ring-0 border-white w-full h-full">
           <AvatarImage
-            src={
-              profile.profile_img
-                ? `https://djangoattendance.atpldhaka.com${profile.profile_img}`
-                : null
-            }
+            src={`https://djangoattendance.atpldhaka.com${profile.profile_img}`}
             alt="Profile"
             className="object-cover w-full h-full"
           />
@@ -217,7 +213,10 @@ const Profile = () => {
             />
           </div>
           <DialogFooter>
-            <Button onClick={handleImageUpload} className="dark:bg-violet-600 dark:hover:bg-violet-700 dark:text-white">
+            <Button
+              onClick={handleImageUpload}
+              className="dark:bg-violet-600 dark:hover:bg-violet-700 dark:text-white"
+            >
               {isLoading ? (
                 <>
                   <RotateCw className="mr-2 h-4 w-4 animate-spin" />
@@ -281,7 +280,11 @@ const Profile = () => {
             </div>
           </div>
           <DialogFooter>
-            <Button type="submit" onClick={handleProfileUpdate} className="dark:bg-violet-600 dark:hover:bg-violet-700 dark:text-white"> 
+            <Button
+              type="submit"
+              onClick={handleProfileUpdate}
+              className="dark:bg-violet-600 dark:hover:bg-violet-700 dark:text-white"
+            >
               {isLoading ? (
                 <>
                   <RotateCw className="mr-2 h-4 w-4 animate-spin" />

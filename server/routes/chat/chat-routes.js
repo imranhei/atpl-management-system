@@ -1,34 +1,22 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 const {
-  createConversation,
-  getUserConversations,
   sendMessage,
-  getMessagesByConversation,
-  addParticipant,
-  removeParticipant,
-  listParticipants
-} = require('../../controller/chat/chat-controller');
+  getPrivateMessages,
+  getGroupMessages,
+  createGroup,
+  addMember,
+  removeMember,
+} = require("../../controller/chat/chat-controller");
 
-// POST /api/messages
-router.post('/message', sendMessage);
+// Message-related
+router.post("/message", sendMessage);
+router.get("/messages/private", getPrivateMessages);
+router.get("/messages/group/:groupId", getGroupMessages);
 
-// GET /api/messages/:conversationId
-router.get('/message/:conversationId', getMessagesByConversation);
-
-// POST /api/conversations
-router.post('/conversation', createConversation);
-
-// GET /api/conversations/:userId
-router.get('/conversation/:userId', getUserConversations);
-
-// POST /api/participants
-router.post('/participant', addParticipant);
-
-// DELETE /api/participants
-router.delete('/participant', removeParticipant);
-
-// GET /api/participants/:conversationId
-router.get('/participant/:conversationId', listParticipants);
+// Group-related
+router.post("/group", createGroup);
+router.post("/group/:groupId/add", addMember);
+router.post("/group/:groupId/remove", removeMember);
 
 module.exports = router;

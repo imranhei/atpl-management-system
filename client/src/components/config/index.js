@@ -227,7 +227,7 @@ export const SIDEBAR_MENU = {
       id: "messages",
       label: "Chat",
       path: "/chat",
-      icon: MessagesSquare,
+      icon: MessageCircleMore,
     },
   ],
 };

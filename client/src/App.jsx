@@ -1,5 +1,10 @@
 import { useEffect } from "react";
 import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { checkAuth } from "./store/auth-slice";
+import { LoaderCircle } from "lucide-react";
+import "./App.css";
+
 import AuthLayout from "./components/auth/layout";
 import AuthLogin from "./pages/auth/login";
 import AuthRegister from "./pages/auth/register";
@@ -8,9 +13,6 @@ import SystemLayout from "./components/user-view/layout";
 import TodayMeals from "./pages/user-view/day-wise-meal";
 import Meal from "./pages/user-view/meal";
 import EmployeeLeave from "./pages/user-view/leave"; 
-import { useDispatch, useSelector } from "react-redux";
-import { checkAuth } from "./store/auth-slice";
-import { LoaderCircle } from "lucide-react";
 import Attendance from "./pages/user-view/attendance";
 import Dashboard from "./pages/user-view/dashboard";
 import Home from "./pages/common/Home";
