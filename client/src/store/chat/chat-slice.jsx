@@ -17,7 +17,7 @@ export const sendMessage = createAsyncThunk(
       const userId = state.chat.selectedUser?.id;
 
       const response = await axios.post(
-        `${import.meta.env.VITE_API_URL_MONGO}/api/chat/message`,
+        `${import.meta.env.VITE_API_URL_CHAT}/api/chat/message`,
         {
           ...messageData,
           senderId: state.auth.user.id,
@@ -47,7 +47,7 @@ export const fetchUserConversations = createAsyncThunk(
   async ({ token, receiverId, senderId }) => {
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_API_URL_MONGO}/api/chat/messages/private`,
+        `${import.meta.env.VITE_API_URL_CHAT}/api/chat/messages/private`,
         {
           params: {
             user1: senderId,
