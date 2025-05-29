@@ -7,6 +7,7 @@ import ChatContainer from "@/components/common/ChatContainer";
 import { useDispatch, useSelector } from "react-redux";
 import { getEmployeeDetails } from "@/store/admin/employee-details-slice";
 import { connectSocket, disconnectSocket } from "@/lib/socket";
+import Box from "@/components/ui/box";
 
 const Chat = () => {
   const dispatch = useDispatch();
@@ -30,20 +31,20 @@ const Chat = () => {
   }, [user]);
 
   return (
-    <div className="h-fit w-full">
-      <div className="flex w-full items-center justify-center">
-        <div className="bg-gray-100 rounded-lg shadow-lg w-full max-w-5xl sm:h-[calc(100vh-6rem)] h-[calc(100vh-8rem)]">
-          <Card className="sm:flex h-full rounded-lg overflow-hidden relative hidden">
+    <div className="h-fit w-full sm:space-y-4 space-y-3">
+      <div className="flex items-center justify-center m-4">
+        <div className="bg-gray-100 shadow-spread rounded-lg flex-1 max-w-5xl sm:h-[calc(100vh-6rem)] h-[calc(100vh-8rem)]">
+          <div className="sm:flex h-full rounded-lg overflow-hidden relative hidden">
             <ChatSidebar />
             {!selectedUser ? <NoChatSelected /> : <ChatContainer />}
-          </Card>
-          <Card className="sm:hidden h-full rounded-lg overflow-hidden relative flex">
+          </div>
+          <div className="sm:hidden h-full rounded-lg overflow-hidden relative flex">
             {chat ? (
               <ChatContainer setChat={() => setChat((prev) => !prev)} />
             ) : (
               <ChatSidebar setChat={() => setChat((prev) => !prev)} />
             )}
-          </Card>
+          </div>
         </div>
       </div>
     </div>

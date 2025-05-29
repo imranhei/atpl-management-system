@@ -23,7 +23,7 @@ const ChatSidebar = ({ setChat = () => {} }) => {
   }
 
   return (
-    <aside className="h-full w-full sm:w-14 lg:w-72 bg-secondary border-r border-gray-300 dark:border-gray-600 flex flex-col transition-all duration-200">
+    <aside className="h-full w-full sm:w-14 lg:w-72 bg-sidebar border-r border-gray-300 dark:border-gray-600 flex flex-col transition-all duration-200">
       <div className="p-3">
         <div className="flex justify-between gap-2">
           <div className="flex items-center gap-2">
@@ -48,7 +48,7 @@ const ChatSidebar = ({ setChat = () => {} }) => {
         {employeeDetails?.map((user) => (
           <div key={user.id}>
             <button
-              className={`flex items-center px-1 py-1 gap-2 w-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-200 ${
+              className={`flex items-center px-1 py-1 gap-2 w-full hover:bg-gray-200 dark:hover:bg-slate-800 transition-colors duration-200 ${
                 selectedUser?.id === user.id ? "ring-gray-300" : ""
               }`}
               onClick={() => {

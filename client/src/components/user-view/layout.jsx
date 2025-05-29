@@ -15,13 +15,13 @@ const SystemLayout = () => {
         {/* Main Content */}
         <div className="flex flex-1 flex-col lg:ml-64 ml-0 overflow-x-auto">
           {/* Header */}
-          <div className="flex-none">
+          <div className="flex-none shadow-md z-30">
             <SystemNavbar />
           </div>
 
           {/* Main Body */}
-          <main className="flex-1 overflow-y-auto bg-muted/40 p-3 sm:p-4 md:p-6">
-            <SidebarTrigger className="absolute top-3.5 left-4 lg:hidden" />
+          <main className="flex-1 overflow-y-auto bg-background">
+            <SidebarTrigger className="absolute top-3.5 left-4 lg:hidden z-40" />
             <Outlet />
           </main>
         </div>

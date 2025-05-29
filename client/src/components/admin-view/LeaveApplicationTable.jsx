@@ -8,13 +8,16 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import Box from "@/components/ui/box";
 
 const LeaveApplicationTable = ({ data }) => {
   return (
-    <Table className="bg-background rounded">
+    <Box>
+    <h2 className="text-lg font-bold py-2 text-center">Leave History</h2>
+      <Table className="bg-background rounded">
       {/* Table Header */}
       <TableHeader>
-        <TableRow>
+        <TableRow className="bg-sidebar">
           <TableHead>Emp Code</TableHead>
           <TableHead>From</TableHead>
           <TableHead>To</TableHead>
@@ -51,6 +54,7 @@ const LeaveApplicationTable = ({ data }) => {
         ))}
       </TableBody>
     </Table>
+    </Box>
   );
 };
 

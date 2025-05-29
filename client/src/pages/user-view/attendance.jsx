@@ -37,6 +37,7 @@ import {
 import PaginationWithEllipsis from "@/components/user-view/paginationWithEllipsis";
 import TextChangeAnimation from "@/components/common/TextChangeAnimation";
 import { Card } from "@/components/ui/card";
+import Box from "@/components/ui/box";
 
 const Attendance = () => {
   const dispatch = useDispatch();
@@ -85,19 +86,19 @@ const Attendance = () => {
   };
 
   return (
-    <Card className="sm:space-y-4 space-y-2 relative p-2">
-      <div className="m-0 text-lg font-bold text-center">
+    <div className="m-4 sm:space-y-4 space-y-3">
+      <div className="m-0 text-lg font-bold text-textHead text-center">
         Atpl Dhaka Attendance
       </div>
       
-      <div className="flex gap-2 justify-end">
+      <div className="flex gap-2 justify-end w-full">
         <Popover>
           <PopoverTrigger asChild>
             <Button
               id="date"
               variant="outline"
               className={cn(
-                "w-[240px] justify-start text-left font-normal",
+                "sm:w-[240px] flex-1 justify-start text-left font-normal bg-sidebar shadow-spread",
                 !params.start_date &&
                   !params.end_date &&
                   "text-muted-foreground"
@@ -118,7 +119,7 @@ const Attendance = () => {
               )}
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-auto p-0" align="start">
+          <PopoverContent className="w-full p-0" align="start">
             <Calendar
               initialFocus
               mode="range"
@@ -153,9 +154,11 @@ const Attendance = () => {
           </Tooltip>
         </TooltipProvider>
       </div>
-      <Table className="bg-background rounded">
+
+      <Box>
+        <Table className="bg-background rounded">
         <TableHeader>
-          <TableRow className="text-nowrap bg-gray-100 dark:bg-slate-900">
+          <TableRow className="text-nowrap bg-sidebar text-textHead">
             <TableHead className="text-center">Date</TableHead>
             <TableHead className="text-center">Entry</TableHead>
             <TableHead className="text-center">Exit</TableHead>
@@ -179,7 +182,7 @@ const Attendance = () => {
             results.map((punch, index) => (
               <TableRow
                 key={index}
-                className="even:bg-gray-100 even:dark:bg-slate-900 text-nowrap dark:text-muted-foreground text-center"
+                className="text-nowrap text-textBody text-center"
               >
                 {/* <TableCell>{punch?.first_name}</TableCell> */}
                 <TableCell>{formatDate(punch?.date)}</TableCell>
@@ -246,6 +249,7 @@ const Attendance = () => {
           )}
         </TableFooter>
       </Table>
+      </Box>
 
       {pagination?.last_page > 1 && (
         <PaginationWithEllipsis
@@ -254,7 +258,7 @@ const Attendance = () => {
           onPageChange={(page) => setParams((prev) => ({ ...prev, page }))}
         />
       )}
-    </Card>
+    </div>
   );
 };
 

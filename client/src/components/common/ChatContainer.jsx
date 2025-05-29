@@ -33,7 +33,7 @@ const ChatContainer = ({ setChat }) => {
   }, [messages]);
 
   return (
-    <div className="flex-1 flex flex-col overflow-auto bg-muted">
+    <div className="flex-1 flex flex-col overflow-auto bg-muted dark:bg-sidebar">
       <ChatHeader setChat={setChat} />
 
       <div className="flex-1 flex flex-col overflow-y-auto p-4 space-y-2">
@@ -71,9 +71,9 @@ const ChatContainer = ({ setChat }) => {
                 <div
                   className={`${
                     message.senderId === user.id
-                      ? "bg-blue-100"
-                      : "bg-gray-200"
-                  } relative p-2 rounded-sm min-w-20 max-w-[75%] pb-5`}
+                      ? "bg-blue-100 dark:bg-navbar"
+                      : "bg-gray-200 dark:bg-[#043237]"
+                  } relative p-2 rounded-sm min-w-20 max-w-[75%] pb-5 text-text-body`}
                 >
                   {message?.image_url && (
                     <img src={message.image_url} alt="" className="pb-2" />

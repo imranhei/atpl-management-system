@@ -9,6 +9,8 @@
   font-style: normal;
 }
 
+
+
 @media print {
   html, body {
     height: auto !important;
@@ -52,6 +54,14 @@
     --background: 0 0% 100%;
 
     --foreground: 222.2 84% 4.9%;
+
+    --container: vlack;
+
+    --box: white;
+
+    --textHead: black;
+
+    --textBody: black;
 
     --card: 0 0% 100%;
 
@@ -114,12 +124,25 @@
 
     --sidebar-border: 220 13% 91%;
 
-    --sidebar-ring: 217.2 91.2% 59.8%}
+    --sidebar-ring: 217.2 91.2% 59.8%;
+    
+    --navbar-background: 212, 100%, 29%;
+
+    --navbar-border: 212, 100%, 29%;
+  }
   .dark {
 
-    --background: 222.2 84% 4.9%;
+    --background: 216, 60%, 12%;
 
     --foreground: 210 40% 98%;
+
+    --container: 214, 51%, 18%;
+
+    --box: 218, 70%, 12%;
+
+    --textHead: 225, 57%, 85%;
+
+    --textBody: 214, 35%, 74%;
 
     --card: 222.2 84% 4.9%;
 
@@ -163,24 +186,28 @@
 
     --chart-4: 280 65% 60%;
 
-    --chart-5: 340 75% 55%
-  ;
+    --chart-5: 340 75% 55%;
 
-    --sidebar-background: 240 5.9% 10%;
+    --sidebar-background: 214, 51%, 18%;
 
-    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-foreground: 225, 57%, 85%;
 
     --sidebar-primary: 224.3 76.3% 48%;
 
     --sidebar-primary-foreground: 0 0% 100%;
 
-    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent: 215, 68%, 11%;
 
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 225, 57%, 85%;
 
-    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-border: 215, 68%, 11%;
 
-    --sidebar-ring: 217.2 91.2% 59.8%}
+    --sidebar-ring: 217.2 91.2% 59.8%;
+
+    --navbar-background: 218, 70%, 12%;
+
+    --navbar-border: 214, 51%, 18%;
+  }
 }
 
 @layer base {

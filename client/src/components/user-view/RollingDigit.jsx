@@ -45,7 +45,7 @@ const RollingDigit = ({ digit }) => {
         {[...Array(10).keys()].map((n) => (
           <div
             key={n}
-            className="h-[1em] text-sm flex items-center justify-center text-white chakra-petch-medium"
+            className="h-[1em] text-sm flex items-center justify-center text-white dark:text-[#8FFFDC] chakra-petch-medium"
             style={{ lineHeight: "1em" }}
           >
             {n}

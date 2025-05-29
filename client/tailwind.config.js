@@ -53,11 +53,18 @@ export default {
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+      boxShadow: {
+        "spread": "0 0 4px rgba(0,0,0,0.15), 0 0 15px rgba(0,0,0,0.1)",
+      },
       colors: {
         yellow: "hsl(var(--yellow))",
         yellowDark: "hsl(var(--yellow-dark))",
+        textHead: "hsl(var(--textHead))",
+        textBody: "hsl(var(--textBody))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
+        container: "hsl(var(--container))",
+        box: "hsl(var(--box))",
         card: {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
@@ -105,6 +112,10 @@ export default {
           "accent-foreground": "hsl(var(--sidebar-accent-foreground))",
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
+        },
+        navbar: {
+          DEFAULT: "hsl(var(--navbar-background))",
+          border: "hsl(var(--navbar-border))",
         },
       },
     },

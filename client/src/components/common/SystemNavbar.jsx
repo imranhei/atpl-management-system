@@ -33,7 +33,7 @@ const SystemNavbar = () => {
   };
 
   return (
-    <header className="bg-blue-900 dark:bg-slate-800 dark:border-b dark:border-slate-900 flex items-center justify-between px-4 py-2 border-b shadow-md">
+    <header className="bg-navbar border-b border-navbar-border flex items-center justify-between px-4 py-2 shadow-xl">
       <div className="flex justify-between flex-1 items-center gap-2">
         <div className="flex-1 lg:ml-0 ml-6">
           <Link to="/" className="flex w-fit justify-start items-center">

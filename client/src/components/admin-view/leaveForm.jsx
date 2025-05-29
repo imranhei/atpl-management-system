@@ -26,7 +26,7 @@ const LeaveForm = ({ formData, setFormData, onSubmit }) => {
 
   return (
     <form
-      className="space-y-2 py-6"
+      className="space-y-2 py-6 bg-container rounded shadow-spread border p-4 "
       onSubmit={(e) => {
         e.preventDefault();
         onSubmit(formData);
@@ -41,7 +41,7 @@ const LeaveForm = ({ formData, setFormData, onSubmit }) => {
                 id="date"
                 variant="outline"
                 className={cn(
-                  "w-[300px] justify-start text-left font-normal",
+                  "max-w-[300px] justify-start text-left font-normal bg-sidebar",
                   !date && "text-muted-foreground"
                 )}
               >

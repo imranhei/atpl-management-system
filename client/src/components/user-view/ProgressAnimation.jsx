@@ -33,9 +33,9 @@ const ProgressAnimation = ({ value, aamplitude }) => {
           preserveAspectRatio="none"
           className="w-full h-full"
         >
-          <path d={generateWave(2, aamplitude)} fill="#6ee7b7" />
+          <path d={generateWave(2, aamplitude)} fill="#0BFFB2" />
         </svg>
-        <div className="w-full h-full bg-gradient-to-l to-rose-400 via-orange-300 from-emerald-500 absolute top-0 -left-[100%]"></div>
+        <div className="w-full h-full bg-[#0BFFB2] absolute top-0 -left-[100%]"></div>
       </div>
       <div
         className="absolute w-full h-[200%] animate-wave"
@@ -49,9 +49,9 @@ const ProgressAnimation = ({ value, aamplitude }) => {
           preserveAspectRatio="none"
           className="w-full h-full"
         >
-          <path d={generateWave(2, aamplitude)} fill="#10b981" />
+          <path d={generateWave(2, aamplitude)} fill="#00C889" />
         </svg>
-        <div className="w-full h-full bg-gradient-to-l to-rose-400 via-orange-300 from-emerald-500 absolute top-0 -left-[100%]"></div>
+        <div className="w-full h-full bg-[#00C889] absolute top-0 -left-[100%]"></div>
       </div>
     </div>
   );
