@@ -17,8 +17,6 @@ const conversationRoutes = require("./routes/chat/chat-routes");
 dotenv.config();
 const PORT = process.env.PORT || 5000;
 
-createChatTables();
-
 app.use(
   cors({
     origin: process.env.CLIENT_URL,
@@ -50,6 +48,16 @@ app.use("/api/chat", conversationRoutes);
 
 // startCronJobs();
 
-server.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+const startServer = async () => {
+  try {
+    await createChatTables(); // ideally this should ensure DB connection works
+    server.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}`);
+    });
+  } catch (err) {
+    console.error('Failed to initialize DB or start server:', err);
+    process.exit(1);
+  }
+};
+
+startServer();
