@@ -11,9 +11,10 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ArrowUpDown } from "lucide-react";
+import { ArrowUpDown, Users } from "lucide-react";
 import TextChangeAnimation from "@/components/common/TextChangeAnimation";
 import { Card } from "@/components/ui/card";
+import Box from "@/components/ui/box";
 
 const formatDate = (dateString) => {
   if (!dateString) return "";
@@ -86,8 +87,32 @@ const AdminDashboard = () => {
   }, [results]);
 
   return (
-      <Card className="shadow rounded-md p-4">
-        <p className="text-lg font-semibold pb-2">
+    <div className="m-4 sm:space-y-4 space-y-3">
+      <div className="w-full grid grid-cols-3 sm:text-xl text-sm sm:font-bold font-semibold sm:gap-4 gap-3">
+        <Box className="!flex-row sm:gap-4 gap-2 sm:p-4 text-muted-foreground">
+          <Users className="sm:size-16 size-6"/>
+          <div className="flex flex-col sm:gap-1">
+            <div>Total Employee</div>
+            <div>16</div>
+          </div>
+        </Box>
+        <Box className="!flex-row sm:gap-4 gap-2 sm:p-4 text-green-400">
+          <Users className="sm:size-16 size-6"/>
+          <div className="flex flex-col sm:gap-1">
+            <div className="text-muted-foreground">Present</div>
+            <div>{pagination?.total || 0}</div>
+          </div>
+        </Box>
+        <Box className="!flex-row sm:gap-4 gap-2 sm:p-4 text-rose-400">
+          <Users className="sm:size-16 size-6"/>
+          <div className="flex flex-col sm:gap-1">
+            <div className="text-muted-foreground">Absent</div>
+            <div>{16 - pagination?.total || 0}</div>
+          </div>
+        </Box>
+      </div>
+      <Box className="shadow rounded-md">
+        <p className="text-lg font-semibold p-2">
           Attendance for {todayLabel}
         </p>
         <Table className="bg-background rounded border-b">
@@ -145,7 +170,7 @@ const AdminDashboard = () => {
               sortedResults.map((punch, index) => (
                 <TableRow
                   key={index}
-                  className="even:bg-gray-100 even:dark:bg-slate-900 text-nowrap dark:text-muted-foreground text-center"
+                  className="text-center text-nowrap text-textBody"
                 >
                   <TableCell className="text-left">
                     {`${(punch?.first_name + " " + punch?.last_name).split(" ").slice(0, 2).join(" ")}`}
@@ -169,26 +194,9 @@ const AdminDashboard = () => {
               </TableRow>
             )}
           </TableBody>
-          <TableFooter className="">
-            {isLoading ? (
-              <TableRow>
-                <TableCell colSpan={5}>
-                  <Skeleton className="w-full h-[28px] rounded-lg" />
-                </TableCell>
-              </TableRow>
-            ) : (
-              <TableRow>
-                <TableCell colSpan={5}>
-                  <div className="flex sm:flex-row flex-col justify-between w-full gap-2 text-nowrap">
-                    <p>Present: {pagination?.total || 0}</p>
-                    <p>Absent: {16 - pagination?.total || 0}</p>
-                  </div>
-                </TableCell>
-              </TableRow>
-            )}
-          </TableFooter>
         </Table>
-      </Card>
+      </Box>
+      </div>
   );
 };
 

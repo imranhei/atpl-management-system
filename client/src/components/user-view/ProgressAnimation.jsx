@@ -20,9 +20,9 @@ const ProgressAnimation = ({ value, aamplitude }) => {
   }
 
   return (
-    <div className="relative w-full h-full overflow-hidden opacity-50 dark:opacity-100">
+    <div className="relative w-full h-full overflow-hidden dark:opacity-75">
       <div
-        className="absolute w-full h-[220%] animate-wave -mt-2 ml-1"
+        className="absolute w-full h-[300%] animate-wave -mt-2 ml-1"
         style={{
           left: `${value - 3}%`,
           transition: "top 0.5s ease-out",
@@ -33,12 +33,12 @@ const ProgressAnimation = ({ value, aamplitude }) => {
           preserveAspectRatio="none"
           className="w-full h-full"
         >
-          <path d={generateWave(2, aamplitude)} fill="#0BFFB2" />
+          <path d={generateWave(2, aamplitude)} fill="#9cfadc" />
         </svg>
-        <div className="w-full h-full bg-[#0BFFB2] absolute top-0 -left-[100%]"></div>
+        <div className="w-full h-full bg-[#9cfadc] absolute top-0 -left-[100%]"></div>
       </div>
       <div
-        className="absolute w-full h-[200%] animate-wave"
+        className="absolute w-full h-[300%] animate-wave"
         style={{
           left: `${value - 3}%`,
           transition: "top 0.5s ease-out",
@@ -49,9 +49,9 @@ const ProgressAnimation = ({ value, aamplitude }) => {
           preserveAspectRatio="none"
           className="w-full h-full"
         >
-          <path d={generateWave(2, aamplitude)} fill="#00C889" />
+          <path d={generateWave(2, aamplitude)} fill="#26f7b5" />
         </svg>
-        <div className="w-full h-full bg-[#00C889] absolute top-0 -left-[100%]"></div>
+        <div className="w-full h-full bg-[#26f7b5] absolute top-0 -left-[100%]"></div>
       </div>
     </div>
   );

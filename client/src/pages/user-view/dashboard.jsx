@@ -162,7 +162,7 @@ const Dashboard = () => {
 
   return (
     <div className="rounded-md m-4 sm:space-y-4 space-y-3">
-      <Box className="!flex-row justify-between items-center p-4 sm:mb-4 mb-2">
+      <Box className="!flex-row justify-between items-center p-2 sm:mb-4 mb-2">
         <p className="text-lg font-bold text-textHead">Weekly Summary</p>
         <WorkCountdown results={results} />
       </Box>
@@ -198,7 +198,7 @@ const Dashboard = () => {
           <div className="absolute top-0 left-0 w-full h-full">
             <ProgressAnimation
               value={calculateWorkProgressPercentage(results)}
-              aamplitude={40}
+              aamplitude={30}
             />
           </div>
           <div className="flex flex-col items-center flex-1 z-10">
@@ -220,7 +220,7 @@ const Dashboard = () => {
       </div>
 
       <Box>
-        <h1 className="text-lg font-bold py-2 text-center">Daily Attendance</h1>
+        <h1 className="text-lg font-bold py-2 text-center text-textHead">Daily Attendance</h1>
         <Table className="bg-background rounded border-b">
           <TableHeader>
             <TableRow className="text-nowrap dark:text-textHead">

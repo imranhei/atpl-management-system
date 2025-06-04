@@ -15,6 +15,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useReactToPrint } from "react-to-print";
 import PrintReportOverview from "@/components/admin-view/PrintReportOverview";
 import { Card } from "@/components/ui/card";
+import Box from "@/components/ui/box";
 
 const Reports = () => {
   const printRef = useRef(null);
@@ -70,10 +71,10 @@ const Reports = () => {
   }, [dispatch]);
 
   return (
-    <Card className="sm:space-y-4 space-y-2 p-2">
-      <h1 className="sm:text-xl text-base font-semibold text-center pt-2">
+    <div className="m-4 sm:space-y-4 space-y-3 relative">
+      <Box className="sm:text-xl text-base font-semibold text-center p-2 text-textHead">
         Attendance Report for {displayDate()}
-      </h1>
+      </Box>
       <div className="flex gap-2 flex-wrap rounded-sm justify-end">
         <div className="min-w-[200px] flex-1 flex items-center gap-1">
           <Popover>
@@ -82,7 +83,7 @@ const Reports = () => {
                 id="date"
                 variant="outline"
                 className={cn(
-                  "flex-1 justify-start text-left font-normal",
+                  "flex-1 justify-start text-left font-normal bg-sidebar",
                   !customDate?.from &&
                     !customDate?.to &&
                     "text-muted-foreground"
@@ -112,7 +113,7 @@ const Reports = () => {
       <div ref={printRef}>
         <PrintReportOverview report={report} report_count={report_count} displayDate={displayDate} />
       </div>
-    </Card>
+    </div>
   );
 };
 

@@ -70,8 +70,8 @@ const Irregularities = () => {
   }, [dispatch]);
 
   return (
-    <Card className="sm:space-y-4 space-y-2 p-2">
-      <h1 className="sm:text-xl text-base font-semibold text-center pt-2">
+    <div className="m-4 sm:space-y-4 space-y-3">
+      <h1 className="sm:text-xl text-base font-semibold text-center p-2 text-textHead">
         Irregularities Report
       </h1>
       <div className="flex gap-2 flex-wrap rounded-sm justify-end">
@@ -82,7 +82,7 @@ const Irregularities = () => {
                 id="date"
                 variant="outline"
                 className={cn(
-                  "flex-1 justify-start text-left font-normal",
+                  "flex-1 justify-start text-left font-normal bg-sidebar",
                   !customDate?.from &&
                     !customDate?.to &&
                     "text-muted-foreground"
@@ -116,7 +116,7 @@ const Irregularities = () => {
           displayDate={customDate}
         />
       </div>
-    </Card>
+    </div>
   );
 };
 

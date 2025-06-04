@@ -8,10 +8,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import Box from "../ui/box";
 
 const PrintReportOverview = ({ report, report_count, displayDate }) => {
   return (
-    <div className="print:p-0 print:m-[1in] print:font-arial">
+    <Box className="print:p-0 print:m-[1in] print:font-arial">
       <h2 className="text-lg font-semibold mb-4 text-center hidden print:block">
         Attendance Report for {typeof displayDate === 'function' ? displayDate() : ''}
       </h2>
@@ -58,7 +59,7 @@ const PrintReportOverview = ({ report, report_count, displayDate }) => {
           </TableRow>
         </TableFooter>
       </Table>
-    </div>
+    </Box>
   );
 };
 

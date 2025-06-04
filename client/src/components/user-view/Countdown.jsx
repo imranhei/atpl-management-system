@@ -63,7 +63,7 @@ const WorkCountdown = ({ results }) => {
   );
 
   return (
-    <div className="sm:text-base text-sm flex items-center gap-2 text-white bg-[#162b45] p-2 px-4 rounded-md shadow-md overflow-hidden relative dark:bg-[#091930]">
+    <div className="sm:text-base text-sm flex items-center gap-2 bg-[#162b45] p-2 px-4 rounded-md shadow-md overflow-hidden relative dark:bg-[#091930]">
       <div className="absolute bottom-0 left-0 w-full h-1">
         <div
           className={`h-full relative overflow-hidden ${

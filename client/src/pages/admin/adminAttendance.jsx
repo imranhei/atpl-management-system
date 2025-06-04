@@ -44,6 +44,7 @@ import {
 import PaginationWithEllipsis from "@/components/user-view/paginationWithEllipsis";
 import TextChangeAnimation from "@/components/common/TextChangeAnimation";
 import { Card } from "@/components/ui/card";
+import Box from "@/components/ui/box";
 
 const AdminAttendance = () => {
   const dispatch = useDispatch();
@@ -151,10 +152,7 @@ const AdminAttendance = () => {
   };
 
   return (
-    <Card className="sm:space-y-4 space-y-2 relative p-2">
-      <div className="m-0 text-lg font-bold text-center">
-        Atpl Dhaka Attendance
-      </div>
+    <div className="m-4 sm:space-y-4 space-y-3 relative">
       <div className="flex flex-wrap sm:gap-2 gap-1 max-w-[600px]">
         <Popover open={empListOpen} onOpenChange={setEmpListOpen}>
           <PopoverTrigger asChild>
@@ -163,7 +161,7 @@ const AdminAttendance = () => {
               variant="outline"
               aria-expanded={empListOpen}
               role="combobox"
-              className={`max-w-[180px] sm:w-[180px] w-40 justify-between font-normal overflow-hidden sm:p-2 p-1 ${
+              className={`max-w-[180px] sm:w-[180px] w-40 justify-between font-normal overflow-hidden sm:p-2 p-1 bg-sidebar ${
                 selected ? "" : "text-muted-foreground"
               }`}
             >
@@ -227,7 +225,7 @@ const AdminAttendance = () => {
                 id="date"
                 variant="outline"
                 className={cn(
-                  "flex-1 w-48 overflow-hidden justify-start text-left font-normal sm:p-4 p-2",
+                  "flex-1 w-48 overflow-hidden justify-start text-left font-normal sm:p-4 p-2 bg-sidebar",
                   !params.start_date &&
                     !params.end_date &&
                     "text-muted-foreground"
@@ -266,7 +264,11 @@ const AdminAttendance = () => {
         </TooltipProvider>
         </div>
       </div>
-      <Table className="bg-background rounded">
+      <Box>
+        <div className="text-lg font-bold py-2 text-center text-textHead">
+        Atpl Dhaka Attendance
+      </div>
+        <Table className="bg-background rounded">
         <TableHeader>
           <TableRow className="text-nowrap bg-gray-100 dark:bg-slate-900">
             <TableHead>Name</TableHead>
@@ -293,7 +295,7 @@ const AdminAttendance = () => {
             results.map((punch, index) => (
               <TableRow
                 key={index}
-                className="even:bg-gray-100 even:dark:bg-slate-900 text-nowrap dark:text-muted-foreground text-center"
+                className="text-center text-nowrap text-textBody"
               >
                 <TableCell className="text-left">{`${(punch?.first_name + " " + punch?.last_name).split(" ").slice(0, 2).join(" ")}`}</TableCell>
                 <TableCell >{formatDateToReadable(punch?.date)}</TableCell>
@@ -353,6 +355,7 @@ const AdminAttendance = () => {
           )}
         </TableFooter>
       </Table>
+      </Box>
 
       {pagination?.last_page > 1 && (
         <PaginationWithEllipsis
@@ -361,7 +364,7 @@ const AdminAttendance = () => {
           onPageChange={handlePageChange}
         />
       )}
-    </Card>
+    </div>
   );
 };
 

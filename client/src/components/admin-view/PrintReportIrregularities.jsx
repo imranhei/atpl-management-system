@@ -9,6 +9,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { format } from "date-fns";
+import Box from "../ui/box";
 
 const PrintReportIrregularities = ({ report, report_count, displayDate }) => {
   function getHourDifferenceFormatted(punch) {
@@ -44,7 +45,7 @@ const PrintReportIrregularities = ({ report, report_count, displayDate }) => {
   }
 
   return (
-    <div className="print:p-0 print:m-[1in] print:font-arial">
+    <Box className="print:p-0 print:m-[1in] print:font-arial">
       <h2 className="text-lg font-semibold mb-4 text-center hidden print:block">
         Irregularities Report for{" "}
         {displayDate?.from && (
@@ -116,7 +117,7 @@ const PrintReportIrregularities = ({ report, report_count, displayDate }) => {
           </TableRow>
         </TableFooter>
       </Table>
-    </div>
+    </Box>
   );
 };
 

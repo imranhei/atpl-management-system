@@ -54,7 +54,7 @@ export default {
         sm: "calc(var(--radius) - 4px)",
       },
       boxShadow: {
-        "spread": "0 0 4px rgba(0,0,0,0.15), 0 0 15px rgba(0,0,0,0.1)",
+        "spread": "0 2px 5px rgba(0,0,0,0.12)",
       },
       colors: {
         yellow: "hsl(var(--yellow))",
