@@ -13,7 +13,8 @@ import {
   MessagesSquare,
   MessageCircleMore,
   Layers,
-  MailWarning
+  MailWarning,
+  MailCheck
 } from "lucide-react";
 
 export const registerFormControls = [
@@ -200,9 +201,9 @@ export const SIDEBAR_MENU = {
       icon: TicketsPlane,
       submenu: [
         {
-          id: "leave-summary",
-          label: "Leave Summary",
-          path: "/leave-summary",
+          id: "leave-records",
+          label: "Leave Records",
+          path: "/leave-records",
           icon: Layers,
         },
         {

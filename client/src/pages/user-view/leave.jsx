@@ -1,12 +1,17 @@
 import LeaveApplicationTable from "@/components/admin-view/LeaveApplicationTable";
 import LeaveForm from "@/components/admin-view/leaveForm";
 import { useToast } from "@/hooks/use-toast";
-import {
-  addLeaveApplication,
-  fetchLeaveApplicationList,
-} from "@/store/leave/leave-slice";
-import React, { useEffect, useState } from "react";
+import { addLeaveApplication } from "@/store/leave/leave-slice";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+
+const initialState = {
+  leave_type: "full_day",
+  reason: "",
+  date: "",
+  start_date: "",
+  end_date: "",
+};
 
 const EmployeeLeave = () => {
   const dispatch = useDispatch();
@@ -15,54 +20,23 @@ const EmployeeLeave = () => {
   const { user } = useSelector((state) => state.auth);
   const { toast } = useToast();
 
-  const [formData, setFormData] = useState({
-    // emp_code: user?.emp_code || "",
-    leave_date_from: "",
-    leave_date_to: "",
-    leave_type: "",
-    reason: "",
-  });
+  const [formData, setFormData] = useState(initialState);
 
   useEffect(() => {
-    dispatch(fetchLeaveApplicationList());
+    // dispatch(fetchLeaveApplicationList());
   }, [dispatch]);
 
+  const handleClearForm = () => {
+    setFormData(initialState);
+  };
+
   const handleSubmit = async (formData) => {
-    const formatDateUTC = (date) => {
-      const d = new Date(date);
-      return new Date(d.getTime() - d.getTimezoneOffset() * 60000)
-        .toISOString()
-        .split("T")[0];
-    };
+    // optionally clean up: remove empty keys
+    const cleaned = Object.fromEntries(
+      Object.entries(formData).filter(([_, v]) => v)
+    );
 
-    const convertedData = {
-      leave_date_from: formatDateUTC(formData.leave_date_from),
-      leave_date_to: formatDateUTC(formData.leave_date_to),
-      leave_type: formData.leave_type.toLowerCase(),
-      reason: formData.reason,
-    };
-
-    // if (user?.emp_code) {
-    dispatch(addLeaveApplication(convertedData)).then((data) => {
-      if (data?.payload?.success) {
-        // Use "success" instead of "status"
-        dispatch(fetchLeaveApplicationList());
-      } else {
-        console.log(data.payload);
-        toast({ title: data?.payload?.message || "Error occurred" }); // Extract message
-      }
-    });
-
-    setFormData({
-      emp_code: user?.emp_code || "",
-      leave_date_from: "",
-      leave_date_to: "",
-      leave_type: "",
-      reason: "",
-    });
-    //   } else {
-    //     toast({ title: "Employee code does't found, Please Login Again" });
-    //   }
+    dispatch(addLeaveApplication(cleaned)); // if using redux
   };
 
   return (
@@ -74,6 +48,7 @@ const EmployeeLeave = () => {
           <LeaveForm
             formData={formData}
             setFormData={setFormData}
+            onClearForm={handleClearForm}
             onSubmit={handleSubmit}
           />
           <LeaveApplicationTable data={leaveApplicationList} />

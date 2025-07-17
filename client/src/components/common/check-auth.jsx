@@ -4,6 +4,14 @@ const CheckAuth = ({ isAuthenticated, role, children }) => {
   const location = useLocation();
   const { pathname } = location;
 
+  // ✅ Match paths like /leave-review/:id
+  const isStandaloneProtected =
+    pathname.startsWith("/leave-review");
+
+  if (isStandaloneProtected && !isAuthenticated) {
+    return <Navigate to="/auth/login" />;
+  }
+  
   if (location.pathname === "/") {
     if (!isAuthenticated) {
       return <Navigate to="/auth/login" />;
@@ -19,7 +27,6 @@ const CheckAuth = ({ isAuthenticated, role, children }) => {
   const authRoutes = ["admin", "employee"];
   const isAuthRoute = authRoutes.some((route) => pathname.includes(route));
   if (!isAuthenticated && isAuthRoute) {
-
     return <Navigate to="/auth/login" />;
   }
 
@@ -34,11 +41,7 @@ const CheckAuth = ({ isAuthenticated, role, children }) => {
     }
   }
 
-  if (
-    isAuthenticated &&
-    (role === "admin") &&
-    pathname.includes("employee")
-  ) {
+  if (isAuthenticated && role === "admin" && pathname.includes("employee")) {
     return <Navigate to="/admin/dashboard" />;
   }
 

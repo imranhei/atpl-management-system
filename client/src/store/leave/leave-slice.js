@@ -11,16 +11,15 @@ const initialState = {
 // Add a new meal
 export const addLeaveApplication = createAsyncThunk(
   "defaultLeaveData/addLeaveApplication",
-  async (mealData, { rejectWithValue }) => {
-    const token = sessionStorage.getItem("token");
-    const parsedToken = JSON.parse(token);
+  async (data, { rejectWithValue }) => {
+    const token = localStorage.getItem("access_token");
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/records`,
-        mealData,
+        `${import.meta.env.VITE_API_URL}/api/leave/apply/`,
+        data,
         {
           headers: {
-            Authorization: `Bearer ${parsedToken}`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
