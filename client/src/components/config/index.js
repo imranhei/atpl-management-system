@@ -11,7 +11,9 @@ import {
   ChartColumnIncreasing,
   UserPlus,
   MessagesSquare,
-  MessageCircleMore
+  MessageCircleMore,
+  Layers,
+  MailWarning
 } from "lucide-react";
 
 export const registerFormControls = [
@@ -196,6 +198,20 @@ export const SIDEBAR_MENU = {
       label: "Leave",
       path: "/leave",
       icon: TicketsPlane,
+      submenu: [
+        {
+          id: "leave-summary",
+          label: "Leave Summary",
+          path: "/leave-summary",
+          icon: Layers,
+        },
+        {
+          id: "leave-application",
+          label: "Leave Application",
+          path: "/leave-application",
+          icon: MailWarning,
+        },
+      ],
     },
     {
       id: "settings",

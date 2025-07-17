@@ -32,6 +32,7 @@ const LeaveForm = ({ formData, setFormData, onSubmit }) => {
         onSubmit(formData);
       }}
     >
+      <h1 className="text-lg font-bold pb-2 text-textHead text-center">Apply Leave</h1>
       <div className="flex items-center gap-2 mb-4">
         <Label className="text-nowrap w-24">Select Day:</Label>
         <div className="grid gap-2">

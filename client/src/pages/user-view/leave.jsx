@@ -67,7 +67,6 @@ const EmployeeLeave = () => {
 
   return (
     <div className="m-4 sm:space-y-4 space-y-3">
-      <h1 className="text-lg font-semibold pb-2 text-textHead text-center">Leave Application</h1>
       {isLoading ? (
         <div>Loading...</div>
       ) : (

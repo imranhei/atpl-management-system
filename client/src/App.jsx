@@ -12,7 +12,9 @@ import CheckAuth from "./components/common/check-auth";
 import SystemLayout from "./components/user-view/layout";
 import TodayMeals from "./pages/user-view/day-wise-meal";
 import Meal from "./pages/user-view/meal";
-import EmployeeLeave from "./pages/user-view/leave"; 
+import EmployeeLeave from "./pages/user-view/leave";
+import LeaveSummary from "./pages/admin/leaveSummary";
+import LeaveApplication from "./pages/admin/leaveApplication";
 import Attendance from "./pages/user-view/attendance";
 import Dashboard from "./pages/user-view/dashboard";
 import Home from "./pages/common/Home";
@@ -107,7 +109,8 @@ function App() {
           <Route path="overview" element={<Overview />} />
           <Route path="irregularities" element={<Irregularities />} />
           <Route path="meal" element={<Meal />} />
-          <Route path="leave" element={<EmployeeLeave />} />
+          <Route path="leave-summary" element={<LeaveSummary />} />
+          <Route path="leave-application" element={<LeaveApplication />} />
           <Route path="setting" element={<Profile />} />
           <Route path="day-wise-meal" element={<TodayMeals />} />
           <Route path="register" element={<AuthRegister />} />

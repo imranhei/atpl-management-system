@@ -220,7 +220,7 @@ const Dashboard = () => {
       </div>
 
       <Box>
-        <h1 className="text-lg font-bold py-2 text-center text-textHead">Daily Attendance</h1>
+        <h1 className="text-lg font-bold p-2 text-center text-textHead">Daily Attendance</h1>
         <Table className="bg-background rounded border-b">
           <TableHeader>
             <TableRow className="text-nowrap dark:text-textHead">

@@ -89,10 +89,10 @@ const AdminDashboard = () => {
   return (
     <div className="m-4 sm:space-y-4 space-y-3">
       <div className="w-full grid grid-cols-3 sm:text-xl text-sm sm:font-bold font-semibold sm:gap-4 gap-3">
-        <Box className="!flex-row sm:gap-4 gap-2 sm:p-4 text-muted-foreground">
+        <Box className="!flex-row sm:gap-4 gap-2 sm:p-4 p-2 text-muted-foreground">
           <Users className="sm:size-16 size-6"/>
           <div className="flex flex-col sm:gap-1">
-            <div>Total Employee</div>
+            <div>Employee</div>
             <div>16</div>
           </div>
         </Box>
