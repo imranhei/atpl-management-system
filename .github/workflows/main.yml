@@ -45,7 +45,7 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           port: 21 # Default FTP port
           protocol: ftps # Use "ftps" for secure FTP or "ftp" for regular FTP
-          local-dir: client/dist/ # The directory containing your Vite build files
+          local-dir: client/dist/ # The directory containing your Vite build files.
           server-dir: / # Path on your CPanel server
           timeout: 1200
           exclude: |
