@@ -5,26 +5,31 @@ const CheckAuth = ({ isAuthenticated, role, children }) => {
   const { pathname } = location;
 
   // ✅ Match paths like /leave-review/:id
-  const isStandaloneProtected =
-    pathname.startsWith("/leave-review");
+  const isStandaloneProtected = pathname.startsWith("/leave-review");
+  sessionStorage.setItem("last_path", location.pathname + location.search); // ✅
 
-  if (isStandaloneProtected && !isAuthenticated) {
-    return <Navigate to="/auth/login" />;
-  }
-  
+  // if (isStandaloneProtected && !isAuthenticated) {
+  //   return <Navigate to="/auth/login" />;
+  // }
+
   if (location.pathname === "/") {
     if (!isAuthenticated) {
       return <Navigate to="/auth/login" />;
     } else {
       if (role === "admin") {
-        return <Navigate to="/admin/dashboard" />;
+        if (isStandaloneProtected) {
+          const lastPath = sessionStorage.getItem("last_path");
+          return <Navigate to={`${lastPath}`} />;
+        } else {
+          return <Navigate to="/admin/dashboard" />;
+        }
       } else {
         return <Navigate to="/employee/dashboard" />;
       }
     }
   }
 
-  const authRoutes = ["admin", "employee"];
+  const authRoutes = ["admin", "employee", "leave-review"];
   const isAuthRoute = authRoutes.some((route) => pathname.includes(route));
   if (!isAuthenticated && isAuthRoute) {
     return <Navigate to="/auth/login" />;
@@ -35,7 +40,12 @@ const CheckAuth = ({ isAuthenticated, role, children }) => {
     (pathname.includes("auth/login") || pathname.includes("auth/register"))
   ) {
     if (role === "admin") {
-      return <Navigate to="/admin/dashboard" />;
+      if (isStandaloneProtected) {
+        const lastPath = sessionStorage.getItem("last_path");
+        return <Navigate to={`${lastPath}`} />;
+      } else {
+        return <Navigate to="/admin/dashboard" />;
+      }
     } else {
       return <Navigate to="/employee/dashboard" />;
     }

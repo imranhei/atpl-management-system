@@ -30,8 +30,25 @@ const AuthLogin = () => {
           title: "Login successful",
         });
         localStorage.setItem("access_token", res.payload.access);
-        const role = res.payload.user.username === "frahman" || res.payload.user.username === "faisal";
-        navigate(`${role ? "/admin/dashboard" : "/employee/dashboard"}`);
+        // const role = res.payload.user.username === "frahman" || res.payload.user.username === "faisal";
+        // navigate(`${role ? "/admin/dashboard" : "/employee/dashboard"}`);
+
+      //   const lastPath = sessionStorage.getItem("last_path");
+
+      // // check for redirect priority
+      // if (
+      //   lastPath &&
+      //   lastPath !== "/" &&
+      //   !lastPath.includes("/auth/login") &&
+      //   !lastPath.includes("/auth/register")
+      // ) {
+      //   navigate(lastPath, { replace: true });
+      // } else {
+      //   const isAdmin =
+      //     res.payload.user.username === "frahman" ||
+      //     res.payload.user.username === "faisal";
+      //   navigate(isAdmin ? "/admin/dashboard" : "/employee/dashboard");
+      // }
       } else {
         toast({
           variant: "destructive",

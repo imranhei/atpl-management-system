@@ -18,7 +18,7 @@ const ApplicationReview = () => {
   const { id } = useParams();
   const [searchParams] = useSearchParams();
   const { user, isLoading } = useSelector((state) => state.auth);
-  const [unauthorized, setUnauthorized] = useState(false);
+  const [authorized, setAuthorized] = useState(false);
   const [loadingApproval, setLoadingApproval] = useState(false);
   const [approved, setApproved] = useState(false);
 
@@ -28,21 +28,28 @@ const ApplicationReview = () => {
 
   useEffect(() => {
     const token = localStorage.getItem("access_token");
-    if (!token) {
-      setUnauthorized(true); // ✅ No token found
-    } else if (!user) {
+
+    // If user not available yet, try to fetch it
+    if (!user && token) {
       dispatch(checkAuth(token)).then((res) => {
         if (res.payload?.success) {
-          setUnauthorized(false);
+          if (res.payload.user.username === "frahman") {
+            setAuthorized(true);
+          }
         }
       });
+    }
+
+    // ✅ If user already exists, set authorized directly
+    if (user?.username === "frahman") {
+      setAuthorized(true);
     }
   }, [user, dispatch]);
 
   useEffect(() => {
     const token = localStorage.getItem("access_token");
 
-    if (!token || !user) return; // don't run if not ready
+    if (!token || !user || user.username !== "frahman") return; // don't run if not ready
 
     const postDecision = async () => {
       try {
@@ -68,9 +75,17 @@ const ApplicationReview = () => {
     };
 
     postDecision();
-  }, [user?.id]); // ✅ run only when user is confirmed
+  }, [user?.id, id, action]); // ✅ run only when user is confirmed
 
-  if (unauthorized) {
+  if (isLoading || (!user && authorized) || loadingApproval) {
+    return (
+      <div className="flex items-center justify-center min-w-screen min-h-screen">
+        <LoaderCircle size={48} className="animate-spin" />
+      </div>
+    );
+  }
+
+  if (!authorized) {
     return (
       <div className="flex items-center justify-center min-w-screen min-h-screen text-red-500 !bg-transparent">
         <div className="flex flex-col items-center gap-6 border p-6 rounded-lg bg-black/20 shadow-md">
@@ -80,14 +95,6 @@ const ApplicationReview = () => {
             <Button className="btn btn-primary">Go to Login Page</Button>
           </Link>
         </div>
-      </div>
-    );
-  }
-
-  if (isLoading || (!user && !unauthorized) || loadingApproval) {
-    return (
-      <div className="flex items-center justify-center min-w-screen min-h-screen">
-        <LoaderCircle size={48} className="animate-spin" />
       </div>
     );
   }

@@ -39,20 +39,25 @@ function App() {
   useEffect(() => {
     const token = localStorage.getItem("access_token");
     const lastPath = sessionStorage.getItem("last_path");
+    const isStandaloneProtected = location.pathname.startsWith("/leave-review");
 
     if (token && !hasRedirected.current) {
-    dispatch(checkAuth(token)).then(() => {
-    //   if (
-    //     lastPath &&
-    //     lastPath !== "/" &&
-    //     lastPath !== "/auth/login" &&
-    //     lastPath !== location.pathname
-    //   ) {
-    //     hasRedirected.current = true; // ✅ prevent loop
-    //     navigate(lastPath, { replace: true });
-    //   }
-    });
-  }
+      dispatch(checkAuth(token)).then(() => {
+        if (
+          lastPath &&
+          lastPath !== "/" &&
+          lastPath !== "/auth/login" &&
+          lastPath !== location.pathname
+        ) {
+          hasRedirected.current = true; // ✅ prevent loop
+          if (isStandaloneProtected) {
+            navigate(location.pathname, { replace: true });
+          } else {
+            navigate(lastPath, { replace: true });
+          }
+        }
+      });
+    }
   }, [dispatch, location.pathname, navigate]);
 
   useEffect(() => {

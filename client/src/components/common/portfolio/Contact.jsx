@@ -28,7 +28,7 @@ const Contact = () => {
                             <svg className='text-yellow-400' xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 32 32"><g fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1"><circle cx="16" cy="11" r="4"/><path d="M24 15c-3 7-8 15-8 15s-5-8-8-15s2-13 8-13s11 6 8 13Z"/></g></svg>
                             <h1 className='font-semibold text-xl text-gray-600'>Location</h1>
                             <h1>Uttara Tower, level 5</h1>
-                            <h1>Jasimuddn Avenue, Sector-3</h1>
+                            <h1>Jashimuddin Avenue, Sector-3</h1>
                             <h1>Uttara, Dhaka-1230, Bangladesh</h1>
                         </div>
                         <div data-aos="fade-up" className='flex flex-col items-center'>
