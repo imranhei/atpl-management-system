@@ -41,10 +41,6 @@ const EmployeeLeave = () => {
 
   return (
     <div className="m-4 sm:space-y-4 space-y-3">
-      {isLoading ? (
-        <div>Loading...</div>
-      ) : (
-        <>
           <LeaveForm
             formData={formData}
             setFormData={setFormData}
@@ -52,8 +48,6 @@ const EmployeeLeave = () => {
             onSubmit={handleSubmit}
           />
           <LeaveApplicationTable data={leaveApplicationList} />
-        </>
-      )}
     </div>
   );
 };

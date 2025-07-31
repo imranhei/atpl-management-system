@@ -15,11 +15,14 @@ import {
 import { cn } from "@/lib/utils";
 import { CalendarIcon } from "@radix-ui/react-icons";
 import { format } from "date-fns";
+import { Loader2 } from "lucide-react";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import { Calendar } from "../ui/calendar";
 import { Textarea } from "../ui/textarea";
 
 const LeaveForm = ({ formData, setFormData, onClearForm, onSubmit }) => {
+  const { isLoading } = useSelector((state) => state.leaveApplication);
   const [rangeDate, setRangeDate] = useState({ from: null, to: null });
   const [fromOpen, setFromOpen] = useState(false);
   const [toOpen, setToOpen] = useState(false);
@@ -220,7 +223,13 @@ const LeaveForm = ({ formData, setFormData, onClearForm, onSubmit }) => {
           Clear
         </Button>
         <Button type="submit" className="w-full">
-          Submit
+          {isLoading ? (
+            <div className="flex items-center">
+              <Loader2 className="mr-2 animate-spin" /> Submiting
+            </div>
+          ) : (
+            "Submit"
+          )}
         </Button>
       </div>
     </form>

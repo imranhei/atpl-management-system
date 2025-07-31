@@ -1,10 +1,10 @@
-import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
-import CommonForm from "../../components/common/form";
 import { loginFormControls } from "@/components/config";
-import { useDispatch, useSelector } from "react-redux";
-import { useToast } from "../../hooks/use-toast";
 import { login } from "@/store/auth-slice";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import CommonForm from "../../components/common/form";
+import { useToast } from "../../hooks/use-toast";
 
 const initialState = {
   username: "",
@@ -12,43 +12,48 @@ const initialState = {
 };
 
 const AuthLogin = () => {
-  const [formData, setFormData] = useState(initialState);
   const dispatch = useDispatch();
-  const { isLoading } = useSelector((state) => state.auth);
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { isAuthenticated, role, isLoading } = useSelector(
+    (state) => state.auth
+  );
+  const [formData, setFormData] = useState(initialState);
 
   const onSubmit = async (event) => {
     event.preventDefault();
-  
+
     try {
-      const res = await dispatch(login(formData)); // ✅ Await is required
-  
+      const res = await dispatch(login(formData)); // Await is required
+
       if (res.meta.requestStatus === "fulfilled") {
+        const user = res.payload.user; // Assume payload = { access, user: { role, ... } }
+
         toast({
           variant: "success",
           title: "Login successful",
         });
+
         localStorage.setItem("access_token", res.payload.access);
-        // const role = res.payload.user.username === "frahman" || res.payload.user.username === "faisal";
-        // navigate(`${role ? "/admin/dashboard" : "/employee/dashboard"}`);
 
-      //   const lastPath = sessionStorage.getItem("last_path");
+        const lastPath = sessionStorage.getItem("last_path");
 
-      // // check for redirect priority
-      // if (
-      //   lastPath &&
-      //   lastPath !== "/" &&
-      //   !lastPath.includes("/auth/login") &&
-      //   !lastPath.includes("/auth/register")
-      // ) {
-      //   navigate(lastPath, { replace: true });
-      // } else {
-      //   const isAdmin =
-      //     res.payload.user.username === "frahman" ||
-      //     res.payload.user.username === "faisal";
-      //   navigate(isAdmin ? "/admin/dashboard" : "/employee/dashboard");
-      // }
+        if (
+          lastPath &&
+          lastPath !== "/" &&
+          !lastPath.includes("/auth/login") &&
+          !lastPath.includes("/auth/register")
+        ) {
+          sessionStorage.removeItem("last_path"); // Optional: clean up
+          navigate(lastPath, { replace: true });
+        } else {
+          // Navigate based on role
+          if (user?.username === "frahman" || user?.username === "faisal") {
+            navigate("/admin/dashboard");
+          } else {
+            navigate("/employee/dashboard");
+          }
+        }
       } else {
         toast({
           variant: "destructive",
@@ -64,6 +69,16 @@ const AuthLogin = () => {
       });
     }
   };
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      if (role === "admin") {
+        navigate("/admin/dashboard");
+      } else {
+        navigate("/employee/dashboard");
+      }
+    }
+  }, [isAuthenticated, role, navigate]);
 
   return (
     <div className="mx-auto w-full max-w-md space-y-6">

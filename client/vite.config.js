@@ -1,6 +1,6 @@
-import path from "path"
-import react from "@vitejs/plugin-react"
-import { defineConfig } from "vite"
+import react from "@vitejs/plugin-react";
+import path from "path";
+import { defineConfig } from "vite";
 
 export default defineConfig({
   plugins: [react()],
@@ -10,7 +10,15 @@ export default defineConfig({
     },
   },
   server: {
-    host: true, // or use host: '0.0.0.0'
-    port: 5173
-  }
-})
+    proxy: {
+      "/api": {
+        target: "https://djangoattendance.atpldhaka.com",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ""),
+      },
+    },
+
+    // host: true, // or use host: '0.0.0.0'
+    // port: 5173
+  },
+});
