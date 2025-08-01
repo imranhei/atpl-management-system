@@ -1,21 +1,3 @@
-import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  fetchMeals,
-  addMeal,
-  updateMeal,
-  deleteMeal,
-} from "@/store/admin/menu-slice";
-import { useToast } from "@/hooks/use-toast";
-import { Pencil, Trash2, X } from "lucide-react";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -25,13 +7,30 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Separator } from "@/components/ui/separator";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Separator } from "@/components/ui/separator";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  addMeal,
+  deleteMeal,
+  fetchMeals,
+  updateMeal,
+} from "@/store/admin/menu-slice";
+import { Pencil, Trash2, X } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "sonner";
 
 const initialFormState = {
   itemName: "",
@@ -50,7 +49,6 @@ const MealEntry = () => {
   const [deleteAlertOpen, setDeleteAlertOpen] = useState(false);
 
   const dispatch = useDispatch();
-  const { toast } = useToast();
   const { meals, isLoading } = useSelector((state) => state.meals);
 
   const handleInputChange = (e) => {
@@ -70,27 +68,17 @@ const MealEntry = () => {
     if (editMode) {
       dispatch(updateMeal({ formData, _id: editMealId })).then((data) => {
         if (data.payload?.success) {
-          toast({
-            title: "Meal Item Updated Successfully",
-          });
+          toast.success("Meal Item Updated Successfully");
         } else {
-          toast({
-            title: data.payload?.message || "Failed to update meal item",
-            type: "destructive",
-          });
+          toast.error(data.payload?.message || "Failed to update meal item");
         }
       });
     } else {
       dispatch(addMeal(formData)).then((data) => {
         if (data.payload.success) {
-          toast({
-            title: "Meal Item Added Successfully",
-          });
+          toast.success("Meal Item Added Successfully");
         } else {
-          toast({
-            title: data.payload.message || "Failed to add meal item",
-            type: "destructive",
-          });
+          toast.error(data.payload.message || "Failed to add meal item");
         }
       });
     }
@@ -115,14 +103,9 @@ const MealEntry = () => {
   const handleDelete = () => {
     dispatch(deleteMeal(editMealId)).then((data) => {
       if (data.payload.success) {
-        toast({
-          title: "Meal Item Deleted Successfully",
-        });
+        toast.success("Meal Item Deleted Successfully");
       } else {
-        toast({
-          title: data.payload.message || "Failed to delete meal item",
-          type: "destructive",
-        });
+        toast.error( data.payload.message || "Failed to delete meal item");
       }
       setEditMealId(null);
     });
@@ -161,7 +144,10 @@ const MealEntry = () => {
                 <Trash2
                   size={20}
                   className="text-red-500 cursor-pointer"
-                  onClick={() => {setDeleteAlertOpen(true); setEditMealId(meal._id)}}
+                  onClick={() => {
+                    setDeleteAlertOpen(true);
+                    setEditMealId(meal._id);
+                  }}
                 />
               </TableCell>
             </TableRow>
@@ -207,7 +193,9 @@ const MealEntry = () => {
         {formData.hasVariant && (
           <div>
             <div className="flex items-center gap-2">
-            <Label className="text-nowrap w-24 font-normal">Max Quantity</Label>
+              <Label className="text-nowrap w-24 font-normal">
+                Max Quantity
+              </Label>
               <Input
                 type="text"
                 value={variant}
@@ -292,11 +280,14 @@ const MealEntry = () => {
           <AlertDialogHeader>
             <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
             <AlertDialogDescription>
-              This action cannot be undone. This will permanently delete this item.
+              This action cannot be undone. This will permanently delete this
+              item.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel onClick={() => setEditMealId(null)}>Cancel</AlertDialogCancel>
+            <AlertDialogCancel onClick={() => setEditMealId(null)}>
+              Cancel
+            </AlertDialogCancel>
             <AlertDialogAction onClick={handleDelete}>Delete</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

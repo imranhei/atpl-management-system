@@ -3,8 +3,8 @@ import { login } from "@/store/auth-slice";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 import CommonForm from "../../components/common/form";
-import { useToast } from "../../hooks/use-toast";
 
 const initialState = {
   username: "",
@@ -15,7 +15,6 @@ const AuthLogin = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  const { toast } = useToast();
   const { isAuthenticated, role, isLoading } = useSelector(
     (state) => state.auth
   );
@@ -40,7 +39,7 @@ const AuthLogin = () => {
           locationState: location.state?.from,
         };
 
-        const redirectPath = 
+        const redirectPath =
           pathSources.sessionStorage ||
           pathSources.locationState ||
           pathSources.localStorage ||
@@ -59,11 +58,10 @@ const AuthLogin = () => {
             { replace: true }
           );
         }
+        toast.success("Login successful");
       }
     } catch (err) {
-      toast({
-        variant: "destructive",
-        title: "Login failed",
+      toast.error("Login failed", {
         description: err.message || "Unexpected error occurred",
       });
     }

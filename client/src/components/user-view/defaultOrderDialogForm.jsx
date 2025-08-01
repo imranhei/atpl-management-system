@@ -14,7 +14,7 @@ import {
   updateDefaultMeal,
   fetchDefaultMeal,
 } from "@/store/employee/meal-slice";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner"
 import { Select } from "../ui/select";
 
 const DefaultOrderDialogForm = ({
@@ -27,7 +27,6 @@ const DefaultOrderDialogForm = ({
   setDefaultMealId,
 }) => {
   const dispatch = useDispatch();
-  const { toast } = useToast();
   const { user } = useSelector((state) => state.auth);
 
   const handleChange = (e, itemName, field) => {
@@ -49,14 +48,9 @@ const DefaultOrderDialogForm = ({
         (res) => {
           dispatch(fetchDefaultMeal(user.emp_code));
           if (res.payload.success) {
-            toast({
-              title: "Default Order Updated",
-            });
+            toast.success("Default Order Updated");
           } else {
-            toast({
-              title: "Error updating default order",
-              variant: "destructive",
-            });
+            toast.error("Error updating default order");
           }
           setDefaultMealId(null);
           setIsOpen(false);
@@ -66,14 +60,9 @@ const DefaultOrderDialogForm = ({
       dispatch(createDefaultMeal({ name: user.name, emp_id: user.emp_code, meal: formData })).then((res) => {
         dispatch(fetchDefaultMeal(user.emp_code));
         if (res.payload.success) {
-          toast({
-            title: "Default Order Created",
-          });
+          toast.success("Default Order Created");
         } else {
-          toast({
-            title: "Error creating default order",
-            variant: "destructive",
-          });
+          toast.error("Error creating default order");
         }
         setDefaultMealId(null);
         setIsOpen(false);

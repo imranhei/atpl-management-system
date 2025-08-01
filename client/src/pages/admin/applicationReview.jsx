@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/hooks/use-toast";
 import axios from "axios";
 import {
   CircleCheckBig,
@@ -16,10 +15,10 @@ import {
   useParams,
   useSearchParams,
 } from "react-router-dom";
+import { toast } from "sonner";
 
 const ApplicationReview = () => {
   const navigate = useNavigate();
-  const { toast } = useToast();
   const { id } = useParams();
   const [searchParams] = useSearchParams();
   const action = searchParams.get("action");
@@ -63,16 +62,14 @@ const ApplicationReview = () => {
 
         if (action === "approve") {
           setStatus("approved");
-          toast({ title: "Application Approved" });
+          toast.success("Application Approved");
         } else if (action === "reject") {
           setStatus("rejected");
-          toast({ title: "Application Rejected", variant: "destructive" });
+          toast.error("Application Rejected");
         } else {
           setStatus("error");
-          toast({
-            title: "Unknown Action",
+          toast.error("Unknown Action", {
             description: `Unsupported action: ${action}`,
-            variant: "destructive",
           });
         }
       } catch (err) {
@@ -89,47 +86,37 @@ const ApplicationReview = () => {
           errorMessage.toLowerCase().includes("already approved")
         ) {
           setStatus("already-approved");
-          toast({
-            title: "Already Approved",
+          toast.warning("Already Approved", {
             description: errorMessage,
-            variant: "default",
           });
         } else if (
           err?.response?.status === 400 &&
           errorMessage.toLowerCase().includes("already rejected")
         ) {
           setStatus("already-rejected");
-          toast({
-            title: "Already Rejected",
+          toast.warning("Already Rejected", {
             description: errorMessage,
-            variant: "destructive",
           });
         } else if (
           err?.response?.status === 400 ||
           errorMessage.toLowerCase().includes("Invalid action.")
         ) {
           setStatus("invalid-action");
-          toast({
-            title: "Action is required",
+          toast.error("Action is required", {
             description: errorMessage,
-            variant: "destructive",
           });
         } else if (
           err?.response?.status === 400 ||
           err?.response?.status === 403
         ) {
           setStatus("rejected");
-          toast({
-            title: "Application Rejected",
+          toast.warning("Application Rejected", {
             description: errorMessage,
-            variant: "destructive",
           });
         } else {
           setStatus("error");
-          toast({
-            title: "Failed to process application",
+          toast.error("Failed to process application", {
             description: errorMessage,
-            variant: "destructive",
           });
         }
       } finally {

@@ -1,6 +1,6 @@
-import { Cake, Camera, Mail, Pencil, Phone, RotateCw } from "lucide-react";
-import React, { useState } from "react";
-import { Separator } from "@/components/ui/separator";
+import ImageUpload from "@/components/admin-view/ImageUpload";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import Box from "@/components/ui/box";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -13,15 +13,15 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { format } from "date-fns";
-import Avatar1 from "/avatar.png";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useDispatch, useSelector } from "react-redux";
-import ImageUpload from "@/components/admin-view/ImageUpload";
-import { updateProfileData } from "@/store/employee/profile-slice";
-import { useToast } from "@/hooks/use-toast";
+import { Separator } from "@/components/ui/separator";
 import { checkAuth } from "@/store/auth-slice";
-import Box from "@/components/ui/box";
+import { updateProfileData } from "@/store/employee/profile-slice";
+import { format } from "date-fns";
+import { Cake, Camera, Mail, Phone, RotateCw } from "lucide-react";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "sonner";
+import Avatar1 from "/avatar.png";
 
 const initialFormData = {
   phone_number: "",
@@ -29,7 +29,6 @@ const initialFormData = {
 };
 
 const Profile = () => {
-  const { toast } = useToast();
   const dispatch = useDispatch();
   const { user, profile } = useSelector((state) => state.auth);
   const { isLoading } = useSelector((state) => state.profile);
@@ -41,10 +40,8 @@ const Profile = () => {
 
   const handleImageUpload = async () => {
     if (!imageFile) {
-      toast({
-        title: "No image selected",
+      toast.warning("No image selected", {
         description: "Please select an image to upload.",
-        variant: "warning",
       });
       return;
     }
@@ -62,28 +59,22 @@ const Profile = () => {
 
       if (res.status === 200) {
         dispatch(checkAuth(token));
-        toast({
-          title: "Updated successfully",
+        toast.success("Updated successfully", {
           description: "Your profile picture has been updated.",
-          variant: "success",
         });
 
         setImageFile(null);
         setOpenUpload(false);
       } else {
-        toast({
-          title: "Upload failed",
+        toast.error("Upload failed", {
           description: "Unexpected response received.",
-          variant: "destructive",
         });
       }
     } catch (error) {
       console.log(error.profile_img);
-      toast({
-        title: "Upload failed",
+      toast.error("Upload failed", {
         description:
           error?.profile_img[0] || "Something went wrong while uploading.",
-        variant: "destructive",
       });
     } finally {
       setImageLoadingState(false);
@@ -109,23 +100,18 @@ const Profile = () => {
       if (res.status === 200) {
         dispatch(checkAuth(token));
       }
-      toast({
-        title: "Updated successfully",
+      toast.success("Updated successfully", {
         description: "Your profile has been updated.",
-        variant: "success",
       });
-      setOpen(false);
     } catch (error) {
-      toast({
-        title: "Update failed",
+      toast.error("Update failed", {
         description:
           error?.birthday ||
           error?.phone_number ||
           "Something went wrong while updating.",
-        variant: "destructive",
       });
     } finally {
-      // Optionally add any cleanup logic here
+      setOpen(false);
     }
   };
 

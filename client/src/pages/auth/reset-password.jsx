@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import CommonForm from "../../components/common/form";
 import { resetPasswordFormControls } from "@/components/config";
-import { useDispatch, useSelector } from "react-redux";
-import { useToast } from "../../hooks/use-toast";
 import { resetPassword } from "@/store/auth-slice";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "sonner";
+import CommonForm from "../../components/common/form";
 
 const initialState = {
   old_password: "",
@@ -15,35 +15,28 @@ const ResetPassword = () => {
   const [formData, setFormData] = useState(initialState);
   const dispatch = useDispatch();
   const { isLoading } = useSelector((state) => state.auth);
-  const { toast } = useToast();
 
   const onSubmit = async (event) => {
     event.preventDefault();
 
     if (formData.new_password !== formData.confirm_password) {
-      toast({
-        title: "Password Mismatch",
+      toast.error("Password Mismatch", {
         description: "New password and confirm password do not match.",
-        variant: "destructive",
       });
       return;
     }
 
     dispatch(resetPassword(formData)).then((res) => {
       if (res.error) {
-        toast({
-          title: "Error",
+        toast.error("Error", {
           description:
             typeof res.payload === "string"
               ? res.payload
               : res.payload?.message || "Something went wrong",
-          variant: "destructive",
         });
       } else {
-        toast({
-          title: "Success",
+        toast.success("Success", {
           description: "Password changed successfully.",
-          variant: "default",
         });
         setFormData(initialState);
       }

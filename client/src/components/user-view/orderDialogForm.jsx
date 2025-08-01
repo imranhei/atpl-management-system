@@ -14,7 +14,7 @@ import {
   updateOrder,
   getTodayOrder,
 } from "@/store/employee/meal-slice";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner"
 
 const OrderDialogForm = ({
   isOpen,
@@ -26,7 +26,6 @@ const OrderDialogForm = ({
   setOrderId,
 }) => {
   const dispatch = useDispatch();
-  const { toast } = useToast();
   const { user } = useSelector((state) => state.auth);
 
   const handleChange = (e, itemName, field) => {
@@ -49,14 +48,9 @@ const OrderDialogForm = ({
       dispatch(updateOrder({ id: orderId, date, meal })).then((res) => {
         dispatch(getTodayOrder(user.emp_code));
         if (res.payload.success) {
-          toast({
-            title: "Order Updated",
-          });
+          toast.success("Order Updated");
         } else {
-          toast({
-            title: "Error updating order",
-            variant: "destructive",
-          });
+          toast.error("Error updating order");
         }
         setOrderId(null);
         setIsOpen(false);
@@ -65,14 +59,9 @@ const OrderDialogForm = ({
       dispatch(createOrder({ name: user.name, emp_id: user.emp_code, date, meal })).then((res) => {
         dispatch(getTodayOrder(user.emp_code));
         if (res.payload.success) {
-          toast({
-            title: "Order Placed",
-          });
+          toast.success("Order Placed");
         } else {
-          toast({
-            title: "Error placing order",
-            variant: "destructive",
-          });
+          toast.error("Error creating order");
         }
         setOrderId(null);
         setIsOpen(false);
