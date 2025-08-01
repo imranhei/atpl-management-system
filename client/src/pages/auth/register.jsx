@@ -1,4 +1,3 @@
-import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import CommonForm from "../../components/common/form";
 import { registerFormControls } from "@/components/config";
@@ -18,25 +17,12 @@ const initialState = {
 const AuthResgister = () => {
   const [formData, setFormData] = useState(initialState);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { isLoading } = useSelector((state) => state.auth);
   const { toast } = useToast();
 
   const onSubmit = (event) => {
     event.preventDefault();
     console.log("formData", formData);
-
-    //form validation
-
-    // //email validation
-    // const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    // if (!emailRegex.test(formData.email)) {
-    //   toast({
-    //     variant: "destructive",
-    //     title: "Invalid email address",
-    //   });
-    //   return;
-    // }
 
     // //all fields are required
     if (Object.values(formData).some(value => !value)) {
@@ -79,15 +65,6 @@ const AuthResgister = () => {
           <h1 className="sm:text-3xl text-2xl font-bold tracking-tight text-foreground">
             Add New User
           </h1>
-          {/* <p className="mt-2">
-            Already have an account?
-            <Link
-              className="font-medium ml-2 text-yellowDark hover:text-yellowDark hover:underline"
-              to="/auth/login"
-            >
-              Login
-            </Link>
-          </p> */}
         </div>
         <CommonForm
           formControls={registerFormControls}

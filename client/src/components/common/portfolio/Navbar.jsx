@@ -129,6 +129,7 @@ const Navbar = () => {
         {/* Login */}
         <Link
           to="/auth/login"
+          state={{ from: location.pathname }} // Add this
           className="absolute md:right-10 right-20 hover:text-amber-300 z-50"
           replace
         >

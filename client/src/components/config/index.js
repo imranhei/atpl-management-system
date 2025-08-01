@@ -10,11 +10,9 @@ import {
   ChartNoAxesCombined,
   ChartColumnIncreasing,
   UserPlus,
-  MessagesSquare,
   MessageCircleMore,
   Layers,
   MailWarning,
-  MailCheck
 } from "lucide-react";
 
 export const registerFormControls = [

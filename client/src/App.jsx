@@ -1,12 +1,11 @@
 import { LoaderCircle } from "lucide-react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Route, Routes, useLocation } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import "./App.css";
 import { checkAuth } from "./store/auth-slice";
 
 import AuthLayout from "./components/auth/layout";
-import CheckAuth from "./components/common/check-auth";
 import Layout from "./components/common/portfolio/Layout";
 import SystemLayout from "./components/user-view/layout";
 import AdminAttendance from "./pages/admin/adminAttendance";
@@ -28,28 +27,19 @@ import Dashboard from "./pages/user-view/dashboard";
 import TodayMeals from "./pages/user-view/day-wise-meal";
 import EmployeeLeave from "./pages/user-view/leave";
 import Meal from "./pages/user-view/meal";
+import ProtectedRoute from "./components/common/ProtectedRoute";
+import GuestOnlyRoute from "./components/common/GuestOnlyRoute";
 
 function App() {
   const { isAuthenticated, role, isLoadingAuth } = useSelector(
     (state) => state.auth
   );
   const dispatch = useDispatch();
-  const location = useLocation();
 
   useEffect(() => {
     const token = localStorage.getItem("access_token");
-    dispatch(checkAuth(token));
+    if (token) dispatch(checkAuth(token));
   }, [dispatch]);
-
-  // Save last attempted path for redirect after login
-  useEffect(() => {
-    const publicPaths = ["/", "/leave-review"];
-    const isPublic = publicPaths.some((path) => location.pathname.startsWith(path));
-
-    if (!isPublic) {
-      sessionStorage.setItem("last_path", location.pathname);
-    }
-  }, [location.pathname]);
 
   if (isLoadingAuth) {
     return (
@@ -62,7 +52,16 @@ function App() {
   return (
     <div className="flex flex-col bg-gradient-to-tl overflow-x-hidden from-amber-100 to-cyan-100 dark:from-zinc-900">
       <Routes>
-        <Route path="/leave-review/:id" element={<ApplicationReview />} />
+        <Route path="/leave-review/:id" element={
+          <ProtectedRoute 
+            isAuthenticated={isAuthenticated}
+            isLoadingAuth={isLoadingAuth}
+            role={role} 
+            publicAccess={true}
+          >
+            <ApplicationReview />
+          </ProtectedRoute>
+        } />
         <Route
           path="/"
           element={
@@ -76,19 +75,26 @@ function App() {
         <Route
           path="/auth"
           element={
-            <CheckAuth isAuthenticated={isAuthenticated} role={role}>
+            <GuestOnlyRoute isAuthenticated={isAuthenticated} isLoadingAuth={isLoadingAuth} role={role}>
               <AuthLayout />
-            </CheckAuth>
+            </GuestOnlyRoute>
           }
         >
           <Route path="login" element={<AuthLogin />} />
         </Route>
+
+
         <Route
           path="/employee"
           element={
-            <CheckAuth isAuthenticated={isAuthenticated} role={role} allowedRole="employee">
+            <ProtectedRoute 
+              isAuthenticated={isAuthenticated}
+              isLoadingAuth={isLoadingAuth}
+              role={role} 
+              allowedRoles={['employee']}
+            >
               <SystemLayout />
-            </CheckAuth>
+            </ProtectedRoute>
           }
         >
           <Route path="dashboard" element={<Dashboard />} />
@@ -103,9 +109,13 @@ function App() {
         <Route
           path="/admin"
           element={
-            <CheckAuth isAuthenticated={isAuthenticated} role={role} allowedRole="admin">
+            <ProtectedRoute 
+              isAuthenticated={isAuthenticated} 
+              role={role} 
+              allowedRoles={['admin']}
+            >
               <SystemLayout />
-            </CheckAuth>
+            </ProtectedRoute>
           }
         >
           <Route path="dashboard" element={<AdminDashboard />} />

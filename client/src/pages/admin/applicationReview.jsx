@@ -9,7 +9,7 @@ import {
   TriangleAlert,
 } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import {
   Link,
   useNavigate,
@@ -18,7 +18,6 @@ import {
 } from "react-router-dom";
 
 const ApplicationReview = () => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const { toast } = useToast();
   const { id } = useParams();
@@ -42,7 +41,6 @@ const ApplicationReview = () => {
       !user ||
       role !== "admin" ||
       !token ||
-      // !action ||
       !id
     ) {
       return;
@@ -78,9 +76,11 @@ const ApplicationReview = () => {
           });
         }
       } catch (err) {
+        console.log(err);
         const errorMessage =
           err?.response?.data?.message ||
           err?.response?.data?.detail ||
+          err?.response?.data?.error ||
           err.message ||
           "Something went wrong.";
 
@@ -101,6 +101,16 @@ const ApplicationReview = () => {
           setStatus("already-rejected");
           toast({
             title: "Already Rejected",
+            description: errorMessage,
+            variant: "destructive",
+          });
+        } else if (
+          err?.response?.status === 400 ||
+          errorMessage.toLowerCase().includes("Invalid action.")
+        ) {
+          setStatus("invalid-action");
+          toast({
+            title: "Action is required",
             description: errorMessage,
             variant: "destructive",
           });
@@ -130,12 +140,9 @@ const ApplicationReview = () => {
     approveOrReject();
   }, [isAuthenticated, user, id, action]);
 
-  const handleBack = () => {
-    if (window.history.length > 2) {
-      navigate(-1);
-    } else {
-      navigate(role === "admin" ? "/admin/dashboard" : "/");
-    }
+  const handleClick = () => {
+    if (role === "employee") navigate("/employee/dashboard");
+    else navigate("/auth/login");
   };
 
   if (isLoading || loadingApproval) {
@@ -146,15 +153,47 @@ const ApplicationReview = () => {
     );
   }
 
-  // Unauthorized view
-  if (!isAuthenticated || role !== "admin") {
+  if (!isAuthenticated) {
+    return (
+      <div className="flex items-center justify-center min-w-screen min-h-screen text-amber-500">
+        <div className="flex flex-col items-center gap-6 border p-6 rounded-lg bg-black/10 shadow-md">
+          <TriangleAlert size={60} />
+          <h1 className="text-2xl font-bold">Unauthorized Access</h1>
+          <p className="text-center">Please login to view this page</p>
+          <Button
+            onClick={() => {
+              // Store current path before navigating to login
+              const currentPath =
+                window.location.pathname + window.location.search;
+              sessionStorage.setItem("last_path", currentPath);
+              localStorage.setItem("last_path_fallback", currentPath);
+              navigate("/auth/login", {
+                state: { from: currentPath }, // Also pass via navigation state
+              });
+            }}
+            className="mt-2"
+          >
+            Login
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+  if (role !== "admin") {
     return (
       <div className="flex items-center justify-center min-w-screen min-h-screen text-red-500">
         <div className="flex flex-col items-center gap-6 border p-6 rounded-lg bg-black/10 shadow-md">
           <TriangleAlert size={60} />
-          <h1 className="text-2xl font-bold">Unauthorized Access!</h1>
-          <Button onClick={handleBack} className="mt-2">
-            Go Back
+          <h1 className="text-2xl font-bold">Forbidden Access</h1>
+          <p className="text-center">
+            You don't have permission to view this page
+          </p>
+          <Button
+            onClick={() => navigate("/employee/dashboard")}
+            className="mt-2"
+          >
+            Go to Dashboard
           </Button>
         </div>
       </div>
@@ -201,7 +240,16 @@ const ApplicationReview = () => {
           <h1 className="text-2xl font-bold text-yellow-500">
             Failed to Process Application!
           </h1>
-          <Button onClick={handleBack}>Try Again or Go Back</Button>
+          <Button onClick={handleClick}>Try Again or Go Back</Button>
+        </div>
+      ) : status === "invalid-action" ? (
+        <div className="flex flex-col items-center gap-6 border p-12 rounded-lg bg-yellow-900/10 shadow-md">
+          <div className="flex bg-yellow-600/10 p-6 rounded-full">
+            <TriangleAlert size={60} className="text-yellow-500" />
+          </div>
+          <h1 className="text-2xl font-bold text-yellow-500">
+            Invalid Action!
+          </h1>
         </div>
       ) : (
         <div className="text-muted-foreground">Processing your request...</div>

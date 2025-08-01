@@ -169,67 +169,6 @@ const LeaveSummary = () => {
           ))}
         </div>
       </div>
-      {/* <h1 className="text-lg font-semibold pb-2 text-textHead text-center">
-        Leave Report
-      </h1>
-      <div className="flex flex-wrap gap-4 justify-center">
-        <div className="h-fit w-72 p-4 bg-container rounded-lg shadow-spread border space-y-1 relative flex flex-col items-center justify-start overflow-hidden">
-          <div className="absolute w-full h-1/4 top-0 left-0 bg-muted z-0"></div>
-
-          <div className="h-20 w-20 rounded-full bg-teal-500 mx-auto z-10 relative"></div>
-
-          <h2 className="text-lg text-center font-bold text-muted-foreground relative truncate z-10">
-            Imran Hossain
-          </h2>
-          <div className="border-b w-full"></div>
-          <div className="flex justify-between items-end w-full pt-2 text-sm">
-            <div className="text-muted-foreground">Leave Taken</div>
-            <div className="font-semibold">
-              <span className="text-rose-400 text-3xl">10</span>
-              <span className="text-muted-foreground">/</span>
-              <span className="text-green-400">21</span>
-            </div>
-          </div>
-          <div className="w-full h-1 bg-gray-200 relative z-10">
-            <div className="absolute left-0 z-20 h-full w-[calc((10/21)*100%)] bg-rose-400"></div>
-          </div>
-          <div className="w-full rounded mt-2">
-            <ChartContainer config={chartConfig}>
-              <BarChart
-                accessibilityLayer
-                data={chartData}
-                margin={{
-                  top: 25,
-                  bottom: 8,
-                }}
-              >
-                <CartesianGrid vertical={false} />
-                <XAxis
-                  dataKey="month"
-                  tickLine={false}
-                  // axisLine={false}
-                  tickFormatter={(value) => value.slice(0, 3)}
-                  angle={-90}
-                  textAnchor="end"
-                  dx={-5}
-                />
-                <ChartTooltip
-                  cursor={false}
-                  content={<ChartTooltipContent hideLabel />}
-                />
-                <Bar dataKey="leave" fill="#fb7185" radius={4}>
-                  <LabelList
-                    position="top"
-                    offset={6}
-                    className="fill-foreground"
-                    fontSize={12}
-                  />
-                </Bar>
-              </BarChart>
-            </ChartContainer>
-          </div>
-        </div>
-      </div> */}
     </div>
   );
 };

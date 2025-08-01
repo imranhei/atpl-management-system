@@ -14,7 +14,6 @@ import { format, subDays } from "date-fns";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useReactToPrint } from "react-to-print";
 import PrintReportOverview from "@/components/admin-view/PrintReportOverview";
-import { Card } from "@/components/ui/card";
 import Box from "@/components/ui/box";
 
 const Reports = () => {

@@ -24,7 +24,6 @@ const MenuItems = () => {
       {employeeMenuItems.map((menuItem) => {
         return (
           <Link
-            // onClick={() => handleNavigate(menuItem)}
             key={menuItem.id}
             to={menuItem.path}
             className={`text-sm font-medium cursor-pointer hover:text-primary ${
@@ -42,14 +41,12 @@ const MenuItems = () => {
 };
 
 const HeaderRightContent = () => {
-  const { user, isAuthenticated } = useSelector((state) => state.auth);
-  const [openCartSheet, setOpenCartSheet] = useState(false);
+  const { user } = useSelector((state) => state.auth);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const handleLogout = () => {
     // dispatch(logoutUser()); //if i have any subdomain
-    // dispatch(resetTokenAndCredentials()); //if i don't have any subdomain
+    dispatch(resetTokenAndCredentials()); //if i don't have any subdomain
     navigate("/auth/login");
   };
 

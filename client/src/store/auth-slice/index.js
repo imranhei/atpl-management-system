@@ -7,7 +7,7 @@ const initialState = {
   user: null,
   profile: null,
   isLoadingAuth: false,
-  role: "employee",
+  role: "",
 };
 
 export const login = createAsyncThunk(
@@ -162,6 +162,8 @@ const authSlice = createSlice({
             action.payload.user.username === "faisal"
           ) {
             state.role = "admin";
+          } else {
+            state.role = "employee";
           }
         }
       })

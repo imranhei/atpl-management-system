@@ -1,5 +1,4 @@
 import React from "react";
-import { Pencil, Trash2 } from "lucide-react";
 import {
   Table,
   TableBody,

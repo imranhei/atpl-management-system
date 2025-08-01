@@ -5,12 +5,10 @@ import {
   Table,
   TableBody,
   TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Skeleton } from "@/components/ui/skeleton";
 import { ArrowUpDown, Users } from "lucide-react";
 import TextChangeAnimation from "@/components/common/TextChangeAnimation";
 import { Card } from "@/components/ui/card";
@@ -119,7 +117,6 @@ const AdminDashboard = () => {
           <TableHeader>
             <TableRow className="text-nowrap bg-gray-100 dark:bg-slate-900">
               <TableHead>Name</TableHead>
-              {/* <TableHead className="text-center">Date</TableHead> */}
               <TableHead className="text-center">
                 <div className="flex items-center justify-center gap-2">
                   Entry{" "}

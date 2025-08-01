@@ -1,8 +1,26 @@
-import { getAttendance } from "@/store/employee/attendance-slice";
-import { getEmployeeDetails } from "@/store/admin/employee-details-slice";
-import { useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { format, subDays } from "date-fns";
+import TextChangeAnimation from "@/components/common/TextChangeAnimation";
+import Box from "@/components/ui/box";
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Command,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+} from "@/components/ui/command";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   Table,
   TableBody,
@@ -12,39 +30,20 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Skeleton } from "@/components/ui/skeleton";
-import { CalendarIcon, Check, ChevronsUpDown, FilterX } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
-  Command,
-  CommandInput,
-  CommandGroup,
-  CommandItem,
-} from "@/components/ui/command";
 import PaginationWithEllipsis from "@/components/user-view/paginationWithEllipsis";
-import TextChangeAnimation from "@/components/common/TextChangeAnimation";
-import { Card } from "@/components/ui/card";
-import Box from "@/components/ui/box";
+import { cn } from "@/lib/utils";
+import { getEmployeeDetails } from "@/store/admin/employee-details-slice";
+import { getAttendance } from "@/store/employee/attendance-slice";
+import { format } from "date-fns";
+import { CalendarIcon, Check, ChevronsUpDown, FilterX } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 const AdminAttendance = () => {
   const dispatch = useDispatch();
@@ -54,8 +53,8 @@ const AdminAttendance = () => {
   const { results, pagination } = attendance || {};
 
   const [empListOpen, setEmpListOpen] = useState(false);
+  // const [dateRange, setDateRange] = useState(null);
   const [selected, setSelected] = useState(null);
-  const [dateRange, setDateRange] = useState(null);
   const [customDate, setCustomDate] = useState({ from: null, to: null });
   const [params, setParams] = useState({
     emp_code: null,
@@ -65,7 +64,7 @@ const AdminAttendance = () => {
     end_date: null,
   });
 
-  const formatDate = (date) => date ? format(date, "yyyy-MM-dd") : null;
+  const formatDate = (date) => (date ? format(date, "yyyy-MM-dd") : null);
 
   const fetchAttendance = (override = {}) => {
     const token = localStorage.getItem("access_token");
@@ -84,7 +83,9 @@ const AdminAttendance = () => {
   }, [dispatch]);
 
   const handleEmployeeChange = (value) => {
-    const selectedPerson = employeeDetails.find((emp) => `${emp.first_name} ${emp.last_name}` === value);
+    const selectedPerson = employeeDetails.find(
+      (emp) => `${emp.first_name} ${emp.last_name}` === value
+    );
     const empCode = selectedPerson?.emp_code;
     setSelected((prev) => (prev?.emp_code === empCode ? null : selectedPerson));
     setParams((prev) => ({
@@ -94,29 +95,16 @@ const AdminAttendance = () => {
     }));
   };
 
-  const handleRangeSelect = (value) => {
-    const today = new Date();
-    const from = subDays(today, Number(value));
-    setDateRange(value);
-    setCustomDate({ from: null, to: null });
-    setParams((prev) => ({
-      ...prev,
-      start_date: formatDate(from),
-      end_date: formatDate(today),
-      page: 1,
-    }));
-  };
-
   const handleCustomDateChange = (range) => {
-    setCustomDate(range);
-    setDateRange(null);
-    setParams((prev) => ({
-      ...prev,
-      start_date: formatDate(range?.from),
-      end_date: formatDate(range?.to),
-      page: 1,
-    }));
-  };
+  setCustomDate(range);
+  setParams((prev) => ({
+    ...prev,
+    start_date: formatDate(range?.from),
+    end_date: formatDate(range?.to),
+    page: 1,
+  }));
+};
+
 
   const handlePerPageChange = (value) => {
     setParams((prev) => ({ ...prev, page: 1, per_page: parseInt(value) }));
@@ -128,13 +116,18 @@ const AdminAttendance = () => {
 
   const handleClearDate = () => {
     setCustomDate({ from: null, to: null });
-    setDateRange(null);
-    setParams((prev) => ({ ...prev, start_date: null, end_date: null, page: 1 }));
+    // setDateRange(null);
+    setParams((prev) => ({
+      ...prev,
+      start_date: null,
+      end_date: null,
+      page: 1,
+    }));
   };
 
   const displayDate = () => {
+    if (!customDate || !customDate.from) return "Pick a date range";
     const { from, to } = customDate;
-    if (!from) return "Pick a date range";
     return to
       ? `${format(from, "LLL dd, y")} - ${format(to, "LLL dd, y")}`
       : format(from, "LLL dd, y");
@@ -142,7 +135,7 @@ const AdminAttendance = () => {
 
   const formatDateToReadable = (dateString) => {
     if (!dateString) return "";
-  
+
     const date = new Date(dateString);
     return date.toLocaleDateString("en-US", {
       day: "2-digit",
@@ -165,7 +158,12 @@ const AdminAttendance = () => {
                 selected ? "" : "text-muted-foreground"
               }`}
             >
-              {selected?.first_name ? `${(selected?.first_name + " " + selected?.last_name).split(" ").slice(0, 2).join(" ")}` : "Select Employee"}
+              {selected?.first_name
+                ? `${(selected?.first_name + " " + selected?.last_name)
+                    .split(" ")
+                    .slice(0, 2)
+                    .join(" ")}`
+                : "Select Employee"}
               <ChevronsUpDown className="opacity-50" />
             </Button>
           </PopoverTrigger>
@@ -176,14 +174,20 @@ const AdminAttendance = () => {
                 {employeeDetails?.map((person) => (
                   <CommandItem
                     key={person.emp_code}
-                    value={`${(person?.first_name + " " + person?.last_name).split(" ").slice(0, 3).join(" ")}`}
+                    value={`${(person?.first_name + " " + person?.last_name)
+                      .split(" ")
+                      .slice(0, 3)
+                      .join(" ")}`}
                     onSelect={(value) => {
-                        handleEmployeeChange(value);
-                        setEmpListOpen(false);
-                        triggerRef.current?.focus();
+                      handleEmployeeChange(value);
+                      setEmpListOpen(false);
+                      triggerRef.current?.focus();
                     }}
                   >
-                    {`${(person?.first_name + " " + person?.last_name).split(" ").slice(0, 3).join(" ")}`}
+                    {`${(person?.first_name + " " + person?.last_name)
+                      .split(" ")
+                      .slice(0, 3)
+                      .join(" ")}`}
                     <Check
                       className={cn(
                         "ml-auto",
@@ -198,26 +202,6 @@ const AdminAttendance = () => {
             </Command>
           </PopoverContent>
         </Popover>
-        {/* <Select
-          value={dateRange || ""} // Fallback to empty string if null/undefined
-          onValueChange={handleRangeSelect}
-        >
-          <SelectTrigger
-            className={`min-w-28 w-40 px-2 bg-background ${
-              dateRange ? "" : "text-muted-foreground"
-            }`}
-          >
-            <SelectValue
-              placeholder="Select range"
-              className="placeholder:text-opacity-30"
-            />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="7">Last 7 days</SelectItem>
-            <SelectItem value="15">Last 15 days</SelectItem>
-            <SelectItem value="30">Last 30 days</SelectItem>
-          </SelectContent>
-        </Select> */}
         <div className="min-w-[200px] flex-1 flex items-center gap-1">
           <Popover>
             <PopoverTrigger asChild>
@@ -247,114 +231,123 @@ const AdminAttendance = () => {
             </PopoverContent>
           </Popover>
           <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                onClick={handleClearDate}
-                disabled={!params.start_date && !params.end_date}
-                className="sm:p-4 p-2 shadow"
-              >
-                <FilterX size={20} />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Clear filter</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  onClick={handleClearDate}
+                  disabled={!params.start_date && !params.end_date}
+                  className="sm:p-4 p-2 shadow"
+                >
+                  <FilterX size={20} />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Clear filter</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </div>
       </div>
       <Box>
         <div className="text-lg font-bold py-2 text-center text-textHead">
-        Atpl Dhaka Attendance
-      </div>
+          Atpl Dhaka Attendance
+        </div>
         <Table className="bg-background rounded">
-        <TableHeader>
-          <TableRow className="text-nowrap bg-gray-100 dark:bg-slate-900">
-            <TableHead>Name</TableHead>
-            <TableHead className="text-center">Date</TableHead>
-            <TableHead className="text-center">Entry</TableHead>
-            <TableHead className="text-center">Exit</TableHead>
-            <TableHead className="text-center">Duration</TableHead>
-            <TableHead className="text-center">Status</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {isLoading ? (
-            <TableRow>
-              <TableCell colSpan={6} className="text-center space-y-2">
-                {Array.from({ length: 10 }).map((_, index) => (
-                  <Skeleton
-                    key={index}
-                    className="w-full h-[29px] rounded-lg"
-                  />
-                ))}
-              </TableCell>
+          <TableHeader>
+            <TableRow className="text-nowrap bg-gray-100 dark:bg-slate-900">
+              <TableHead>Name</TableHead>
+              <TableHead className="text-center">Date</TableHead>
+              <TableHead className="text-center">Entry</TableHead>
+              <TableHead className="text-center">Exit</TableHead>
+              <TableHead className="text-center">Duration</TableHead>
+              <TableHead className="text-center">Status</TableHead>
             </TableRow>
-          ) : results?.length > 0 ? (
-            results.map((punch, index) => (
-              <TableRow
-                key={index}
-                className="text-center text-nowrap text-textBody"
-              >
-                <TableCell className="text-left">{`${(punch?.first_name + " " + punch?.last_name).split(" ").slice(0, 2).join(" ")}`}</TableCell>
-                <TableCell >{formatDateToReadable(punch?.date)}</TableCell>
-                <TableCell>{punch?.first_punch_time}</TableCell>
-                <TableCell>{punch?.last_punch_time}</TableCell>
-                <TableCell className="font-semibold">{punch?.total_hour}</TableCell>
-                <TableCell className="!p-1 min-w-[136px] w-44 sm:text-sm text-xs">
-                  <TextChangeAnimation punch={punch} />
+          </TableHeader>
+          <TableBody>
+            {isLoading ? (
+              <TableRow>
+                <TableCell colSpan={6} className="text-center space-y-2">
+                  {Array.from({ length: 10 }).map((_, index) => (
+                    <Skeleton
+                      key={index}
+                      className="w-full h-[29px] rounded-lg"
+                    />
+                  ))}
                 </TableCell>
               </TableRow>
-            ))
-          ) : (
-            <TableRow>
-              <TableCell colSpan={6} className="text-center">
-                No attendance data found.
-              </TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-        <TableFooter>
-          {isLoading ? (
-            <TableRow>
-              <TableCell colSpan={6}>
-                <Skeleton className="w-full h-[28px] rounded-lg" />
-              </TableCell>
-            </TableRow>
-          ) : (
-            <TableRow>
-              <TableCell colSpan={6} className="text-right">
-                <div className="flex justify-between items-center">
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm">Show</span>
-                    <Select
-                      onValueChange={handlePerPageChange}
-                      defaultValue={params.per_page.toString()}
-                    >
-                      <SelectTrigger className="w-20">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="10">10</SelectItem>
-                        <SelectItem value="15">15</SelectItem>
-                        <SelectItem value="20">20</SelectItem>
-                        <SelectItem value="25">25</SelectItem>
-                        <SelectItem value="30">30</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <span className="text-sm">entries</span>
+            ) : results?.length > 0 ? (
+              results.map((punch, index) => (
+                <TableRow
+                  key={index}
+                  className="text-center text-nowrap text-textBody"
+                >
+                  <TableCell className="text-left">{`${(
+                    punch?.first_name +
+                    " " +
+                    punch?.last_name
+                  )
+                    .split(" ")
+                    .slice(0, 2)
+                    .join(" ")}`}</TableCell>
+                  <TableCell>{formatDateToReadable(punch?.date)}</TableCell>
+                  <TableCell>{punch?.first_punch_time}</TableCell>
+                  <TableCell>{punch?.last_punch_time}</TableCell>
+                  <TableCell className="font-semibold">
+                    {punch?.total_hour}
+                  </TableCell>
+                  <TableCell className="!p-1 min-w-[136px] w-44 sm:text-sm text-xs">
+                    <TextChangeAnimation punch={punch} />
+                  </TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={6} className="text-center">
+                  No attendance data found.
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+          <TableFooter>
+            {isLoading ? (
+              <TableRow>
+                <TableCell colSpan={6}>
+                  <Skeleton className="w-full h-[28px] rounded-lg" />
+                </TableCell>
+              </TableRow>
+            ) : (
+              <TableRow>
+                <TableCell colSpan={6} className="text-right">
+                  <div className="flex justify-between items-center">
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm">Show</span>
+                      <Select
+                        onValueChange={handlePerPageChange}
+                        defaultValue={params.per_page.toString()}
+                      >
+                        <SelectTrigger className="w-20">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="10">10</SelectItem>
+                          <SelectItem value="15">15</SelectItem>
+                          <SelectItem value="20">20</SelectItem>
+                          <SelectItem value="25">25</SelectItem>
+                          <SelectItem value="30">30</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <span className="text-sm">entries</span>
+                    </div>
+                    <p>
+                      Showing {results?.length || 0} of {pagination?.total || 0}{" "}
+                      entries
+                    </p>
                   </div>
-                  <p>
-                    Showing {results?.length || 0} of {pagination?.total || 0}{" "}
-                    entries
-                  </p>
-                </div>
-              </TableCell>
-            </TableRow>
-          )}
-        </TableFooter>
-      </Table>
+                </TableCell>
+              </TableRow>
+            )}
+          </TableFooter>
+        </Table>
       </Box>
 
       {pagination?.last_page > 1 && (

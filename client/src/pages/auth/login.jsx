@@ -2,7 +2,7 @@ import { loginFormControls } from "@/components/config";
 import { login } from "@/store/auth-slice";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import CommonForm from "../../components/common/form";
 import { useToast } from "../../hooks/use-toast";
 
@@ -14,52 +14,51 @@ const initialState = {
 const AuthLogin = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
   const { toast } = useToast();
   const { isAuthenticated, role, isLoading } = useSelector(
     (state) => state.auth
   );
   const [formData, setFormData] = useState(initialState);
 
+  const lastPath = sessionStorage.getItem("last_path");
+
   const onSubmit = async (event) => {
     event.preventDefault();
 
     try {
-      const res = await dispatch(login(formData)); // Await is required
+      const res = await dispatch(login(formData));
 
       if (res.meta.requestStatus === "fulfilled") {
-        const user = res.payload.user; // Assume payload = { access, user: { role, ... } }
-
-        toast({
-          variant: "success",
-          title: "Login successful",
-        });
-
+        const user = res.payload.user;
         localStorage.setItem("access_token", res.payload.access);
 
-        const lastPath = sessionStorage.getItem("last_path");
+        // Check for stored path first
+        const pathSources = {
+          sessionStorage: sessionStorage.getItem("last_path"),
+          localStorage: localStorage.getItem("last_path_fallback"),
+          locationState: location.state?.from,
+        };
 
-        if (
-          lastPath &&
-          lastPath !== "/" &&
-          !lastPath.includes("/auth/login") &&
-          !lastPath.includes("/auth/register")
-        ) {
-          sessionStorage.removeItem("last_path"); // Optional: clean up
-          navigate(lastPath, { replace: true });
+        const redirectPath = 
+          pathSources.sessionStorage ||
+          pathSources.locationState ||
+          pathSources.localStorage ||
+          null;
+
+        // Only redirect to stored path if it's a leave-review page
+        sessionStorage.removeItem("last_path");
+        localStorage.removeItem("last_path_fallback");
+
+        // Redirect logic
+        if (redirectPath && redirectPath.startsWith("/leave-review/")) {
+          navigate(redirectPath, { replace: true });
         } else {
-          // Navigate based on role
-          if (user?.username === "frahman" || user?.username === "faisal") {
-            navigate("/admin/dashboard");
-          } else {
-            navigate("/employee/dashboard");
-          }
+          navigate(
+            user.role === "admin" ? "/admin/dashboard" : "/employee/dashboard",
+            { replace: true }
+          );
         }
-      } else {
-        toast({
-          variant: "destructive",
-          title: "Login failed",
-          description: res.payload?.message || "An unexpected error occurred.",
-        });
       }
     } catch (err) {
       toast({
@@ -71,14 +70,15 @@ const AuthLogin = () => {
   };
 
   useEffect(() => {
+    console.log("isAuthenticated:", isAuthenticated);
     if (isAuthenticated) {
-      if (role === "admin") {
-        navigate("/admin/dashboard");
-      } else {
-        navigate("/employee/dashboard");
-      }
+      const fromPath = location.state?.from;
+      const defaultPath =
+        role === "admin" ? "/admin/dashboard" : "/employee/dashboard";
+
+      navigate(fromPath || defaultPath, { replace: true });
     }
-  }, [isAuthenticated, role, navigate]);
+  }, [isAuthenticated, role, navigate, location.state]);
 
   return (
     <div className="mx-auto w-full max-w-md space-y-6">
