@@ -83,28 +83,23 @@ const AdminAttendance = () => {
   }, [dispatch]);
 
   const handleEmployeeChange = (value) => {
-    const selectedPerson = employeeDetails.find(
-      (emp) => `${emp.first_name} ${emp.last_name}` === value
-    );
-    const empCode = selectedPerson?.emp_code;
-    setSelected((prev) => (prev?.emp_code === empCode ? null : selectedPerson));
+    setSelected((prev) => (prev?.emp_code === value.emp_code ? null : value));
     setParams((prev) => ({
       ...prev,
-      emp_code: prev?.emp_code === empCode ? null : empCode,
+      emp_code: prev?.emp_code === value.emp_code ? null : value.emp_code,
       page: 1,
     }));
   };
 
   const handleCustomDateChange = (range) => {
-  setCustomDate(range);
-  setParams((prev) => ({
-    ...prev,
-    start_date: formatDate(range?.from),
-    end_date: formatDate(range?.to),
-    page: 1,
-  }));
-};
-
+    setCustomDate(range);
+    setParams((prev) => ({
+      ...prev,
+      start_date: formatDate(range?.from),
+      end_date: formatDate(range?.to),
+      page: 1,
+    }));
+  };
 
   const handlePerPageChange = (value) => {
     setParams((prev) => ({ ...prev, page: 1, per_page: parseInt(value) }));
@@ -158,10 +153,10 @@ const AdminAttendance = () => {
                 selected ? "" : "text-muted-foreground"
               }`}
             >
-              {selected?.first_name
+              {selected
                 ? `${(selected?.first_name + " " + selected?.last_name)
                     .split(" ")
-                    .slice(0, 2)
+                    .slice(0, 3)
                     .join(" ")}`
                 : "Select Employee"}
               <ChevronsUpDown className="opacity-50" />
@@ -174,12 +169,9 @@ const AdminAttendance = () => {
                 {employeeDetails?.map((person) => (
                   <CommandItem
                     key={person.emp_code}
-                    value={`${(person?.first_name + " " + person?.last_name)
-                      .split(" ")
-                      .slice(0, 3)
-                      .join(" ")}`}
+                    value={person}
                     onSelect={(value) => {
-                      handleEmployeeChange(value);
+                      handleEmployeeChange(person);
                       setEmpListOpen(false);
                       triggerRef.current?.focus();
                     }}

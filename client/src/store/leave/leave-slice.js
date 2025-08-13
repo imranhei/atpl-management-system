@@ -1,14 +1,16 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const initialState = {
   defaultLeaveData: null,
   leaveApplicationList: [],
+  leaveSummary: [],
   isLoading: false,
+  isSubmiting: false,
+  pagination: null,
   error: null,
 };
 
-// Add a new meal
 export const addLeaveApplication = createAsyncThunk(
   "defaultLeaveData/addLeaveApplication",
   async (data, { rejectWithValue }) => {
@@ -35,20 +37,41 @@ export const addLeaveApplication = createAsyncThunk(
 
 export const fetchLeaveApplicationList = createAsyncThunk(
   "defaultLeaveData/fetchLeaveApplicationList",
-  async (_, { rejectWithValue }) => {
-    const token = sessionStorage.getItem("token");
-    const parsedToken = JSON.parse(token);
-
+  async (params, { rejectWithValue }) => {
+    const token = localStorage.getItem("access_token");
     try {
-      // const queryString = params
-      //   ? `?${new URLSearchParams(params).toString()}`
-      //   : "";
       const response = await axios.get(
-        `${import.meta.env.VITE_API_URL}/api/records`,
+        `${import.meta.env.VITE_API_URL}/api/leave/list/`,
         {
           headers: {
-            Authorization: `Bearer ${parsedToken}`,
+            Authorization: `Bearer ${token}`,
           },
+          params,
+        }
+      );
+
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data ||
+          "An error occurred while fetching the leave application list."
+      );
+    }
+  }
+);
+
+export const fetchLeaveSummary = createAsyncThunk(
+  "defaultLeaveData/fetchLeaveSummary",
+  async (params = {}, { rejectWithValue }) => {
+    const token = localStorage.getItem("access_token");
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL}/api/leave/summary/`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          params,
         }
       );
 
@@ -70,14 +93,14 @@ const leaveSlice = createSlice({
     builder
       // Add a new leave application
       .addCase(addLeaveApplication.pending, (state) => {
-        state.isLoading = true;
+        state.isSubmiting = true;
       })
       .addCase(addLeaveApplication.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.defaultLeaveData = action.payload.results;
+        state.isSubmiting = false;
+        state.leaveApplicationList.push(action.payload.data);
       })
       .addCase(addLeaveApplication.rejected, (state, action) => {
-        state.isLoading = false;
+        state.isSubmiting = false;
         state.error = action.payload;
       })
 
@@ -88,8 +111,20 @@ const leaveSlice = createSlice({
       .addCase(fetchLeaveApplicationList.fulfilled, (state, action) => {
         state.isLoading = false;
         state.leaveApplicationList = action.payload.results;
+        state.pagination = action.payload.pagination;
       })
       .addCase(fetchLeaveApplicationList.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+      .addCase(fetchLeaveSummary.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchLeaveSummary.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.leaveSummary = action.payload.results;
+      })
+      .addCase(fetchLeaveSummary.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
       });

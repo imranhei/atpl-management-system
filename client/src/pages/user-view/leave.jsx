@@ -1,6 +1,10 @@
 import LeaveApplicationTable from "@/components/admin-view/LeaveApplicationTable";
 import LeaveForm from "@/components/admin-view/leaveForm";
-import { addLeaveApplication } from "@/store/leave/leave-slice";
+import PaginationWithEllipsis from "@/components/user-view/paginationWithEllipsis";
+import {
+  addLeaveApplication,
+  fetchLeaveApplicationList,
+} from "@/store/leave/leave-slice";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
@@ -8,30 +12,36 @@ import { toast } from "sonner";
 const initialState = {
   leave_type: "full_day",
   reason: "",
-  date: "",
-  start_date: "",
-  end_date: "",
+  date: [], // always array of 'yyyy-MM-dd'
 };
 
 const EmployeeLeave = () => {
   const dispatch = useDispatch();
-  const { defaultLeaveData, leaveApplicationList, isLoading, error } =
-    useSelector((state) => state.leaveApplication);
-  const { user } = useSelector((state) => state.auth);
+  const { leaveApplicationList, pagination, isLoading, isSubmiting } = useSelector(
+    (state) => state.leaveApplication
+  );
   const [formData, setFormData] = useState(initialState);
+  const [params, setParams] = useState({
+    page: 1,
+    per_page: 15,
+  });
 
-  useEffect(() => {
-    // dispatch(fetchLeaveApplicationList());
-  }, [dispatch]);
+  const handleClearForm = () => setFormData(initialState);
 
-  const handleClearForm = () => {
-    setFormData(initialState);
-  };
+  const handleSubmit = async (data) => {
+    if (!Array.isArray(data.date) || data.date.length === 0) {
+      toast.error("Please select at least one date.");
+      return;
+    }
 
-  const handleSubmit = async (formData) => {
-    // optionally clean up: remove empty keys
+    // Require reason for all types (dropdown for full, textarea for half)
+    if (!data.reason || String(data.reason).trim() === "") {
+      toast.error("Please provide a reason.");
+      return;
+    }
+
     const cleaned = Object.fromEntries(
-      Object.entries(formData).filter(([_, v]) => v)
+      Object.entries(data).filter(([_, v]) => !(v === "" || v == null))
     );
 
     dispatch(addLeaveApplication(cleaned)).then((res) => {
@@ -46,11 +56,22 @@ const EmployeeLeave = () => {
         toast.success("Success", {
           description: "Leave application submitted successfully.",
         });
+        setFormData(initialState);
       }
-
-      setFormData(initialState);
     });
   };
+
+  // const handlePerPageChange = (value) => {
+  //   setParams((prev) => ({ ...prev, page: 1, per_page: parseInt(value) }));
+  // };
+
+  const handlePageChange = (page) => {
+    setParams((prev) => ({ ...prev, page }));
+  };
+
+  useEffect(() => {
+    dispatch(fetchLeaveApplicationList(params));
+  }, [params]);
 
   return (
     <div className="m-4 sm:space-y-4 space-y-3">
@@ -59,8 +80,16 @@ const EmployeeLeave = () => {
         setFormData={setFormData}
         onClearForm={handleClearForm}
         onSubmit={handleSubmit}
+        isLoading={isSubmiting}
       />
-      <LeaveApplicationTable data={leaveApplicationList} />
+      <LeaveApplicationTable data={leaveApplicationList} isLoading={isLoading} />
+      {pagination?.last_page > 1 && (
+        <PaginationWithEllipsis
+          currentPage={params.page}
+          totalPages={pagination?.last_page}
+          onPageChange={handlePageChange}
+        />
+      )}
     </div>
   );
 };

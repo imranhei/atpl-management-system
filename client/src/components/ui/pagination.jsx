@@ -1,6 +1,6 @@
 import * as React from "react"
 import { cn } from "@/lib/utils"
-import { buttonVariants } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { ChevronLeftIcon, ChevronRightIcon, DotsHorizontalIcon } from "@radix-ui/react-icons"
 
 const Pagination = ({
@@ -34,7 +34,8 @@ const PaginationLink = ({
   size = "icon",
   ...props
 }) => (
-  <a
+  <Button
+    type="button"
     aria-current={isActive ? "page" : undefined}
     className={cn(buttonVariants({
       variant: isActive ? "outline" : "ghost",

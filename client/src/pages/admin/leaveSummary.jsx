@@ -1,3 +1,4 @@
+import LeaveApplicationTable from "@/components/admin-view/LeaveApplicationTable";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { CardContent } from "@/components/ui/card";
 import {
@@ -13,8 +14,10 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import { cn } from "@/lib/utils";
+import { fetchLeaveApplicationList } from "@/store/leave/leave-slice";
 import Autoplay from "embla-carousel-autoplay";
 import { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Bar, BarChart, CartesianGrid, LabelList, XAxis } from "recharts";
 import avatar2 from "/avatar2.png";
 
@@ -41,6 +44,9 @@ const chartConfig = {
 };
 
 const LeaveSummary = () => {
+  const dispatch = useDispatch();
+  const { leaveApplicationList, pagination, isLoading, isSubmiting } =
+    useSelector((state) => state.leaveApplication);
   const [api, setApi] = useState(null);
   const [current, setCurrent] = useState(0);
   const [count, setCount] = useState(0);
@@ -64,9 +70,13 @@ const LeaveSummary = () => {
     };
   }, [api]);
 
+  useEffect(() => {
+    dispatch(fetchLeaveApplicationList());
+  }, [dispatch]);
+
   return (
     <div className="m-4 sm:space-y-4 space-y-3 flex-1">
-      <div className="mx-auto w-[calc(100%-30px)]">
+      <div className="mx-auto w-[calc(100%-30px)] pb-4">
         <Carousel
           plugins={[plugin.current]}
           setApi={setApi}
@@ -77,7 +87,10 @@ const LeaveSummary = () => {
         >
           <CarouselContent>
             {Array.from({ length: 5 }).map((_, index) => (
-              <CarouselItem key={index} className="2xl:basis-1/5 xl:basis-1/4 lg:basis-1/3 sm:basis-1/2 basis-4/5">
+              <CarouselItem
+                key={index}
+                className="2xl:basis-1/5 xl:basis-1/4 lg:basis-1/3 sm:basis-1/2 basis-4/5"
+              >
                 <div
                   className={cn("", {
                     "sm:opacity-100 opacity-40": index !== current - 1,
@@ -169,6 +182,11 @@ const LeaveSummary = () => {
           ))}
         </div>
       </div>
+      <hr />
+      <LeaveApplicationTable
+        data={leaveApplicationList}
+        isLoading={isLoading}
+      />
     </div>
   );
 };

@@ -38,7 +38,6 @@ const PaginationWithEllipsis = ({ currentPage, totalPages, onPageChange }) => {
         {currentPage > 1 && (
           <PaginationItem>
             <PaginationPrevious
-              href="javascript:void(0)"
               onClick={() => onPageChange(currentPage - 1)}
             />
           </PaginationItem>
@@ -51,7 +50,6 @@ const PaginationWithEllipsis = ({ currentPage, totalPages, onPageChange }) => {
           ) : (
             <PaginationItem key={page}>
               <PaginationLink
-                href="javascript:void(0)"
                 onClick={() => onPageChange(page)}
                 className={`sm:w-9 w-5 ${page === currentPage ? "font-bold" : "text-muted-foreground"}`}
               >
@@ -64,7 +62,6 @@ const PaginationWithEllipsis = ({ currentPage, totalPages, onPageChange }) => {
         {currentPage < totalPages && (
           <PaginationItem>
             <PaginationNext
-              href="javascript:void(0)"
               onClick={() => onPageChange(currentPage + 1)}
             />
           </PaginationItem>

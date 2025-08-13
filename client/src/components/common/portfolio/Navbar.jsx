@@ -110,7 +110,7 @@ const Navbar = () => {
           ))}
 
           {/* Career page route */}
-          <span
+          {/* <span
             onClick={() => {
               setActive("career");
               setOpen(false);
@@ -123,7 +123,7 @@ const Navbar = () => {
             }`}
           >
             Career
-          </span>
+          </span> */}
         </div>
 
         {/* Login */}
