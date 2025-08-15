@@ -4,6 +4,7 @@ import axios from "axios";
 const initialState = {
   defaultLeaveData: null,
   leaveApplicationList: [],
+  details: [],
   leaveSummary: [],
   isLoading: false,
   isSubmiting: false,
@@ -27,8 +28,9 @@ export const addLeaveApplication = createAsyncThunk(
       );
       return response.data; // Assumes response.data contains the added leave application
     } catch (error) {
+      console.log(error);
       return rejectWithValue(
-        error.response?.data?.message ||
+        error.response?.data?.reason[0] ||
           "An error occurred while adding a leave application."
       );
     }
@@ -85,6 +87,31 @@ export const fetchLeaveSummary = createAsyncThunk(
   }
 );
 
+export const ManuallyAddLeave = createAsyncThunk(
+  "defaultLeaveData/ManuallyAddLeave",
+  async (data, { rejectWithValue }) => {
+    const token = localStorage.getItem("access_token");
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/api/leave/manual/`,
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return response.data; // Assumes response.data contains the added leave application
+    } catch (error) {
+      console.log(error);
+      return rejectWithValue(
+        error.response?.data?.reason[0] ||
+          "An error occurred while adding a leave application."
+      );
+    }
+  }
+);
+
 const leaveSlice = createSlice({
   name: "leave",
   initialState,
@@ -123,6 +150,7 @@ const leaveSlice = createSlice({
       .addCase(fetchLeaveSummary.fulfilled, (state, action) => {
         state.isLoading = false;
         state.leaveSummary = action.payload.results;
+        state.details = action.payload.results[0].details;
       })
       .addCase(fetchLeaveSummary.rejected, (state, action) => {
         state.isLoading = false;

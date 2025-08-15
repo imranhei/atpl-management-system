@@ -37,6 +37,11 @@ export default {
           '0%': { left: '-16px' },
           '100%': { left: '100%' },
         },
+        'bounce-x': {
+          '0%, 100%': { transform: 'translateX(0)' },
+          '30%': { transform: 'translateX(8px)' },
+          '60%': { transform: 'translateX(3px)' },
+        },
       },
       animation: {
         "slide-in": "slideIn 8s infinite ease-in-out",
@@ -44,6 +49,7 @@ export default {
         "skew-shake-x": "skew-x-shake 1.3s infinite;",
         wave: "waveMove 3s linear infinite",
         "slide-horizontal": "slide-horizontal 2s linear infinite",
+        'bounce-x': 'bounce-x 2s cubic-bezier(0.34,1.56,0.64,1) infinite',
       },
       fontFamily: {
         arial: ["Arial", "sans-serif"],

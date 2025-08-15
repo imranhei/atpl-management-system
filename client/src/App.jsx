@@ -29,6 +29,8 @@ import EmployeeLeave from "./pages/user-view/leave";
 import Meal from "./pages/user-view/meal";
 import ProtectedRoute from "./components/common/ProtectedRoute";
 import GuestOnlyRoute from "./components/common/GuestOnlyRoute";
+import DetailLeaveSummary from "./pages/admin/DetailLeaveSummary";
+import NotFound from "./pages/common/Not-Found";
 
 function App() {
   const { isAuthenticated, role, isLoadingAuth } = useSelector(
@@ -124,6 +126,7 @@ function App() {
           <Route path="irregularities" element={<Irregularities />} />
           <Route path="meal" element={<Meal />} />
           <Route path="leave-records" element={<LeaveSummary />} />
+          <Route path="leave-records/:id" element={<DetailLeaveSummary />} />
           <Route path="leave-application" element={<LeaveApplication />} />
           <Route path="application-review" element={<ApplicationReview />} />
           <Route path="setting" element={<Profile />} />
@@ -133,7 +136,7 @@ function App() {
           <Route path="chat" element={<Chat />} />
         </Route>
 
-        <Route path="*" element={<div>404 Not Found</div>} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
   );

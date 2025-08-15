@@ -46,7 +46,7 @@ const EmployeeLeave = () => {
 
     dispatch(addLeaveApplication(cleaned)).then((res) => {
       if (res.error) {
-        toast.error("Error", {
+        toast.error(res?.error?.message, {
           description:
             typeof res.payload === "string"
               ? res.payload

@@ -31,7 +31,7 @@ const LeaveForm = ({
   const [open, setOpen] = useState(false);
   const [selectedDates, setSelectedDates] = useState([]); // Date[]
   const [side, setSide] = useState("bottom"); // will switch to 'top' if needed
-  const CAL_HEIGHT = 340;
+  const CAL_HEIGHT = 350;
 
   // keep local state in sync if parent resets
   useEffect(() => {
@@ -179,7 +179,7 @@ const LeaveForm = ({
               align="start"
               sideOffset={8}
               collisionPadding={12} // keeps edges away from viewport
-              className="w-auto p-0 z-50 max-h-[min(360px,calc(100vh-96px))] overflow-auto"
+              className="w-auto p-0 z-50 max-h-[min(370px,calc(100vh-96px))] overflow-auto"
             >
               <Calendar
                 mode="multiple"

@@ -68,7 +68,6 @@ const AuthLogin = () => {
   };
 
   useEffect(() => {
-    console.log("isAuthenticated:", isAuthenticated);
     if (isAuthenticated) {
       const fromPath = location.state?.from;
       const defaultPath =

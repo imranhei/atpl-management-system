@@ -53,7 +53,6 @@ const AdminAttendance = () => {
   const { results, pagination } = attendance || {};
 
   const [empListOpen, setEmpListOpen] = useState(false);
-  // const [dateRange, setDateRange] = useState(null);
   const [selected, setSelected] = useState(null);
   const [customDate, setCustomDate] = useState({ from: null, to: null });
   const [params, setParams] = useState({
