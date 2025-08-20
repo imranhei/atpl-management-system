@@ -140,7 +140,7 @@ const AddLeaveModal = ({ children }) => {
         <form onSubmit={handleApply} className="space-y-5 pt-2">
           <div className="flex flex-col gap-2">
             <Label>Select Employee</Label>
-            <Popover open={empListOpen} onOpenChange={setEmpListOpen}>
+            <Popover open={empListOpen} onOpenChange={setEmpListOpen} >
               <PopoverTrigger asChild>
                 <Button
                   ref={triggerRef}
@@ -162,15 +162,7 @@ const AddLeaveModal = ({ children }) => {
                 side="bottom"
                 align="start"
                 className="min-w-[200px] p-0"
-                // ✅ prevent Radix from closing when scrolling/clicking inside
-                // onInteractOutside={(e) => {
-                //   if (
-                //     e.target.closest("[cmdk-list]") ||
-                //     e.target.closest("[cmdk-input-wrapper]")
-                //   ) {
-                //     e.preventDefault();
-                //   }
-                // }}
+                modal={false}
               >
                 <Command>
                   <CommandInput placeholder="Search name..." />
@@ -264,6 +256,7 @@ const AddLeaveModal = ({ children }) => {
                 sideOffset={8}
                 collisionPadding={12} // keeps edges away from viewport
                 className="w-auto p-0 z-50 max-h-[min(370px,calc(100vh-96px))] overflow-auto"
+                modal={false}
               >
                 <Calendar
                   mode="multiple"
