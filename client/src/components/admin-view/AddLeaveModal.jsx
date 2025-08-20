@@ -1,13 +1,5 @@
 import { Button } from "@/components/ui/button";
 import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command";
-import {
   Dialog,
   DialogContent,
   DialogHeader,
@@ -29,7 +21,7 @@ import {
 import { cn } from "@/lib/utils";
 import { getEmployeeDetails } from "@/store/admin/employee-details-slice";
 import { format } from "date-fns";
-import { Calendar1Icon, Check, ChevronsUpDown, X } from "lucide-react";
+import { Calendar1Icon, X } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Calendar } from "../ui/calendar";
@@ -140,66 +132,40 @@ const AddLeaveModal = ({ children }) => {
         <form onSubmit={handleApply} className="space-y-5 pt-2">
           <div className="flex flex-col gap-2">
             <Label>Select Employee</Label>
-            <Popover open={empListOpen} onOpenChange={setEmpListOpen} >
-              <PopoverTrigger asChild>
-                <Button
-                  ref={triggerRef}
-                  type="button"
-                  variant="outline"
-                  aria-expanded={empListOpen}
-                  role="combobox"
-                  className={cn(
-                    "w-full justify-between font-normal overflow-hidden bg-sidebar",
-                    !selectedEmp && "text-muted-foreground"
-                  )}
-                >
-                  {selectedEmp ? displayName(selectedEmp) : "Select Employee"}
-                  <ChevronsUpDown className="opacity-50" />
-                </Button>
-              </PopoverTrigger>
+            <Select
+              value={selectedEmp?.id?.toString()}
+              onValueChange={(val) => {
+                const emp = employeeDetails.find(
+                  (e) => e.id.toString() === val
+                );
+                if (emp) {
+                  handleEmployeeChange(emp);
+                }
+              }}
+            >
+              <SelectTrigger className="w-full bg-sidebar font-normal">
+                <SelectValue
+                  placeholder="Select Employee"
+                  aria-label={
+                    selectedEmp ? displayName(selectedEmp) : undefined
+                  }
+                />
+              </SelectTrigger>
 
-              <PopoverContent
-                side="bottom"
-                align="start"
-                className="min-w-[200px] p-0 z-[9999]"
-                modal={false}
-              >
-                <Command>
-                  <CommandInput placeholder="Search name..." />
-                  <CommandList
-                    className="max-h-44 overflow-y-auto"
-                    onPointerDown={(e) => e.stopPropagation()}
-                    onWheel={(e) => e.stopPropagation()}
-                    onTouchMove={(e) => e.stopPropagation()}
-                  >
-                    <CommandEmpty>No employee found.</CommandEmpty>
-                    <CommandGroup>
-                      {(employeeDetails ?? []).map((person) => (
-                        <CommandItem
-                          key={person.id}
-                          value={displayName(person)}
-                          onSelect={() => {
-                            handleEmployeeChange(person);
-                            setEmpListOpen(false);
-                            triggerRef.current?.focus();
-                          }}
-                        >
-                          {displayName(person)}
-                          <Check
-                            className={cn(
-                              "ml-auto",
-                              selectedEmp?.id === person.id
-                                ? "opacity-100"
-                                : "opacity-0"
-                            )}
-                          />
-                        </CommandItem>
-                      ))}
-                    </CommandGroup>
-                  </CommandList>
-                </Command>
-              </PopoverContent>
-            </Popover>
+              <SelectContent className="max-h-44 overflow-y-auto">
+                {employeeDetails?.length ? (
+                  employeeDetails.map((person) => (
+                    <SelectItem key={person.id} value={person.id.toString()}>
+                      {displayName(person)}
+                    </SelectItem>
+                  ))
+                ) : (
+                  <div className="p-2 text-sm text-muted-foreground">
+                    No employee found.
+                  </div>
+                )}
+              </SelectContent>
+            </Select>
           </div>
 
           <div className="flex flex-col gap-2">
