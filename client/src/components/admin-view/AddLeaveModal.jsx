@@ -152,10 +152,14 @@ const AddLeaveModal = ({ children }) => {
                 />
               </SelectTrigger>
 
-              <SelectContent className="max-h-44 overflow-y-auto">
+              <SelectContent
+                className="max-h-44 overflow-y-auto"
+                position="popper"
+                side="bottom"
+              >
                 {employeeDetails?.length ? (
                   employeeDetails.map((person) => (
-                    <SelectItem key={person.id} value={person.id.toString()}>
+                    <SelectItem key={person.id} value={person.id.toString()} isSelected={person.id === selectedEmp?.id}>
                       {displayName(person)}
                     </SelectItem>
                   ))
