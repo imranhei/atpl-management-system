@@ -11,7 +11,7 @@ const Command = React.forwardRef(({ className, ...props }, ref) => (
     //   "flex h-full w-full flex-col overflow-hidden rounded-md bg-popover text-popover-foreground",
     //   className
     // )}
-    cmdk-list="" // 👈 gives us a hook for the selector above
+    data-cmdk-list="" // 👈 gives us a hook for the selector above
     className={cn("max-h-[300px] overflow-y-auto overflow-x-hidden", className)}
     onPointerDown={(e) => e.stopPropagation()}
     onWheel={(e) => e.stopPropagation()}
@@ -37,7 +37,7 @@ const CommandDialog = ({
 }
 
 const CommandInput = React.forwardRef(({ className, ...props }, ref) => (
-  <div className="flex items-center border-b px-3" cmdk-input-wrapper="">
+  <div className="flex items-center border-b px-3" data-cmdk-input-wrapper="">
     <MagnifyingGlassIcon className="mr-2 h-4 w-4 shrink-0 opacity-50" />
     <CommandPrimitive.Input
       ref={ref}
