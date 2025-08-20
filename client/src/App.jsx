@@ -8,7 +8,7 @@ import { checkAuth } from "./store/auth-slice";
 import AuthLayout from "./components/auth/layout";
 import Layout from "./components/common/portfolio/Layout";
 import SystemLayout from "./components/user-view/layout";
-import AdminAttendance from "./pages/admin/AdminAttendance";
+import AdminAttendance from "./pages/admin/AdminAttendance.jsx";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import ApplicationReview from "./pages/admin/ApplicationReview";
 import Irregularities from "./pages/admin/Irregularities";
