@@ -162,15 +162,15 @@ const AddLeaveModal = ({ children }) => {
                 align="start"
                 className="min-w-[200px] p-0"
                 avoidCollisions={false}
-                onInteractOutside={(e) => e.preventDefault()}
+                // onInteractOutside={(e) => e.preventDefault()}
               >
                 <Command>
                   <CommandInput placeholder="Search name..." />
                   <CommandList
                     className="max-h-44 overflow-y-auto"
-                    onPointerDown={(e) => e.stopPropagation()}
+                    // onPointerDown={(e) => e.stopPropagation()}
                     onWheelCapture={(e) => e.stopPropagation()}
-                    onTouchMoveCapture={(e) => e.stopPropagation()}
+                    // onTouchMoveCapture={(e) => e.stopPropagation()}
                   >
                     <CommandEmpty>No employee found.</CommandEmpty>
                     <CommandGroup>
