@@ -28,7 +28,6 @@ import {
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 import { getEmployeeDetails } from "@/store/admin/employee-details-slice";
-import { ManuallyAddLeave } from "@/store/leave/leave-slice";
 import { format } from "date-fns";
 import { Calendar1Icon, Check, ChevronsUpDown, X } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -158,11 +157,18 @@ const AddLeaveModal = ({ children }) => {
                   <ChevronsUpDown className="opacity-50" />
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="min-w-[200px] p-0">
+              <PopoverContent
+                side="bottom"
+                align="start"
+                className="min-w-[200px] p-0"
+                avoidCollisions={false}
+                onInteractOutside={(e) => e.preventDefault()}
+              >
                 <Command>
                   <CommandInput placeholder="Search name..." />
                   <CommandList
                     className="max-h-44 overflow-y-auto"
+                    onPointerDown={(e) => e.stopPropagation()}
                     onWheelCapture={(e) => e.stopPropagation()}
                     onTouchMoveCapture={(e) => e.stopPropagation()}
                   >
@@ -355,11 +361,7 @@ const AddLeaveModal = ({ children }) => {
             >
               Clear
             </Button>
-            <Button
-              type="submit"
-              disabled={isLoading}
-              className="flex-1"
-            >
+            <Button type="submit" disabled={isLoading} className="flex-1">
               {isLoading ? "Saving..." : "Save"}
             </Button>
           </div>

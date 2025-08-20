@@ -4,9 +4,9 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/components/ui/tabs"
-import EmployeeMenu from "@/components/user-view/menus"
+import EmployeeMenu from "@/components/user-view/Menus"
 import EmployeeOrder from "@/components/user-view/order"
-import EmployeeOrderHistory from "@/components/user-view/order-history"
+import EmployeeOrderHistory from "@/components/user-view/OrderHistory"
 
 const Meal = () => {
   return (

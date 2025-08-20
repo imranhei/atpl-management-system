@@ -1,6 +1,6 @@
 import LeaveApplicationTable from "@/components/admin-view/LeaveApplicationTable";
-import LeaveForm from "@/components/admin-view/leaveForm";
-import PaginationWithEllipsis from "@/components/user-view/paginationWithEllipsis";
+import LeaveForm from "@/components/admin-view/LeaveForm";
+import PaginationWithEllipsis from "@/components/user-view/PaginationWithEllipsis";
 import {
   addLeaveApplication,
   fetchLeaveApplicationList,
@@ -17,9 +17,8 @@ const initialState = {
 
 const EmployeeLeave = () => {
   const dispatch = useDispatch();
-  const { leaveApplicationList, pagination, isLoading, isSubmiting } = useSelector(
-    (state) => state.leaveApplication
-  );
+  const { leaveApplicationList, pagination, isLoading, isSubmiting } =
+    useSelector((state) => state.leaveApplication);
   const [formData, setFormData] = useState(initialState);
   const [params, setParams] = useState({
     page: 1,
@@ -82,7 +81,10 @@ const EmployeeLeave = () => {
         onSubmit={handleSubmit}
         isLoading={isSubmiting}
       />
-      <LeaveApplicationTable data={leaveApplicationList} isLoading={isLoading} />
+      <LeaveApplicationTable
+        data={leaveApplicationList}
+        isLoading={isLoading}
+      />
       {pagination?.last_page > 1 && (
         <PaginationWithEllipsis
           currentPage={params.page}

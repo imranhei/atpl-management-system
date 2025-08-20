@@ -3,7 +3,7 @@ import { resetPassword } from "@/store/auth-slice";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
-import CommonForm from "../../components/common/form";
+import CommonForm from "../../components/common/Form";
 
 const initialState = {
   old_password: "",

@@ -18,8 +18,8 @@ import { LoaderCircle, SlidersHorizontal } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button } from "../ui/button";
+import PaginationWithEllipsis from "../user-view/PaginationWithEllipsis";
 import FilterModal from "./FilterModal";
-import PaginationWithEllipsis from "../user-view/paginationWithEllipsis";
 
 const typeMap = {
   full_day: "Full Day",
@@ -252,12 +252,12 @@ const LeaveApplicationTable = () => {
       </Table>
       <div className="w-full py-2">
         {pagination?.last_page > 1 && (
-        <PaginationWithEllipsis
-          currentPage={params.page}
-          totalPages={pagination?.last_page}
-          onPageChange={handlePageChange}
-        />
-      )}
+          <PaginationWithEllipsis
+            currentPage={params.page}
+            totalPages={pagination?.last_page}
+            onPageChange={handlePageChange}
+          />
+        )}
       </div>
     </Box>
   );

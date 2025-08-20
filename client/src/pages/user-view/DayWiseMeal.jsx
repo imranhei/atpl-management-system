@@ -6,7 +6,7 @@ import {
   updateDayMeal,
 } from "@/store/admin/day-wise-meal-slice";
 import WeeklyMealTable from "@/components/admin-view/WeeklyMealTable";
-import MealForm from "@/components/admin-view/mealForm";
+import MealForm from "@/components/admin-view/MealForm";
 
 const WeeklyMealManager = () => {
   const dispatch = useDispatch();

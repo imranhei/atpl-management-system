@@ -10,10 +10,10 @@ import {
   updateMealOffDates,
   getMealOffDates,
 } from "@/store/employee/place-order-slice";
-import OrderTable from "./orderTable";
-import DefaultOrderForm from "./defaultOrderForm";
-import PlaceOrderForm from "./placeOrderForm";
-import MealOffDialog from "./mealOffDialog";
+import OrderTable from "./OrderTable";
+import DefaultOrderForm from "./DefaultOrderForm";
+import PlaceOrderForm from "./PlaceOrderForm";
+import MealOffDialog from "./MealOffDialog";
 import { format } from "date-fns";
 import { Button } from "../ui/button";
 

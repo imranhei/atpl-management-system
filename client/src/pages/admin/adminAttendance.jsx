@@ -36,7 +36,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import PaginationWithEllipsis from "@/components/user-view/paginationWithEllipsis";
+import PaginationWithEllipsis from "@/components/user-view/PaginationWithEllipsis";
 import { cn } from "@/lib/utils";
 import { getEmployeeDetails } from "@/store/admin/employee-details-slice";
 import { getAttendance } from "@/store/employee/attendance-slice";

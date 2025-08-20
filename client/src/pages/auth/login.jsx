@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import CommonForm from "../../components/common/form";
+import CommonForm from "../../components/common/Form";
 
 const initialState = {
   username: "",
