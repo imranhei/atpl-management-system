@@ -155,7 +155,7 @@ const AddLeaveModal = ({ children }) => {
               <SelectContent
                 className="max-h-44 overflow-y-auto"
                 position="popper"
-                side="bottom"
+                onWheel={(e) => e.stopPropagation()}
               >
                 {employeeDetails?.length ? (
                   employeeDetails.map((person) => (
