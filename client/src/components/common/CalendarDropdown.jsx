@@ -45,7 +45,12 @@ const CalendarDropdown = ({
 
   const prettySummary =
     selectedDates.length > 0
-      ? selectedDates.map((d) => format(d, "dd/MM/yyyy")).join(", ")
+      ? selectedDates.length > 2
+        ? `${selectedDates
+            .slice(0, 2)
+            .map((d) => format(d, "dd/MM/yyyy"))
+            .join(", ")} +${selectedDates.length - 2} more`
+        : selectedDates.map((d) => format(d, "dd/MM/yyyy")).join(", ")
       : placeholder;
 
   return (
