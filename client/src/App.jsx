@@ -6,13 +6,16 @@ import "./App.css";
 import { checkAuth } from "./store/auth-slice";
 
 import AuthLayout from "./components/auth/layout";
+import GuestOnlyRoute from "./components/common/GuestOnlyRoute";
 import Layout from "./components/common/portfolio/Layout";
+import ProtectedRoute from "./components/common/ProtectedRoute";
 import SystemLayout from "./components/user-view/layout";
 import AdminAttendance from "./pages/admin/AdminAttendance";
 import AdminDashboard from "./pages/admin/AdminDashboard";
+import ApplicationHistory from "./pages/admin/ApplicationHistory";
 import ApplicationReview from "./pages/admin/ApplicationReview";
+import DetailLeaveSummary from "./pages/admin/DetailLeaveSummary";
 import Irregularities from "./pages/admin/Irregularities";
-import LeaveApplication from "./pages/admin/LeaveApplication";
 import LeaveSummary from "./pages/admin/LeaveSummary";
 import Overview from "./pages/admin/Overview";
 import AuthLogin from "./pages/auth/Login";
@@ -21,16 +24,13 @@ import ResetPassword from "./pages/auth/ResetPassword";
 import Career from "./pages/common/Career";
 import Chat from "./pages/common/Chat";
 import Home from "./pages/common/Home";
+import NotFound from "./pages/common/Not-Found";
 import Profile from "./pages/common/Profile";
 import Attendance from "./pages/user-view/Attendance";
 import Dashboard from "./pages/user-view/Dashboard";
 import TodayMeals from "./pages/user-view/DayWiseMeal";
 import EmployeeLeave from "./pages/user-view/Leave";
 import Meal from "./pages/user-view/Meal";
-import ProtectedRoute from "./components/common/ProtectedRoute";
-import GuestOnlyRoute from "./components/common/GuestOnlyRoute";
-import DetailLeaveSummary from "./pages/admin/DetailLeaveSummary";
-import NotFound from "./pages/common/Not-Found";
 
 function App() {
   const { isAuthenticated, role, isLoadingAuth } = useSelector(
@@ -54,16 +54,19 @@ function App() {
   return (
     <div className="flex flex-col bg-gradient-to-tl overflow-x-hidden from-amber-100 to-cyan-100 dark:from-zinc-900">
       <Routes>
-        <Route path="/leave-review/:id" element={
-          <ProtectedRoute 
-            isAuthenticated={isAuthenticated}
-            isLoadingAuth={isLoadingAuth}
-            role={role} 
-            publicAccess={true}
-          >
-            <ApplicationReview />
-          </ProtectedRoute>
-        } />
+        <Route
+          path="/leave-review/:id"
+          element={
+            <ProtectedRoute
+              isAuthenticated={isAuthenticated}
+              isLoadingAuth={isLoadingAuth}
+              role={role}
+              publicAccess={true}
+            >
+              <ApplicationReview />
+            </ProtectedRoute>
+          }
+        />
         <Route
           path="/"
           element={
@@ -77,7 +80,11 @@ function App() {
         <Route
           path="/auth"
           element={
-            <GuestOnlyRoute isAuthenticated={isAuthenticated} isLoadingAuth={isLoadingAuth} role={role}>
+            <GuestOnlyRoute
+              isAuthenticated={isAuthenticated}
+              isLoadingAuth={isLoadingAuth}
+              role={role}
+            >
               <AuthLayout />
             </GuestOnlyRoute>
           }
@@ -85,15 +92,14 @@ function App() {
           <Route path="login" element={<AuthLogin />} />
         </Route>
 
-
         <Route
           path="/employee"
           element={
-            <ProtectedRoute 
+            <ProtectedRoute
               isAuthenticated={isAuthenticated}
               isLoadingAuth={isLoadingAuth}
-              role={role} 
-              allowedRoles={['employee']}
+              role={role}
+              allowedRoles={["employee"]}
             >
               <SystemLayout />
             </ProtectedRoute>
@@ -111,10 +117,10 @@ function App() {
         <Route
           path="/admin"
           element={
-            <ProtectedRoute 
-              isAuthenticated={isAuthenticated} 
-              role={role} 
-              allowedRoles={['admin']}
+            <ProtectedRoute
+              isAuthenticated={isAuthenticated}
+              role={role}
+              allowedRoles={["admin"]}
             >
               <SystemLayout />
             </ProtectedRoute>
@@ -127,7 +133,10 @@ function App() {
           <Route path="meal" element={<Meal />} />
           <Route path="leave-records" element={<LeaveSummary />} />
           <Route path="leave-records/:id" element={<DetailLeaveSummary />} />
-          <Route path="leave-application" element={<LeaveApplication />} />
+          <Route
+            path="leave-application-history"
+            element={<ApplicationHistory />}
+          />
           <Route path="application-review" element={<ApplicationReview />} />
           <Route path="setting" element={<Profile />} />
           <Route path="day-wise-meal" element={<TodayMeals />} />

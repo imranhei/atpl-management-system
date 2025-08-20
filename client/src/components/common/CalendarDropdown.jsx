@@ -60,8 +60,8 @@ const CalendarDropdown = ({
         type="button"
         onClick={() => setOpenCal((o) => !o)}
         className={cn(
-          "justify-start font-normal bg-sidebar shadow-none border hover:bg-gray-100 w-full",
-          !selectedDates.length && "text-muted-foreground"
+          "justify-start font-normal !bg-sidebar shadow-none dark:text-white border hover:bg-gray-100 w-full",
+          !selectedDates.length && "text-muted-foreground dark:text-muted-foreground"
         )}
       >
         <Calendar1Icon className="mr-2 inline-block" />
@@ -110,7 +110,7 @@ const CalendarDropdown = ({
                         const next = exists ? prev : [...prev, today];
                         setFormData((f) => ({
                           ...f,
-                          date: next.map((d) => format(d, "yyyy-MM-dd")),
+                          date: next.map((d) => format(d, "yyyy-MM-dd")), // ✅ array
                         }));
                         return next;
                       });

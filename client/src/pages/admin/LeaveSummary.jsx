@@ -1,13 +1,10 @@
 import AddLeaveModal from "@/components/admin-view/AddLeaveModal";
-import LeaveApplicationTable from "@/components/admin-view/LeaveApplicationTable";
 import LeaveCard from "@/components/admin-view/LeaveCard";
 import { Button } from "@/components/ui/button";
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
 } from "@/components/ui/carousel";
 import { cn } from "@/lib/utils";
 import { fetchLeaveSummary } from "@/store/leave/leave-slice";
@@ -167,17 +164,10 @@ const LeaveSummary = () => {
               )
             )}
           </CarouselContent>
-
-          <CarouselPrevious className="top-[calc(100%+1rem)] translate-y-0 left-0" />
-          <CarouselNext className="top-[calc(100%+1rem)] translate-y-0 right-8 translate-x-full" />
         </Carousel>
 
         <Pager api={api} current={current} count={count} />
       </div>
-
-      <hr />
-
-      <LeaveApplicationTable />
     </div>
   );
 };

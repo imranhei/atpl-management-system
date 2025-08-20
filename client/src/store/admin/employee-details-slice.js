@@ -12,7 +12,7 @@ export const getEmployeeDetails = createAsyncThunk(
   async ({ token }) => {
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_API_URL}/api/employee/info`,
+        `${import.meta.env.VITE_API_URL}/api/employee/info/`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

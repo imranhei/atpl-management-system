@@ -44,7 +44,7 @@ const LeaveCard = ({ user, active }) => {
     <div className={cn("", { "sm:opacity-100 opacity-40": !active })}>
       <CardContent className="flex items-center justify-center select-none cursor-default">
         <div className="h-fit w-full p-4 bg-container rounded-lg shadow-spread border space-y-1 relative flex flex-col items-center justify-start overflow-hidden">
-          <div className="absolute w-full h-20 top-0 left-0 bg-muted z-0" />
+          <div className="absolute w-full h-20 top-0 left-0 bg-muted z-0 dark:bg-gray-900" />
           <Avatar className="focus:outline-none ring-1 ring-white size-20 border-white">
             <AvatarImage
               src={img || ""}
@@ -110,7 +110,7 @@ const LeaveCard = ({ user, active }) => {
           </div>
 
           <Link
-            className="mt-2 flex w-full items-center justify-between rounded-lg border bg-muted/20 hover:bg-muted px-3 py-2"
+            className="mt-2 flex w-full items-center justify-between rounded-lg border bg-muted/20 hover:bg-muted px-3 py-2 dark:bg-indigo-700"
             to={`${user.id}`}
             aria-label="View details"
           >

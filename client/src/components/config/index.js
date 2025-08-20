@@ -205,9 +205,9 @@ export const SIDEBAR_MENU = {
           icon: Layers,
         },
         {
-          id: "leave-application",
-          label: "Leave Application",
-          path: "/leave-application",
+          id: "leave-application-history",
+          label: "Application History",
+          path: "/leave-application-history",
           icon: MailWarning,
         },
       ],

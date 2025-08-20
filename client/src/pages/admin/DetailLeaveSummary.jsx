@@ -69,7 +69,8 @@ const DetailLeaveSummary = () => {
             <Button
               size="sm"
               onClick={() => window.history.back()}
-              variant="outline"
+              variant="ghost"
+              className="bg-transparent"
             >
               <ArrowLeft className="cursor-pointer" />
             </Button>
@@ -98,7 +99,7 @@ const DetailLeaveSummary = () => {
         </div>
         <Table className="bg-background rounded">
           <TableHeader>
-            <TableRow className="bg-sidebar">
+            <TableRow className="bg-sidebar dark:bg-slate-900">
               <TableHead className="text-center w-14">SL No</TableHead>
               <TableHead>Date</TableHead>
               <TableHead>Type</TableHead>
@@ -126,7 +127,7 @@ const DetailLeaveSummary = () => {
               {details?.map((row, index) => (
                 <TableRow
                   key={index}
-                  className={`${index % 2 !== 0 ? "bg-slate-50" : ""}`}
+                  className={`${index % 2 !== 0 ? "bg-slate-50 dark:bg-slate-900" : ""}`}
                 >
                   <TableCell className="text-center">{index + 1}</TableCell>
                   <TableCell>{formatYMDToShort(row.date)}</TableCell>

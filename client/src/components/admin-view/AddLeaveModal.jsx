@@ -15,18 +15,20 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { getEmployeeDetails } from "@/store/admin/employee-details-slice";
+import { ManuallyAddLeave } from "@/store/leave/leave-slice";
 import { format } from "date-fns";
 import { X } from "lucide-react";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Label } from "../ui/label";
+import { Textarea } from "../ui/textarea";
 
 const initialFormData = {
   user_id: null,
   leave_type: "",
   date: [],
   reason: "",
-  status: "",
+  status: "approved",
 };
 
 const reasons = [
@@ -49,38 +51,28 @@ function displayName(p) {
 
 const typeMap = {
   full_day: "Full Day",
-  "1st_half": "1st Half",
-  "2nd_half": "2nd Half",
+  "1st_half": "1st Half (7am - 11:30am)",
+  "2nd_half": "2nd Half (11:30am - 4pm)",
 };
 
 const AddLeaveModal = ({ children }) => {
   const dispatch = useDispatch();
-  const triggerRef = useRef(null);
-  const triggerCalRef = useRef(null);
   const { employeeDetails } = useSelector((s) => s.employeeDetails);
   const { isLoading } = useSelector((s) => s.leaveApplication);
   const [open, setOpen] = useState(false);
-  const [openCal, setOpenCal] = useState(false);
   const [formData, setFormData] = useState(initialFormData);
-  const [empListOpen, setEmpListOpen] = useState(false);
   const [selectedEmp, setSelectedEmp] = useState(null);
-  const [side, setSide] = useState("bottom");
   const [selectedDates, setSelectedDates] = useState([]);
-
-  const CAL_HEIGHT = 350;
 
   const handleApply = (e) => {
     e.preventDefault();
     console.log(formData);
 
-    // dispatch(
-    //   ManuallyAddLeave({
-    //     ...formData,
-    //     date: selectedDates.map((d) => format(d, "yyyy-MM-dd")).join(","),
-    //   })
-    // );
+    dispatch(ManuallyAddLeave(formData)).then((res) => console.log(res));
     setOpen(false);
   };
+
+  const isFullDay = formData.leave_type === "full_day";
 
   const handleEmployeeChange = (person) => {
     setFormData((prev) => ({ ...prev, user_id: person.id }));
@@ -89,15 +81,9 @@ const AddLeaveModal = ({ children }) => {
 
   const handleClear = () => {
     setFormData(initialFormData);
+    setSelectedEmp(null);
+    setSelectedDates([]);
   };
-
-  const prettySummary = useMemo(() => {
-    if (!formData.date.length) return "Pick date(s)";
-    if (formData.date.length === 1)
-      return format(formData.date[0], "LLL dd, y");
-    const sorted = [...formData.date].sort((a, b) => a - b);
-    return `${format(sorted[0], "LLL dd, y")} (+${sorted.length - 1})`;
-  }, [formData.date]);
 
   const removeOne = (dateToRemove) => {
     const next = selectedDates.filter(
@@ -106,7 +92,7 @@ const AddLeaveModal = ({ children }) => {
     setSelectedDates(next);
     setFormData((prev) => ({
       ...prev,
-      date: next.map((d) => format(d, "yyyy-MM-dd")),
+      date: next.map((d) => format(d, "yyyy-MM-dd")), // ✅ array
     }));
   };
 
@@ -120,7 +106,7 @@ const AddLeaveModal = ({ children }) => {
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="sm:max-w-md w-5/6">
         <DialogHeader>
-          <DialogTitle className="text-center">Filter</DialogTitle>
+          <DialogTitle className="text-center">Add Leave Manually</DialogTitle>
         </DialogHeader>
 
         <form onSubmit={handleApply} className="space-y-5 pt-2">
@@ -177,7 +163,7 @@ const AddLeaveModal = ({ children }) => {
                 setFormData({ ...formData, leave_type: e });
               }}
             >
-              <SelectTrigger>
+              <SelectTrigger className="bg-sidebar">
                 <SelectValue placeholder="Select leave type" />
               </SelectTrigger>
               <SelectContent>
@@ -226,31 +212,40 @@ const AddLeaveModal = ({ children }) => {
 
           <div className="flex flex-col gap-2">
             <Label>Leave Reason:</Label>
-            <Select
-              value={formData.reason}
-              onValueChange={(value) =>
-                setFormData((prev) => ({ ...prev, reason: value }))
-              }
-            >
-              <SelectTrigger className="flex-1">
-                <SelectValue placeholder="Select Leave Reason" />
-              </SelectTrigger>
-              <SelectContent>
-                {reasons.map((r) => (
-                  <SelectItem key={r.value} value={r.value}>
-                    {r.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            {isFullDay ? (
+              <Select
+                value={formData.reason}
+                onValueChange={(value) =>
+                  setFormData((prev) => ({ ...prev, reason: value }))
+                }
+              >
+                <SelectTrigger className="flex-1 bg-sidebar">
+                  <SelectValue placeholder="Select Leave Reason" />
+                </SelectTrigger>
+                <SelectContent>
+                  {reasons.map((r) => (
+                    <SelectItem key={r.value} value={r.value}>
+                      {r.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            ) : (
+              <Textarea
+                placeholder="Reason"
+                value={formData.reason}
+                onChange={(e) => {
+                  setFormData((prev) => ({ ...prev, reason: e.target.value }));
+                }}
+              />
+            )}
           </div>
 
           <div className="flex gap-2">
             <Button
               type="button"
-              variant="destructive"
               onClick={handleClear}
-              className="flex-1"
+              className="flex-1 !bg-rose-400 hover:!bg-rose-500"
             >
               Clear
             </Button>

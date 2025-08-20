@@ -89,7 +89,6 @@ const LeaveForm = ({
           <Select
             value={formData.leave_type}
             onValueChange={(value) => {
-              // Keep dates; just reset reason when switching modes to avoid mixing dropdown code & free text
               setFormData((prev) => ({
                 ...prev,
                 leave_type: value,
@@ -97,7 +96,7 @@ const LeaveForm = ({
               }));
             }}
           >
-            <SelectTrigger className="flex-1">
+            <SelectTrigger className="flex-1 dark:bg-slate-900/60">
               <SelectValue placeholder="Select Leave Type" />
             </SelectTrigger>
             <SelectContent>
@@ -119,7 +118,7 @@ const LeaveForm = ({
                 setFormData((prev) => ({ ...prev, reason: value }))
               }
             >
-              <SelectTrigger className="flex-1">
+              <SelectTrigger className="flex-1 dark:bg-slate-900/60">
                 <SelectValue placeholder="Select Leave Reason" />
               </SelectTrigger>
               <SelectContent>
@@ -137,7 +136,7 @@ const LeaveForm = ({
             <Label>Reason:</Label>
             <Textarea
               placeholder="Write your reason"
-              className="w-full min-h-20"
+              className="w-full min-h-20 dark:bg-slate-900/60"
               value={formData.reason}
               onChange={(e) =>
                 setFormData((prev) => ({ ...prev, reason: e.target.value }))
@@ -165,7 +164,7 @@ const LeaveForm = ({
                 ref={triggerRef}
                 type="button"
                 className={cn(
-                  "justify-start font-normal bg-sidebar shadow-none border hover:bg-gray-100",
+                  "justify-start font-normal bg-sidebar dark:!bg-slate-900/60 dark:text-white shadow-none border hover:bg-gray-100",
                   !selectedDates.length && "text-muted-foreground"
                 )}
               >
@@ -193,7 +192,7 @@ const LeaveForm = ({
                   }));
                 }}
                 footer={
-                  <div className="flex items-center justify-between gap-2 border-t sticky bottom-0 bg-background">
+                  <div className="flex items-center justify-between gap-2 border-t sticky bottom-0 bg-transparent">
                     <Button
                       type="button"
                       variant="ghost"
@@ -259,7 +258,7 @@ const LeaveForm = ({
       <div className="grid grid-cols-2 gap-4">
         <Button
           type="reset"
-          className="w-full bg-gray-100 hover:bg-gray-200"
+          className="w-full bg-gray-100 dark:bg-rose-500 hover:bg-gray-200"
           onClick={() => {
             onClearForm();
             setSelectedDates([]);

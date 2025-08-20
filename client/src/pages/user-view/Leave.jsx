@@ -1,4 +1,3 @@
-import LeaveApplicationTable from "@/components/admin-view/LeaveApplicationTable";
 import LeaveForm from "@/components/admin-view/LeaveForm";
 import PaginationWithEllipsis from "@/components/user-view/PaginationWithEllipsis";
 import {
@@ -8,6 +7,7 @@ import {
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
+import ApplicationHistory from "../admin/ApplicationHistory";
 
 const initialState = {
   leave_type: "full_day",
@@ -81,7 +81,7 @@ const EmployeeLeave = () => {
         onSubmit={handleSubmit}
         isLoading={isSubmiting}
       />
-      <LeaveApplicationTable
+      <ApplicationHistory
         data={leaveApplicationList}
         isLoading={isLoading}
       />
