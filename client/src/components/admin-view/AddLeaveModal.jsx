@@ -161,7 +161,7 @@ const AddLeaveModal = ({ children }) => {
               <PopoverContent
                 side="bottom"
                 align="start"
-                className="min-w-[200px] p-0"
+                className="min-w-[200px] p-0 z-[9999]"
                 modal={false}
               >
                 <Command>
@@ -255,7 +255,7 @@ const AddLeaveModal = ({ children }) => {
                 align="start"
                 sideOffset={8}
                 collisionPadding={12} // keeps edges away from viewport
-                className="w-auto p-0 z-50 max-h-[min(370px,calc(100vh-96px))] overflow-auto"
+                className="w-auto p-0 max-h-[min(370px,calc(100vh-96px))] overflow-auto z-[9999]"
                 modal={false}
               >
                 <Calendar
