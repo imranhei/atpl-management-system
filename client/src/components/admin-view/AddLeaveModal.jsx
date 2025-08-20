@@ -1,3 +1,4 @@
+import CalendarDropdown from "@/components/common/CalendarDropdown";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -7,24 +8,17 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { cn } from "@/lib/utils";
 import { getEmployeeDetails } from "@/store/admin/employee-details-slice";
 import { format } from "date-fns";
-import { Calendar1Icon, X } from "lucide-react";
+import { X } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Calendar } from "../ui/calendar";
 import { Label } from "../ui/label";
 
 const initialFormData = {
@@ -199,102 +193,11 @@ const AddLeaveModal = ({ children }) => {
           {/* Date(s) — ALWAYS multiple selection, submit as array */}
           <div className="flex flex-col gap-2 sm:col-span-2">
             <Label>Date(s):</Label>
-            <Popover
-              open={openCal}
-              onOpenChange={(o) => {
-                setOpenCal(o);
-                if (o && triggerCalRef.current) {
-                  const rect = triggerCalRef.current.getBoundingClientRect();
-                  const spaceBelow = window.innerHeight - rect.bottom;
-                  setSide(spaceBelow < CAL_HEIGHT ? "top" : "bottom");
-                }
-              }}
-            >
-              <PopoverTrigger asChild>
-                <Button
-                  ref={triggerCalRef}
-                  type="button"
-                  className={cn(
-                    "justify-start font-normal bg-sidebar shadow-none border hover:bg-gray-100",
-                    !selectedDates.length && "text-muted-foreground"
-                  )}
-                >
-                  <Calendar1Icon className="mr-2 inline-block" />
-                  {prettySummary}
-                </Button>
-              </PopoverTrigger>
-
-              <PopoverContent
-                side={side}
-                align="start"
-                sideOffset={8}
-                collisionPadding={12}
-                className="w-auto p-0 max-h-[min(370px,calc(100vh-96px))] overflow-auto z-[9999]"
-                modal={false}
-                onWheel={(e) => e.stopPropagation()}
-                onTouchMove={(e) => e.stopPropagation()}
-                style={{
-                  WebkitOverflowScrolling: "touch",
-                  overscrollBehavior: "contain",
-                }}
-                // ⬇️ Prevent closing when interacting inside calendar
-                onInteractOutside={(e) => {
-                  if (e.target.closest("[data-calendar-root]")) {
-                    e.preventDefault();
-                  }
-                }}
-                onCloseAutoFocus={(e) => e.preventDefault()} // stop focus jump
-              >
-                <div data-calendar-root>
-                  <Calendar
-                    mode="multiple"
-                    selected={selectedDates}
-                    onSelect={(dates) => {
-                      const safe = dates ?? [];
-                      setSelectedDates(safe);
-                      setFormData((prev) => ({
-                        ...prev,
-                        date: safe.map((d) => format(d, "yyyy-MM-dd")),
-                      }));
-                    }}
-                    footer={
-                      <div className="flex items-center justify-between gap-2 border-t sticky bottom-0 bg-background">
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          className="p-1"
-                          onClick={() => {
-                            const today = new Date();
-                            today.setHours(0, 0, 0, 0);
-                            setSelectedDates((prev) => {
-                              const exists = prev.some(
-                                (d) => d.toDateString() === today.toDateString()
-                              );
-                              const next = exists ? prev : [...prev, today];
-                              setFormData((f) => ({
-                                ...f,
-                                date: next.map((d) => format(d, "yyyy-MM-dd")),
-                              }));
-                              return next;
-                            });
-                          }}
-                        >
-                          Today
-                        </Button>
-                        <Button
-                          className="p-1"
-                          type="button"
-                          variant="ghost"
-                          onClick={() => setOpenCal(false)}
-                        >
-                          OK
-                        </Button>
-                      </div>
-                    }
-                  />
-                </div>
-              </PopoverContent>
-            </Popover>
+            <CalendarDropdown
+              selectedDates={selectedDates}
+              setSelectedDates={setSelectedDates}
+              setFormData={setFormData}
+            />
 
             {!!selectedDates.length && (
               <div className="flex flex-wrap gap-2 pt-1">
