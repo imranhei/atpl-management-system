@@ -157,20 +157,26 @@ const AddLeaveModal = ({ children }) => {
                   <ChevronsUpDown className="opacity-50" />
                 </Button>
               </PopoverTrigger>
+
               <PopoverContent
                 side="bottom"
                 align="start"
                 className="min-w-[200px] p-0"
-                avoidCollisions={false}
-                // onInteractOutside={(e) => e.preventDefault()}
+                // ✅ prevent Radix from closing when scrolling/clicking inside
+                onInteractOutside={(e) => {
+                  if (
+                    e.target.closest("[cmdk-list]") ||
+                    e.target.closest("[cmdk-input-wrapper]")
+                  ) {
+                    e.preventDefault();
+                  }
+                }}
               >
                 <Command>
                   <CommandInput placeholder="Search name..." />
                   <CommandList
                     className="max-h-44 overflow-y-auto"
-                    // onPointerDown={(e) => e.stopPropagation()}
-                    onWheelCapture={(e) => e.stopPropagation()}
-                    // onTouchMoveCapture={(e) => e.stopPropagation()}
+                    onPointerDown={(e) => e.stopPropagation()} // ✅ allow scroll & selection
                   >
                     <CommandEmpty>No employee found.</CommandEmpty>
                     <CommandGroup>
