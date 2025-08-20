@@ -231,59 +231,68 @@ const AddLeaveModal = ({ children }) => {
                 collisionPadding={12}
                 className="w-auto p-0 max-h-[min(370px,calc(100vh-96px))] overflow-auto z-[9999]"
                 modal={false}
-                onWheel={(e) => e.stopPropagation()} // ✅ allow mouse wheel
-                onTouchMove={(e) => e.stopPropagation()} // ✅ allow finger swipe
+                onWheel={(e) => e.stopPropagation()}
+                onTouchMove={(e) => e.stopPropagation()}
                 style={{
-                  WebkitOverflowScrolling: "touch", // ✅ smooth iOS scroll
-                  overscrollBehavior: "contain", // ✅ don’t drag body
+                  WebkitOverflowScrolling: "touch",
+                  overscrollBehavior: "contain",
                 }}
-              >
-                <Calendar
-                  mode="multiple"
-                  selected={selectedDates}
-                  onSelect={(dates) => {
-                    const safe = dates ?? [];
-                    setSelectedDates(safe);
-                    setFormData((prev) => ({
-                      ...prev,
-                      date: safe.map((d) => format(d, "yyyy-MM-dd")),
-                    }));
-                  }}
-                  footer={
-                    <div className="flex items-center justify-between gap-2 border-t sticky bottom-0 bg-background">
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        className="p-1"
-                        onClick={() => {
-                          const today = new Date();
-                          today.setHours(0, 0, 0, 0);
-                          setSelectedDates((prev) => {
-                            const exists = prev.some(
-                              (d) => d.toDateString() === today.toDateString()
-                            );
-                            const next = exists ? prev : [...prev, today];
-                            setFormData((f) => ({
-                              ...f,
-                              date: next.map((d) => format(d, "yyyy-MM-dd")),
-                            }));
-                            return next;
-                          });
-                        }}
-                      >
-                        Today
-                      </Button>
-                      <Button
-                        className="p-1"
-                        type="button"
-                        variant="ghost"
-                        onClick={() => setOpenCal(false)}
-                      >
-                        OK
-                      </Button>
-                    </div>
+                // ⬇️ Prevent closing when interacting inside calendar
+                onInteractOutside={(e) => {
+                  if (e.target.closest("[data-calendar-root]")) {
+                    e.preventDefault();
                   }
-                />
+                }}
+                onCloseAutoFocus={(e) => e.preventDefault()} // stop focus jump
+              >
+                <div data-calendar-root>
+                  <Calendar
+                    mode="multiple"
+                    selected={selectedDates}
+                    onSelect={(dates) => {
+                      const safe = dates ?? [];
+                      setSelectedDates(safe);
+                      setFormData((prev) => ({
+                        ...prev,
+                        date: safe.map((d) => format(d, "yyyy-MM-dd")),
+                      }));
+                    }}
+                    footer={
+                      <div className="flex items-center justify-between gap-2 border-t sticky bottom-0 bg-background">
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          className="p-1"
+                          onClick={() => {
+                            const today = new Date();
+                            today.setHours(0, 0, 0, 0);
+                            setSelectedDates((prev) => {
+                              const exists = prev.some(
+                                (d) => d.toDateString() === today.toDateString()
+                              );
+                              const next = exists ? prev : [...prev, today];
+                              setFormData((f) => ({
+                                ...f,
+                                date: next.map((d) => format(d, "yyyy-MM-dd")),
+                              }));
+                              return next;
+                            });
+                          }}
+                        >
+                          Today
+                        </Button>
+                        <Button
+                          className="p-1"
+                          type="button"
+                          variant="ghost"
+                          onClick={() => setOpenCal(false)}
+                        >
+                          OK
+                        </Button>
+                      </div>
+                    }
+                  />
+                </div>
               </PopoverContent>
             </Popover>
 
