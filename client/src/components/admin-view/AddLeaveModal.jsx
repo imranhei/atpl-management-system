@@ -159,7 +159,11 @@ const AddLeaveModal = ({ children }) => {
               >
                 {employeeDetails?.length ? (
                   employeeDetails.map((person) => (
-                    <SelectItem key={person.id} value={person.id.toString()} isSelected={person.id === selectedEmp?.id}>
+                    <SelectItem
+                      key={person.id}
+                      value={person.id.toString()}
+                      isSelected={person.id === selectedEmp?.id}
+                    >
                       {displayName(person)}
                     </SelectItem>
                   ))
@@ -221,12 +225,18 @@ const AddLeaveModal = ({ children }) => {
               </PopoverTrigger>
 
               <PopoverContent
-                side={side} // flips to top when needed
+                side={side}
                 align="start"
                 sideOffset={8}
-                collisionPadding={12} // keeps edges away from viewport
+                collisionPadding={12}
                 className="w-auto p-0 max-h-[min(370px,calc(100vh-96px))] overflow-auto z-[9999]"
                 modal={false}
+                onWheel={(e) => e.stopPropagation()} // ✅ allow mouse wheel
+                onTouchMove={(e) => e.stopPropagation()} // ✅ allow finger swipe
+                style={{
+                  WebkitOverflowScrolling: "touch", // ✅ smooth iOS scroll
+                  overscrollBehavior: "contain", // ✅ don’t drag body
+                }}
               >
                 <Calendar
                   mode="multiple"
