@@ -83,10 +83,11 @@ const SelectContent = React.forwardRef(
         <SelectPrimitive.Viewport
           onWheel={(e) => e.stopPropagation()}
           className={cn(
-            "p-1 overflow-y-auto",
+            "p-1 overflow-y-auto touch-pan-y",
             position === "popper" &&
               "h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)]"
           )}
+          style={{ WebkitOverflowScrolling: "touch" }}
         >
           {children}
         </SelectPrimitive.Viewport>
