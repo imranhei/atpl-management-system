@@ -29,8 +29,9 @@ import Profile from "./pages/common/Profile";
 import Attendance from "./pages/user-view/Attendance";
 import Dashboard from "./pages/user-view/Dashboard";
 import TodayMeals from "./pages/user-view/DayWiseMeal";
-import EmployeeLeave from "./pages/user-view/Leave";
+import EmployeeLeaveApplication from "./pages/user-view/EmployeeLeaveApplication";
 import Meal from "./pages/user-view/Meal";
+import EmployeeLeaveHistory from "./pages/user-view/EmployeeLeaveHistory";
 
 function App() {
   const { isAuthenticated, role, isLoadingAuth } = useSelector(
@@ -108,7 +109,8 @@ function App() {
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="attendance" element={<Attendance />} />
           <Route path="meal" element={<Meal />} />
-          <Route path="leave" element={<EmployeeLeave />} />
+          <Route path="leave-aplication" element={<EmployeeLeaveApplication />} />
+          <Route path="leave-history" element={<EmployeeLeaveHistory />} />
           <Route path="setting" element={<Profile />} />
           <Route path="day-wise-meal" element={<TodayMeals />} />
           <Route path="reset-password" element={<ResetPassword />} />

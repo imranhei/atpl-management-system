@@ -15,7 +15,7 @@ const initialState = {
   date: [], // always array of 'yyyy-MM-dd'
 };
 
-const EmployeeLeave = () => {
+const EmployeeLeaveApplication = () => {
   const dispatch = useDispatch();
   const { leaveApplicationList, pagination, isLoading, isSubmiting } =
     useSelector((state) => state.leaveApplication);
@@ -96,4 +96,4 @@ const EmployeeLeave = () => {
   );
 };
 
-export default EmployeeLeave;
+export default EmployeeLeaveApplication;

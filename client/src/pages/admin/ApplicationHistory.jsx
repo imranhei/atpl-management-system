@@ -52,8 +52,8 @@ const ApplicationHistory = () => {
 
   return (
     <div className={`sm:space-y-4 space-y-3 ${role === "admin" ? "m-4" : ""}`}>
-      <div className="relative w-full text-center">
-        <h2 className="text-lg font-bold py-2 text-center">
+      <div className="relative w-full sm:text-center">
+        <h2 className="text-lg font-bold py-2">
           Application History
         </h2>
         <FilterModal params={params} setParams={setParams} role={role}>
@@ -67,11 +67,9 @@ const ApplicationHistory = () => {
           {/* Table Header */}
           <TableHeader>
             <TableRow className="bg-sidebar">
-              {role === "admin" && <TableHead>Name</TableHead>}
+              <TableHead>Name</TableHead>
               <TableHead className="min-w-44">Date</TableHead>
-              {role === "admin" && (
                 <TableHead className="text-center">Notified</TableHead>
-              )}
               <TableHead>Type</TableHead>
               <TableHead className="min-w-40">Reason</TableHead>
               <TableHead className="text-center">Status</TableHead>
@@ -82,7 +80,7 @@ const ApplicationHistory = () => {
           {isLoading ? (
             <TableBody>
               <TableRow>
-                <TableCell colSpan={4} className="p-0">
+                <TableCell colSpan={6} className="p-0">
                   <div className="flex w-full items-center justify-center">
                     <LoaderCircle
                       size={16}
@@ -96,7 +94,7 @@ const ApplicationHistory = () => {
             <TableBody>
               {leaveApplicationList?.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={4} className="p-0">
+                  <TableCell colSpan={6} className="p-0">
                     <div className="flex w-full items-center text-muted-foreground justify-center">
                       No records found.
                     </div>

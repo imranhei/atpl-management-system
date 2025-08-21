@@ -72,13 +72,13 @@ const LeaveForm = ({
 
   return (
     <form
-      className="space-y-4 py-6 bg-container rounded shadow-spread border p-4"
+      className="space-y-4 py-4 bg-container rounded shadow-spread border p-4"
       onSubmit={(e) => {
         e.preventDefault();
         onSubmit(formData);
       }}
     >
-      <h1 className="text-lg font-bold pb-2 text-textHead text-center">
+      <h1 className="text-lg font-bold text-textHead text-center">
         Apply Leave
       </h1>
 

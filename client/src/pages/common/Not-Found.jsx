@@ -1,7 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Home } from "lucide-react";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 export default function NotFound() {
+  const navigate = useNavigate();
+  const { role } = useSelector((state) => state.auth);
   const handleBack = () => {
     window.history.back();
   };
@@ -36,7 +40,12 @@ export default function NotFound() {
               <ArrowLeft className="w-4 h-4 mr-2" />
               Go Back
             </Button>
-            <Button className="inline-flex items-center justify-center rounded-md text-sm font-medium bg-primary text-primary-foreground hover:bg-primary/90 px-6 py-3">
+            <Button
+              className="inline-flex items-center justify-center rounded-md text-sm font-medium bg-primary text-primary-foreground hover:bg-primary/90 px-6 py-3"
+              onClick={() => {
+                navigate(`/${role}/dashboard`);
+              }}
+            >
               <Home className="w-4 h-4 mr-2" />
               Go to Dashboard
             </Button>

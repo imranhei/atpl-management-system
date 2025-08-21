@@ -124,7 +124,6 @@ const leaveSlice = createSlice({
       })
       .addCase(addLeaveApplication.fulfilled, (state, action) => {
         state.isSubmiting = false;
-        state.leaveApplicationList.push(action.payload.data);
       })
       .addCase(addLeaveApplication.rejected, (state, action) => {
         state.isSubmiting = false;
