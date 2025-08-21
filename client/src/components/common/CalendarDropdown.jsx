@@ -61,7 +61,8 @@ const CalendarDropdown = ({
         onClick={() => setOpenCal((o) => !o)}
         className={cn(
           "justify-start font-normal !bg-sidebar shadow-none dark:text-white border hover:bg-gray-100 w-full",
-          !selectedDates.length && "text-muted-foreground dark:text-muted-foreground"
+          !selectedDates.length &&
+            "text-muted-foreground dark:text-muted-foreground"
         )}
       >
         <Calendar1Icon className="mr-2 inline-block" />
@@ -93,6 +94,10 @@ const CalendarDropdown = ({
                   ...prev,
                   date: safe.map((d) => format(d, "yyyy-MM-dd")),
                 }));
+              }}
+              disabled={(date) => {
+                const day = date.getDay();
+                return day === 0 || day === 6; // 0 = Sunday, 6 = Saturday
               }}
               footer={
                 <div className="flex items-center justify-between gap-2 border-t sticky bottom-0 bg-background">

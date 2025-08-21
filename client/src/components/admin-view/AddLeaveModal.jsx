@@ -26,10 +26,11 @@ import { Textarea } from "../ui/textarea";
 
 const initialFormData = {
   user_id: null,
-  leave_type: "",
+  leave_type: "full_day",
   date: [],
-  reason: "",
+  reason: "personal",
   status: "approved",
+  informed_status: "informed",
 };
 
 const reasons = [
@@ -54,6 +55,11 @@ const typeMap = {
   full_day: "Full Day",
   "1st_half": "1st Half (7am - 11:30am)",
   "2nd_half": "2nd Half (11:30am - 4pm)",
+};
+
+const informdStatusMap = {
+  informed: "Informed",
+  not_informed: "Not Informed",
 };
 
 const AddLeaveModal = ({ children }) => {
@@ -86,7 +92,7 @@ const AddLeaveModal = ({ children }) => {
     }
 
     dispatch(ManuallyAddLeave(formData)).then((res) => {
-      if (res.payload.data) {
+      if (res.payload?.data) {
         toast.success("Leave applied successfully");
         dispatch(fetchLeaveSummary());
         handleClear();
@@ -224,6 +230,29 @@ const AddLeaveModal = ({ children }) => {
                   ))}
               </div>
             )}
+          </div>
+
+          <div className="flex flex-col gap-2 sm:col-span-2">
+            <Label>
+              Informed Status <span className="text-red-500">*</span>
+            </Label>
+            <Select
+              value={formData.informed_status}
+              onValueChange={(val) => {
+                setFormData((prev) => ({ ...prev, informed_status: val }));
+              }}
+            >
+              <SelectTrigger className="bg-sidebar">
+                <SelectValue placeholder="Select leave type" />
+              </SelectTrigger>
+              <SelectContent>
+                {Object.keys(informdStatusMap).map((key) => (
+                  <SelectItem key={key} value={key}>
+                    {informdStatusMap[key]}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
 
           <div className="flex flex-col gap-2">
