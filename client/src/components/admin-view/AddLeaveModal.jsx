@@ -137,57 +137,44 @@ const AddLeaveModal = ({ children }) => {
         <form onSubmit={handleApply} className="space-y-5 pt-2">
           <div className="flex flex-col gap-2">
             <Label>
-              Select Employeespan <span className="text-red-500">*</span>
+              Select Employee <span className="text-red-500">*</span>
             </Label>
             <Select
-              value={selectedEmp?.id?.toString()}
+              value={selectedEmp?.id?.toString() ?? ""}
               onValueChange={(val) => {
                 const emp = employeeDetails.find(
                   (e) => e.id.toString() === val
                 );
                 if (emp) {
                   handleEmployeeChange(emp);
+                } else {
+                  // clear when no value
+                  setFormData((prev) => ({ ...prev, user_id: null }));
+                  setSelectedEmp(null);
                 }
               }}
             >
               <SelectTrigger className="w-full bg-sidebar font-normal">
-                <SelectValue
-                  placeholder="Select Employee"
-                  aria-label={
-                    selectedEmp ? displayName(selectedEmp) : undefined
-                  }
-                />
+                <SelectValue placeholder="Select Employee" />
               </SelectTrigger>
-
-              <SelectContent
-                className="max-h-44 overflow-y-auto"
-                position="popper"
-                onWheel={(e) => e.stopPropagation()}
-              >
-                {employeeDetails?.length ? (
-                  employeeDetails.map((person) => (
-                    <SelectItem
-                      key={person.id}
-                      value={person.id.toString()}
-                      isSelected={person.id === selectedEmp?.id}
-                    >
-                      {displayName(person)}
-                    </SelectItem>
-                  ))
-                ) : (
-                  <div className="p-2 text-sm text-muted-foreground">
-                    No employee found.
-                  </div>
-                )}
+              <SelectContent className="max-h-48 overflow-y-auto">
+                {employeeDetails?.map((person) => (
+                  <SelectItem key={person.id} value={person.id.toString()}>
+                    {displayName(person)}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </div>
 
           <div className="flex flex-col gap-2">
-            <Label>Leave Type</Label>
+            <Label>
+              Leave Type <span className="text-red-500">*</span>
+            </Label>
             <Select
-              onValueChange={(e) => {
-                setFormData({ ...formData, leave_type: e });
+              value={formData.leave_type}
+              onValueChange={(val) => {
+                setFormData((prev) => ({ ...prev, leave_type: val }));
               }}
             >
               <SelectTrigger className="bg-sidebar">
@@ -205,7 +192,9 @@ const AddLeaveModal = ({ children }) => {
 
           {/* Date(s) — ALWAYS multiple selection, submit as array */}
           <div className="flex flex-col gap-2 sm:col-span-2">
-            <Label>Date(s):</Label>
+            <Label>
+              Date(s) <span className="text-red-500">*</span>
+            </Label>
             <CalendarDropdown
               selectedDates={selectedDates}
               setSelectedDates={setSelectedDates}
@@ -238,7 +227,9 @@ const AddLeaveModal = ({ children }) => {
           </div>
 
           <div className="flex flex-col gap-2">
-            <Label>Leave Reason:</Label>
+            <Label>
+              Leave Reason <span className="text-red-500">*</span>
+            </Label>
             {isFullDay ? (
               <Select
                 value={formData.reason}
