@@ -15,11 +15,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { getEmployeeDetails } from "@/store/admin/employee-details-slice";
-import { ManuallyAddLeave } from "@/store/leave/leave-slice";
+import { fetchLeaveSummary, ManuallyAddLeave } from "@/store/leave/leave-slice";
 import { format } from "date-fns";
 import { X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { toast } from "sonner";
 import { Label } from "../ui/label";
 import { Textarea } from "../ui/textarea";
 
@@ -66,10 +67,34 @@ const AddLeaveModal = ({ children }) => {
 
   const handleApply = (e) => {
     e.preventDefault();
-    console.log(formData);
 
-    dispatch(ManuallyAddLeave(formData)).then((res) => console.log(res));
-    setOpen(false);
+    if (!formData.user_id) {
+      toast.error("Employee is required");
+      return;
+    }
+    if (!formData.leave_type) {
+      toast.error("Leave type is required");
+      return;
+    }
+    if (!formData.date || formData.date.length === 0) {
+      toast.error("Date is required");
+      return;
+    }
+    if (!formData.reason.trim()) {
+      toast.error("Reason is required");
+      return;
+    }
+
+    dispatch(ManuallyAddLeave(formData)).then((res) => {
+      if (res.payload.data) {
+        toast.success("Leave applied successfully");
+        dispatch(fetchLeaveSummary());
+        handleClear();
+        setOpen(false);
+      } else {
+        toast.error("Error applying leave");
+      }
+    });
   };
 
   const isFullDay = formData.leave_type === "full_day";
@@ -111,7 +136,9 @@ const AddLeaveModal = ({ children }) => {
 
         <form onSubmit={handleApply} className="space-y-5 pt-2">
           <div className="flex flex-col gap-2">
-            <Label>Select Employee</Label>
+            <Label>
+              Select Employeespan <span className="text-red-500">*</span>
+            </Label>
             <Select
               value={selectedEmp?.id?.toString()}
               onValueChange={(val) => {

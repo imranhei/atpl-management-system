@@ -53,9 +53,7 @@ const ApplicationHistory = () => {
   return (
     <div className={`sm:space-y-4 space-y-3 ${role === "admin" ? "m-4" : ""}`}>
       <div className="relative w-full sm:text-center">
-        <h2 className="text-lg font-bold py-2">
-          Application History
-        </h2>
+        <h2 className="text-lg font-bold py-2">Application History</h2>
         <FilterModal params={params} setParams={setParams} role={role}>
           <Button className="absolute right-2 top-2">
             Filter <SlidersHorizontal />
@@ -67,9 +65,11 @@ const ApplicationHistory = () => {
           {/* Table Header */}
           <TableHeader>
             <TableRow className="bg-sidebar">
-              <TableHead>Name</TableHead>
+              {role === "admin" && <TableHead>Name</TableHead>}
               <TableHead className="min-w-44">Date</TableHead>
+              {role === "admin" && (
                 <TableHead className="text-center">Notified</TableHead>
+              )}
               <TableHead>Type</TableHead>
               <TableHead className="min-w-40">Reason</TableHead>
               <TableHead className="text-center">Status</TableHead>
@@ -80,7 +80,7 @@ const ApplicationHistory = () => {
           {isLoading ? (
             <TableBody>
               <TableRow>
-                <TableCell colSpan={6} className="p-0">
+                <TableCell colSpan={role === "admin" ? 6 : 4} className="p-0">
                   <div className="flex w-full items-center justify-center">
                     <LoaderCircle
                       size={16}
@@ -94,7 +94,7 @@ const ApplicationHistory = () => {
             <TableBody>
               {leaveApplicationList?.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={6} className="p-0">
+                  <TableCell colSpan={role === "admin" ? 6 : 4} className="p-0">
                     <div className="flex w-full items-center text-muted-foreground justify-center">
                       No records found.
                     </div>
@@ -252,15 +252,16 @@ const ApplicationHistory = () => {
             </TableBody>
           )}
         </Table>
-        <div className="w-full py-2">
-          {pagination?.last_page > 1 && (
+
+        {pagination?.last_page > 1 && (
+          <div className="w-full py-2">
             <PaginationWithEllipsis
               currentPage={params.page}
               totalPages={pagination?.last_page}
               onPageChange={handlePageChange}
             />
-          )}
-        </div>
+          </div>
+        )}
       </Box>
     </div>
   );
