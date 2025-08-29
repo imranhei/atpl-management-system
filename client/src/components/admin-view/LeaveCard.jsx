@@ -23,7 +23,7 @@ const resolveImg = (url) => {
   return base ? `${base}${url}` : url;
 };
 
-const LeaveCard = ({ user, active }) => {
+const LeaveCard = ({ user, active = true }) => {
   const chartData = (user?.monthly_breakdown || []).map((m) => ({
     month: m.month,
     leave: Number(m.leave || 0),
