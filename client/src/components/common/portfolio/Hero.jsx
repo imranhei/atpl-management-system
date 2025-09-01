@@ -1,29 +1,61 @@
-import React, { useEffect } from 'react';
-import { Element } from 'react-scroll';
-import bg from '../../../assets/hero_banner.jpg';
-import Aos from "aos";
-import "aos/dist/aos.css";
+import { Button } from "@/components/ui/button";
+import { ChevronsRight } from "lucide-react";
+import bg from "../../../assets/hero.webp";
 
 const Hero = () => {
-  
-  useEffect(() => {
-    Aos.init({ duration: 1000 });
-  }, []);
-
   return (
-    <Element name='hero' className='section'>
-      <div className='min-h-screen h-fit w-full relative overflow-hidden'>
-        <div className="h-full w-full opacity-75 bg-black z-10 absolute top-0 left-0"></div>
-        <img src={bg} alt='background' className='h-full w-full object-cover blur-sm absolute top-0 left-0' />
-        <div className="min-h-screen w-full z-20 relative flex justify-center items-center pt-16 pb-10">
-          <div className=' h-full mx-auto text-white lg:w-3/4 w-4/5 space-y-6'>
-            <h1 className="md:text-5xl text-3xl font-bold text-yellow-400" data-aos="fade-down">Unleashing the potential of technology to fuel your success story.</h1>
-            <h1 className='md:text-xl text-justify' data-aos="fade-up">At <span className='text-yellow-400 font-semibold'>ATPL Dhaka</span>, we are dedicated to providing top-notch engineering services and solutions tailored to meet your specific needs. With our team of experienced professionals and cutting-edge technology, we strive to deliver exceptional results that drive your business forward.</h1>
+    <section
+      id="hero"
+      className="min-h-screen flex items-center justify-center relative"
+    >
+      {/* Background Image */}
+      <div
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: `url(${bg})` }}
+      >
+        <div className="absolute inset-0 bg-black/50" />
+      </div>
+
+      {/* Content */}
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
+        <div className="space-y-8">
+          <h1 className="text-3xl md:text-5xl font-bold tracking-tight">
+            Unleashing the potential of technology to fuel your success story
+          </h1>
+          <p className="text-xl md:text-2xl text-gray-200 max-w-4xl mx-auto">
+            Strategic back office for Ampec Technologies and Total Electrical
+            Connections Pty Ltd, providing comprehensive engineering and
+            technical support services from our operations center in Uttara,
+            Dhaka-1230, Bangladesh.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button
+              size="lg"
+              onClick={() =>
+                document
+                  .getElementById("services")
+                  ?.scrollIntoView({ behavior: "smooth" })
+              }
+            >
+              Explore Our Services
+            </Button>
+            <Button
+              variant="outline"
+              className="text-primary hover:bg-background/80"
+              size="lg"
+              onClick={() =>
+                document
+                  .getElementById("about")
+                  ?.scrollIntoView({ behavior: "smooth" })
+              }
+            >
+              Learn More <ChevronsRight />
+            </Button>
           </div>
         </div>
       </div>
-    </Element>
+    </section>
   );
-}
+};
 
 export default Hero;

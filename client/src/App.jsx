@@ -23,15 +23,16 @@ import AuthRegister from "./pages/auth/Register";
 import ResetPassword from "./pages/auth/ResetPassword";
 import Career from "./pages/common/Career";
 import Chat from "./pages/common/Chat";
-import Home from "./pages/common/Home";
+import JobDescription from "./pages/common/JobDescription";
 import NotFound from "./pages/common/Not-Found";
+import Portfolio from "./pages/common/Portfolio";
 import Profile from "./pages/common/Profile";
 import Attendance from "./pages/user-view/Attendance";
 import Dashboard from "./pages/user-view/Dashboard";
 import TodayMeals from "./pages/user-view/DayWiseMeal";
 import EmployeeLeaveApplication from "./pages/user-view/EmployeeLeaveApplication";
-import Meal from "./pages/user-view/Meal";
 import EmployeeLeaveHistory from "./pages/user-view/EmployeeLeaveHistory";
+import Meal from "./pages/user-view/Meal";
 
 function App() {
   const { isAuthenticated, role, isLoadingAuth } = useSelector(
@@ -68,14 +69,18 @@ function App() {
             </ProtectedRoute>
           }
         />
-        <Route
+        {/* <Route
           path="/"
           element={
             <Layout>
               <Home />
             </Layout>
           }
-        />
+        /> */}
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Portfolio />} />
+          <Route path="/job-description/:alias" element={<JobDescription />} />
+        </Route>
         <Route path="/career" element={<Career />} />
 
         <Route
@@ -109,7 +114,10 @@ function App() {
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="attendance" element={<Attendance />} />
           <Route path="meal" element={<Meal />} />
-          <Route path="leave-aplication" element={<EmployeeLeaveApplication />} />
+          <Route
+            path="leave-aplication"
+            element={<EmployeeLeaveApplication />}
+          />
           <Route path="leave-history" element={<EmployeeLeaveHistory />} />
           <Route path="setting" element={<Profile />} />
           <Route path="day-wise-meal" element={<TodayMeals />} />

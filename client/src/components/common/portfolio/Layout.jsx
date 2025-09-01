@@ -1,11 +1,12 @@
 import Navbar from "./Navbar";
 import Footer from "./Footer";
+import { Outlet } from "react-router-dom"
 
-const Layout = ({ children }) => {
+const Layout = () => {
   return (
     <div className="bg-white w-full overflow-hidden relative">
       <Navbar />
-      {children}
+      <Outlet />
       <Footer />
     </div>
   );

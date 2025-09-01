@@ -1,5 +1,5 @@
-import Aos from "aos";
-import "aos/dist/aos.css";
+import { Button } from "@/components/ui/button";
+import { Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import logo from "/atpldhaka.png";
@@ -7,136 +7,125 @@ import logo from "/atpldhaka.png";
 const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [active, setActive] = useState("hero");
-  const [open, setOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("hero");
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  useEffect(() => {
-    Aos.init({ duration: 1000 });
-  }, []);
-
-  // Scroll to section if hash exists (on home page)
-  useEffect(() => {
-    if (location.pathname === "/" && location.hash) {
-      const id = location.hash.replace("#", "");
-      const el = document.getElementById(id);
-      if (el) {
-        setTimeout(() => {
-          el.scrollIntoView({ behavior: "smooth", block: "start" });
-        }, 100);
+  const scrollToSection = (sectionId) => {
+    if (location.pathname !== "/") {
+      navigate("/", { state: { scrollTo: sectionId } });
+    } else {
+      const element = document.getElementById(sectionId);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
       }
     }
-  }, [location]);
-
-  const handleClick = (section) => {
-    setActive(section);
-    setOpen(false);
-
-    if (location.pathname !== "/") {
-      navigate("/", { replace: true });
-
-      // Wait for navigation to complete before scrolling
-      setTimeout(() => {
-        const el = document.getElementById(section);
-        if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
-      }, 100);
-    } else {
-      const el = document.getElementById(section);
-      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
+    setIsMenuOpen(false); // Close menu after navigation
   };
 
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = ["hero", "about", "services", "career"];
+      const scrollPosition = window.scrollY + 100;
+      for (const section of sections) {
+        const element = document.getElementById(section);
+        if (element) {
+          const offsetTop = element.offsetTop;
+          const offsetHeight = element.offsetHeight;
+          if (
+            scrollPosition >= offsetTop &&
+            scrollPosition < offsetTop + offsetHeight
+          ) {
+            setActiveSection(section);
+            break;
+          }
+        }
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const navItems = [
+    { id: "hero", label: "Home" },
+    { id: "about", label: "About" },
+    { id: "services", label: "Services" },
+    { id: "career", label: "Career" },
+  ];
+
   return (
-    <div
-      data-aos="fade-down"
-      className="fixed w-full z-50 text-white bg-black h-14 bg-opacity-80 flex items-center justify-center"
-    >
-      <div className="flex justify-center items-center w-full">
-        {/* Hamburger menu */}
-        <div
-          onClick={() => setOpen(!open)}
-          className="absolute right-10 z-50 cursor-pointer md:hidden"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="w-6 h-6"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+    <nav className="fixed top-0 w-full bg-black backdrop-blur-sm z-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16">
+          <div className="flex-shrink-0">
+            <img
+              src={logo}
+              alt="ATPL Dhaka"
+              className="h-8 w-auto cursor-pointer"
+              onClick={() => scrollToSection("hero")}
             />
-          </svg>
+          </div>
+          
+          {/* Desktop Navigation */}
+          <div className="hidden md:block">
+            <div className="ml-10 flex items-baseline space-x-4">
+              {navItems.map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => scrollToSection(item.id)}
+                  className={`px-3 py-1 text-sm font-medium transition-colors duration-200 border-b ${
+                    activeSection === item.id
+                      ? "text-white border-yellow"
+                      : "text-gray-400 hover:text-white hover:border-yellow border-transparent"
+                  }`}
+                >
+                  {item.label}
+                </button>
+              ))}
+            </div>
+          </div>
+          
+          {/* Right side items (Login + Menu) */}
+          <div className="flex items-center space-x-2">
+            {/* Login Button - Always visible */}
+            <Link to="/auth/login">
+              <Button size="sm">Login</Button>
+            </Link>
+            
+            {/* Mobile Menu Button */}
+            <div className="md:hidden">
+              <Button 
+                size="sm" 
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                className="border-gray-600"
+              >
+                {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+              </Button>
+            </div>
+          </div>
         </div>
-
-        {/* Logo */}
-        <div
-          onClick={() => handleClick("hero")}
-          className="cursor-pointer absolute left-10 z-50"
-        >
-          <img
-            data-aos="fade-right"
-            data-aos-delay="1000"
-            className="h-8"
-            src={logo}
-            alt="logo"
-          />
-        </div>
-
-        {/* Nav Links */}
-        <div
-          className={`z-40 text-center md:space-x-5 md:p-0 px-20 md:w-auto w-full py-3 md:static absolute flex flex-col md:flex-row md:bg-transparent bg-black bg-opacity-80 transition-all duration-700 right-0 ${
-            open ? "top-14" : "-top-40"
-          }`}
-        >
-          {["hero", "about", "services", "contact"].map((section) => (
-            <span
-              key={section}
-              onClick={() => handleClick(section)}
-              className={`cursor-pointer w-full md:w-fit md:border-b-2 ${
-                active === section
-                  ? "text-amber-300 border-amber-300"
-                  : "border-transparent"
-              }`}
-            >
-              {section === "hero"
-                ? "Home"
-                : section.charAt(0).toUpperCase() +
-                  section.slice(1).replace("-", " ")}
-            </span>
-          ))}
-
-          {/* Career page route */}
-          {/* <span
-            onClick={() => {
-              setActive("career");
-              setOpen(false);
-              navigate("/career");
-            }}
-            className={`cursor-pointer w-full md:w-fit md:border-b-2 ${
-              active === "career"
-                ? "text-yellow-300 border-yellow-300"
-                : "border-transparent"
-            }`}
-          >
-            Career
-          </span> */}
-        </div>
-
-        {/* Login */}
-        <Link
-          to="/auth/login"
-          state={{ from: location.pathname }} // Add this
-          className="absolute md:right-10 right-20 hover:text-amber-300 z-50"
-          replace
-        >
-          Login
-        </Link>
       </div>
-    </div>
+      
+      {/* Mobile Menu */}
+      {isMenuOpen && (
+        <div className="md:hidden bg-black/95 backdrop-blur-sm border-t border-gray-800">
+          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+            {navItems.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => scrollToSection(item.id)}
+                className={`block w-full text-left px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 ${
+                  activeSection === item.id
+                    ? "bg-gray-900 text-white"
+                    : "text-gray-300 hover:bg-gray-800 hover:text-white"
+                }`}
+              >
+                {item.label}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+    </nav>
   );
 };
 
