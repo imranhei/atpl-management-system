@@ -59,7 +59,7 @@ const typeMap = {
 
 const informdStatusMap = {
   informed: "Informed",
-  not_informed: "Not Informed",
+  uninformed: "Not Informed",
 };
 
 const AddLeaveModal = ({ children }) => {
