@@ -21,7 +21,7 @@ import Overview from "./pages/admin/Overview";
 import AuthLogin from "./pages/auth/Login";
 import AuthRegister from "./pages/auth/Register";
 import ResetPassword from "./pages/auth/ResetPassword";
-import Career from "./pages/common/Career";
+import Career from "./pages/common/ApplyForm";
 import Chat from "./pages/common/Chat";
 import JobDescription from "./pages/common/JobDescription";
 import NotFound from "./pages/common/Not-Found";
@@ -33,6 +33,7 @@ import TodayMeals from "./pages/user-view/DayWiseMeal";
 import EmployeeLeaveApplication from "./pages/user-view/EmployeeLeaveApplication";
 import EmployeeLeaveHistory from "./pages/user-view/EmployeeLeaveHistory";
 import Meal from "./pages/user-view/Meal";
+import ApplyForm from "./pages/common/ApplyForm";
 
 function App() {
   const { isAuthenticated, role, isLoadingAuth } = useSelector(
@@ -69,17 +70,10 @@ function App() {
             </ProtectedRoute>
           }
         />
-        {/* <Route
-          path="/"
-          element={
-            <Layout>
-              <Home />
-            </Layout>
-          }
-        /> */}
         <Route path="/" element={<Layout />}>
           <Route index element={<Portfolio />} />
           <Route path="/job-description/:alias" element={<JobDescription />} />
+          <Route path="job-description/:alias/apply" element={<ApplyForm />} />
         </Route>
         <Route path="/career" element={<Career />} />
 

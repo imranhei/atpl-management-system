@@ -52,7 +52,7 @@ const Services = () => {
         "We deliver electrical design and estimation for all project types, with detailed plans, load calculations, and cost estimates.",
       icon: "⚡",
       features: [
-        "Electrical System Design",
+        "Electrical System Design & Estimation",
         "AutoCAD Drafting",
         "Project Documentation",
         "Compliance Checking",
