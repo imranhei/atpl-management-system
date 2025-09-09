@@ -62,7 +62,7 @@ const informdStatusMap = {
   uninformed: "Not Informed",
 };
 
-const AddLeaveModal = ({ children }) => {
+const AddLeaveModal = ({ children, }) => {
   const dispatch = useDispatch();
   const { employeeDetails } = useSelector((s) => s.employeeDetails);
   const { isLoading } = useSelector((s) => s.leaveApplication);
