@@ -3,8 +3,13 @@ import { Button } from "@/components/ui/button";
 import { Share2 } from "lucide-react";
 import hiring_banner from "../../assets/hiring_banner.png";
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
 
 const JobDescription = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const JD = {
     title: "Graphics Designer",
     deadline: "26 Aug 2025",
@@ -50,6 +55,7 @@ const JobDescription = () => {
       },
     ],
   };
+  
   return (
     <section className="bg-gradient-to-br from-background dark:to-background to-muted/20">
       <div className="min-h-screen flex items-center justify-center relative">

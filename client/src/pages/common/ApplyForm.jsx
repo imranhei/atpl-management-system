@@ -66,7 +66,7 @@ const ApplyForm = () => {
     console.log("Submitted:", formData);
   };
 
-  const scrollTo = (id) => {
+  const scrollTo1 = (id) => {
     const el = document.getElementById(id);
     if (el) {
       const yOffset = -200; // 👈 extra space for navbar
@@ -74,6 +74,12 @@ const ApplyForm = () => {
       window.scrollTo({ top: y, behavior: "smooth" });
     }
   };
+
+  useEffect(() => {
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 0);
+  }, []);
 
   useEffect(() => {
     const onScroll = () => {
@@ -112,7 +118,7 @@ const ApplyForm = () => {
                 return (
                   <button
                     key={step.id}
-                    onClick={() => scrollTo(step.id)}
+                    onClick={() => scrollTo1(step.id)}
                     className="flex flex-col items-center"
                   >
                     <div
