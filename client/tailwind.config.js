@@ -4,8 +4,6 @@ export default {
   content: ["./index.html", "./src/**/*.{ts,tsx,js,jsx}"],
   theme: {
     extend: {
-      fontFamily: {
-      },
       keyframes: {
         slideIn: {
           "0%": { transform: "translateY(40px)", opacity: "0" },

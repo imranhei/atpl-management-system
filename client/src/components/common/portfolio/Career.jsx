@@ -11,14 +11,14 @@ import { Link } from "react-router-dom";
 
 const Career = () => {
   const jobOpenings = [
-    // {
-    //   title: "Electrical Estimator",
-    //   department: "Engineering",
-    //   location: "Dhaka",
-    //   type: "Full-time",
-    //   description:
-    //     "Provide accurate electrical estimates for various projects and clients.",
-    // },
+    {
+      title: "Electrical Estimator",
+      department: "Engineering",
+      location: "Dhaka",
+      type: "Full-time",
+      description:
+        "Provide accurate electrical estimates for various projects and clients.",
+    },
   ];
 
   return (
