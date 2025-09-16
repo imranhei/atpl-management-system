@@ -169,7 +169,7 @@ const DetailLeaveSummary = () => {
                           )}
                         </div>
                       );
-                    })()}
+                    })}
                   </TableCell>
                   {/* <TableCell>
                     <span

@@ -15,6 +15,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import PaginationWithEllipsis from "@/components/user-view/PaginationWithEllipsis";
 import { fetchLeaveApplicationList } from "@/store/leave/leave-slice";
 import { format, parseISO } from "date-fns";
 import { LoaderCircle, SlidersHorizontal } from "lucide-react";
@@ -30,7 +31,7 @@ const typeMap = {
 const ApplicationHistory = () => {
   const dispatch = useDispatch();
   const { role } = useSelector((s) => s.auth);
-  const { leaveApplicationList, isLoading } = useSelector(
+  const { leaveApplicationList, pagination, isLoading } = useSelector(
     (s) => s.leaveApplication
   );
   const [params, setParams] = useState({
@@ -252,6 +253,14 @@ const ApplicationHistory = () => {
           )}
         </Table>
       </Box>
+
+      {pagination?.last_page > 1 && (
+        <PaginationWithEllipsis
+          currentPage={params.page}
+          totalPages={pagination?.last_page}
+          onPageChange={handlePageChange}
+        />
+      )}
     </div>
   );
 };

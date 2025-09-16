@@ -1,5 +1,4 @@
 import LeaveForm from "@/components/admin-view/LeaveForm";
-import PaginationWithEllipsis from "@/components/user-view/PaginationWithEllipsis";
 import {
   addLeaveApplication,
   fetchLeaveApplicationList,
@@ -60,14 +59,6 @@ const EmployeeLeaveApplication = () => {
     });
   };
 
-  // const handlePerPageChange = (value) => {
-  //   setParams((prev) => ({ ...prev, page: 1, per_page: parseInt(value) }));
-  // };
-
-  const handlePageChange = (page) => {
-    setParams((prev) => ({ ...prev, page }));
-  };
-
   useEffect(() => {
     dispatch(fetchLeaveApplicationList(params));
   }, [params]);
@@ -85,13 +76,6 @@ const EmployeeLeaveApplication = () => {
         data={leaveApplicationList}
         isLoading={isLoading}
       />
-      {pagination?.last_page > 1 && (
-        <PaginationWithEllipsis
-          currentPage={params.page}
-          totalPages={pagination?.last_page}
-          onPageChange={handlePageChange}
-        />
-      )}
     </div>
   );
 };
