@@ -28,3 +28,15 @@
 .dark * {
   scrollbar-color: rgb(52, 72, 77) #3b3b3b00;
 }
+
+.preview-content ul { list-style: disc; padding-left: 1.25rem; }
+.preview-content ol { list-style: decimal; padding-left: 1.25rem; }
+.preview-content li { margin: 0.25rem 0; }
+
+.ql-size-12px { font-size: 12px; }
+.ql-size-14px { font-size: 14px; }
+.ql-size-16px { font-size: 16px; }
+.ql-size-18px { font-size: 18px; }
+.ql-size-20px { font-size: 20px; }
+.ql-size-24px { font-size: 24px; }
+.ql-size-32px { font-size: 32px; }

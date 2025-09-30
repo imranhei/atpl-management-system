@@ -16,12 +16,17 @@ import ApplicationHistory from "./pages/admin/ApplicationHistory";
 import ApplicationReview from "./pages/admin/ApplicationReview";
 import DetailLeaveSummary from "./pages/admin/DetailLeaveSummary";
 import Irregularities from "./pages/admin/Irregularities";
+import JobApplicationHistory from "./pages/admin/JobApplicationHistory";
+import JobRecords from "./pages/admin/JobRecords";
 import LeaveSummary from "./pages/admin/LeaveSummary";
 import Overview from "./pages/admin/Overview";
 import AuthLogin from "./pages/auth/Login";
 import AuthRegister from "./pages/auth/Register";
 import ResetPassword from "./pages/auth/ResetPassword";
-import Career from "./pages/common/ApplyForm";
+import {
+  default as ApplyForm,
+  default as Career,
+} from "./pages/common/ApplyForm";
 import Chat from "./pages/common/Chat";
 import JobDescription from "./pages/common/JobDescription";
 import NotFound from "./pages/common/Not-Found";
@@ -33,7 +38,7 @@ import TodayMeals from "./pages/user-view/DayWiseMeal";
 import EmployeeLeaveApplication from "./pages/user-view/EmployeeLeaveApplication";
 import EmployeeLeaveHistory from "./pages/user-view/EmployeeLeaveHistory";
 import Meal from "./pages/user-view/Meal";
-import ApplyForm from "./pages/common/ApplyForm";
+import Employee from "./pages/admin/Employee";
 
 function App() {
   const { isAuthenticated, role, isLoadingAuth } = useSelector(
@@ -72,7 +77,7 @@ function App() {
         />
         <Route path="/" element={<Layout />}>
           <Route index element={<Portfolio />} />
-          <Route path="/job-description/:alias" element={<JobDescription />} />
+          <Route path="job-description/:alias" element={<JobDescription />} />
           <Route path="job-description/:alias/apply" element={<ApplyForm />} />
         </Route>
         <Route path="/career" element={<Career />} />
@@ -132,6 +137,7 @@ function App() {
         >
           <Route path="dashboard" element={<AdminDashboard />} />
           <Route path="attendance" element={<AdminAttendance />} />
+          <Route path="employees" element={<Employee />} />
           <Route path="overview" element={<Overview />} />
           <Route path="irregularities" element={<Irregularities />} />
           <Route path="meal" element={<Meal />} />
@@ -140,6 +146,11 @@ function App() {
           <Route
             path="leave-application-history"
             element={<ApplicationHistory />}
+          />
+          <Route path="job-records" element={<JobRecords />} />
+          <Route
+            path="job-application-history"
+            element={<JobApplicationHistory />}
           />
           <Route path="application-review" element={<ApplicationReview />} />
           <Route path="setting" element={<Profile />} />

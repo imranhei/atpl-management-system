@@ -3,7 +3,7 @@ import linkedin from "@/assets/in.svg";
 import tw from "@/assets/tw.svg";
 import { Mail, MapPin, Phone } from "lucide-react";
 import { Link } from "react-router-dom";
-import icon from "../../../../public/atpldhaka.png";
+import icon from "/atpldhaka.png";
 
 const Footer = () => {
   return (
@@ -29,9 +29,6 @@ const Footer = () => {
               Total Electrical Connections Pty Ltd
             </Link>
             , located in Uttara, Dhaka-1230, Bangladesh.
-          </p>
-          <p className="mt-5 text-gray-300 text-sm">
-            &copy; Copyright ATPL DHAKA
           </p>
         </div>
 
@@ -61,11 +58,14 @@ const Footer = () => {
             progress.
           </p>
           <div className="flex items-center gap-6">
+            <img src={linkedin} alt="" />
             <img src={fb} alt="" />
             <img src={tw} alt="" />
-            <img src={linkedin} alt="" />
           </div>
         </div>
+        <p className="mt-2 text-gray-300 text-sm text-center sm:col-span-3">
+          Copyright &copy; {new Date().getFullYear()} ATPL DHAKA
+        </p>
       </div>
     </div>
   );

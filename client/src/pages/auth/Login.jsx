@@ -59,6 +59,10 @@ const AuthLogin = () => {
           );
         }
         toast.success("Login successful");
+      } else {
+        toast.error("Login failed", {
+          description: res.payload.message || "Unexpected error occurred",
+        });
       }
     } catch (err) {
       toast.error("Login failed", {

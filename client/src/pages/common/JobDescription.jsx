@@ -1,11 +1,13 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Share2 } from "lucide-react";
-import hiring_banner from "../../assets/hiring_banner.png";
-import { Link } from "react-router-dom";
-import { useEffect } from "react";
+import { useCallback, useEffect, useMemo } from "react";
+import { Link, useLocation, useParams } from "react-router-dom";
 
 const JobDescription = () => {
+  const { alias } = useParams();
+  const location = useLocation();
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -56,9 +58,49 @@ const JobDescription = () => {
     ],
   };
 
+  // Build the exact current URL (keeps any ?query or #hash)
+  const fullUrl = useMemo(() => {
+    if (typeof window === "undefined") {
+      // fallback for SSR
+      return `https://atpldhaka.com/job-description/${alias ?? ""}`;
+    }
+    return new URL(
+      location.pathname + location.search + location.hash,
+      window.location.origin
+    ).toString();
+  }, [alias, location]);
+
+  const handleShare = useCallback(async () => {
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: alias?.replace(/-/g, " ") ?? "Job",
+          url: fullUrl,
+        });
+        return;
+      }
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(fullUrl);
+      } else {
+        const ta = document.createElement("textarea");
+        ta.value = fullUrl;
+        ta.setAttribute("readonly", "");
+        ta.style.position = "absolute";
+        ta.style.left = "-9999px";
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand("copy");
+        document.body.removeChild(ta);
+      }
+      alert("Link copied!");
+    } catch {
+      alert("Couldn't share/copy the link.");
+    }
+  }, [fullUrl, alias]);
+
   return (
     <section className="bg-gradient-to-br from-background dark:to-background to-muted/20">
-      <div className="min-h-screen flex items-center justify-center relative">
+      {/* <div className="min-h-screen flex items-center justify-center relative">
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{ backgroundImage: `url(${hiring_banner})` }}
@@ -82,8 +124,8 @@ const JobDescription = () => {
             </p>
           </div>
         </div>
-      </div>
-      <div className="py-20 relative overflow-hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
+      </div> */}
+      <div className="py-20 mt-10 relative overflow-hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
         <h1 className="sm:text-4xl text-2xl font-bold">{JD.title}</h1>
         <p className="text-muted-foreground py-4">
           Application Deadline:{" "}
@@ -98,9 +140,14 @@ const JobDescription = () => {
             <Badge variant="outline">{JD.age} years</Badge>
             <Badge variant="outline">{JD.exp} Years</Badge>
           </div>
-          <Link to="apply" className="ml-auto"><Button className="px-10">Apply Now</Button></Link>
-          <Button className="bg-black/80 text-white">
-            <Share2 className="text-yellow" />
+          <Link to="apply" className="ml-auto">
+            <Button className="px-10">Apply Now</Button>
+          </Link>
+          <Button
+            onClick={handleShare}
+            className="bg-black/80 hover:bg-black text-white"
+          >
+            <Share2 className="mr-2 h-4 w-4 text-yellow dark:text-white" />
             Share
           </Button>
         </div>
@@ -126,7 +173,7 @@ const JobDescription = () => {
 
         <div className="py-4 text-justify">
           <h3 className="sm:text-2xl text-xl font-bold mb-4">Qualifications</h3>
-          <ul className="list-none pl-4 text-muted-foreground leading-7">
+          <ul className="list-none text-muted-foreground leading-7">
             {JD.qualifications.map((item, index) => (
               <li key={index}>
                 <strong>{item.title}:</strong>
@@ -174,7 +221,9 @@ const JobDescription = () => {
         </div>
 
         <div className="w-full mt-6">
-            <Link to="apply"><Button className="px-20">Apply Now</Button></Link>
+          <Link to="apply">
+            <Button className="px-20">Apply Now</Button>
+          </Link>
         </div>
       </div>
     </section>
