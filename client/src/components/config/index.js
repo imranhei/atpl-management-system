@@ -3,7 +3,6 @@ import {
   ChartColumnIncreasing,
   ChartNoAxesCombined,
   CircleUser,
-  CopyPlus,
   FileChartColumn,
   FileClock,
   Layers,
@@ -16,7 +15,6 @@ import {
   ReceiptText,
   Settings,
   TicketsPlane,
-  UserPlus,
   Users,
 } from "lucide-react";
 
@@ -270,12 +268,6 @@ export const SIDEBAR_MENU = {
           icon: CircleUser,
         },
         {
-          id: "register",
-          label: "Add User",
-          path: "/register",
-          icon: UserPlus,
-        },
-        {
           id: "reset-password",
           label: "Reset Password",
           path: "/reset-password",
@@ -283,11 +275,11 @@ export const SIDEBAR_MENU = {
         },
       ],
     },
-    {
-      id: "messages",
-      label: "Chat",
-      path: "/chat",
-      icon: MessageCircleMore,
-    },
+    // {
+    //   id: "messages",
+    //   label: "Chat",
+    //   path: "/chat",
+    //   icon: MessageCircleMore,
+    // },
   ],
 };

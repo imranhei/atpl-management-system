@@ -1,9 +1,17 @@
-import { registerFormControls } from "@/components/config";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { registerUser } from "@/store/auth-slice";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
-import CommonForm from "../../components/common/Form";
+import CommonForm from "../common/Form";
+import { registerFormControls } from "../config";
+
 const initialState = {
   emp_code: "",
   username: "",
@@ -13,14 +21,14 @@ const initialState = {
   password: "",
 };
 
-const AuthResgister = () => {
-  const [formData, setFormData] = useState(initialState);
+const AddEmployeeModal = ({ children }) => {
   const dispatch = useDispatch();
   const { isLoading } = useSelector((state) => state.auth);
+  const [formData, setFormData] = useState(initialState);
+  const [open, setOpen] = useState(false);
 
   const onSubmit = (event) => {
     event.preventDefault();
-    console.log("formData", formData);
 
     // //all fields are required
     if (Object.values(formData).some((value) => !value)) {
@@ -38,6 +46,7 @@ const AuthResgister = () => {
       if (data?.payload && data?.payload?.status) {
         toast.success(data.payload.message || "Registration success");
         setFormData(initialState);
+        setOpen(false);
       } else {
         toast.error("Registration failed", {
           description: data?.payload?.message || data?.error?.message || "",
@@ -47,13 +56,14 @@ const AuthResgister = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-full px-8 sm:px-12">
-      <div className="mx-auto w-full max-w-md space-y-6">
-        <div className="text-center">
-          <h1 className="sm:text-3xl text-2xl font-bold tracking-tight text-foreground">
-            Add New User
-          </h1>
-        </div>
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>{children}</DialogTrigger>
+      <DialogContent className="sm:max-w-md w-5/6 max-h-[calc(100vh-4rem)] overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle className="text-center mb-4">
+            Register New Employee
+          </DialogTitle>
+        </DialogHeader>
         <CommonForm
           formControls={registerFormControls}
           buttonText={"Register"}
@@ -63,9 +73,9 @@ const AuthResgister = () => {
           onSubmit={onSubmit}
           isLoading={isLoading}
         />
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 };
 
-export default AuthResgister;
+export default AddEmployeeModal;

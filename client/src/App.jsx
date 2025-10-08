@@ -21,7 +21,6 @@ import JobRecords from "./pages/admin/JobRecords";
 import LeaveSummary from "./pages/admin/LeaveSummary";
 import Overview from "./pages/admin/Overview";
 import AuthLogin from "./pages/auth/Login";
-import AuthRegister from "./pages/auth/Register";
 import ResetPassword from "./pages/auth/ResetPassword";
 import {
   default as ApplyForm,
@@ -155,7 +154,6 @@ function App() {
           <Route path="application-review" element={<ApplicationReview />} />
           <Route path="setting" element={<Profile />} />
           <Route path="day-wise-meal" element={<TodayMeals />} />
-          <Route path="register" element={<AuthRegister />} />
           <Route path="reset-password" element={<ResetPassword />} />
           <Route path="chat" element={<Chat />} />
         </Route>
