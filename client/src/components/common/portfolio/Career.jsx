@@ -87,7 +87,7 @@ const Career = () => {
 
                 {/* Message */}
                 <h3 className="text-2xl font-semibold mb-4 text-foreground">
-                  No Current Openings!
+                  Sorry, No Current Openings
                 </h3>
                 <p className="text-muted-foreground max-w-md">
                   We don't have any job openings available at the moment. Please

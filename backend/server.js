@@ -12,6 +12,9 @@ app.get('/health', (req, res) => {
 });
 // if you serve a SPA with a catch-all, keep it LAST:
 app.get('/', (req, res) => res.json({ ups: true }));
+app.get('/api/alive', (req, res) => {
+  res.json({ message: "Server is alive" });
+});
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
