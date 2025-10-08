@@ -49,7 +49,7 @@ jobs:
           port: 21 # Default FTP port
           protocol: ftps # Use "ftps" for secure FTP or "ftp" for regular FTP
           local-dir: client/dist/ # The directory containing your Vite build files.
-          server-dir: public_html/ # Path on your CPanel server / previous "/"
+          server-dir: / # Path on your CPanel server
           timeout: 1200
           exclude: |
             **/.git*
@@ -84,7 +84,7 @@ jobs:
           port: 21
           # deploy only the runtime files, NOT node_modules
           local-dir: backend/
-          server-dir: public_html/hei.atpldhaka.com/
+          server-dir: hei.atpldhaka.com/
           timeout: 1200
           exclude: |
             **/.git*
