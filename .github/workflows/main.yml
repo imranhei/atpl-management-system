@@ -1,4 +1,4 @@
-name: Deploy to CPanel
+name: Deploy to CPanel (client + backend)
 
 on:
   push:
@@ -6,8 +6,7 @@ on:
       - main
 
 jobs:
-  web-deploy:
-    name: Deploy
+  deploy:
     runs-on: ubuntu-latest
     environment: "Production – atpl-dhaka"
 
@@ -17,7 +16,7 @@ jobs:
 
     steps:
       # Step 1: Checkout the repository
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v3
 
       # Step 2: Set up Node.js
@@ -26,15 +25,19 @@ jobs:
         with:
           node-version: 22 # Use the Node.js version compatible with Vite
 
+      # -------------------- CLIENT --------------------
+
       # Step 3: Install dependencies and build the project
       - name: Inject .env from GitHub Environment
+        working-directory: client
         run: |
           echo "VITE_API_URL=${{ vars.VITE_API_URL }}" > .env
           echo "VITE_API_URL_CHAT=${{ vars.VITE_API_URL_CHAT }}" >> .env
-
+      # npm install/npm ci
       - name: Install dependencies and build
+        working-directory: client
         run: |
-          npm install
+          npm ci
           npm run build
 
       - name: 📂 Sync files using FTP
@@ -46,7 +49,39 @@ jobs:
           port: 21 # Default FTP port
           protocol: ftps # Use "ftps" for secure FTP or "ftp" for regular FTP
           local-dir: client/dist/ # The directory containing your Vite build files.
-          server-dir: / # Path on your CPanel server
+          server-dir: public_html/ # Path on your CPanel server / previous "/"
+          timeout: 1200
+          exclude: |
+            .htaccess
+
+      # -------------------- BACKEND --------------------
+      # If your backend needs a build (TypeScript etc), keep these; otherwise you can remove the build step.
+      - name: Install & build backend (optional)
+        working-directory: backend
+        run: |
+          if [ -f package-lock.json ] || [ -f package.json ]; then
+            npm ci || true
+            # uncomment next line if you have a build step
+            # npm run build || true
+          fi
+
+      # Touch restart.txt so Passenger restarts after deploy
+      - name: Prepare Passenger restart trigger
+        run: |
+          mkdir -p backend/tmp
+          date +%s > backend/tmp/restart.txt
+
+      - name: Deploy backend to /public_html/hei.atpldhaka.com
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps
+          port: 21
+          # deploy only the runtime files, NOT node_modules
+          local-dir: backend/
+          server-dir: public_html/hei.atpldhaka.com/
           timeout: 1200
           exclude: |
             .htaccess
