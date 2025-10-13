@@ -38,6 +38,11 @@ const Profile = () => {
   const [imageFile, setImageFile] = useState(null);
   const [imageLoadingState, setImageLoadingState] = useState(false);
 
+  const BASE = "https://djangoattendance.atpldhaka.com";
+
+  const imgPath = profile?.profile_img;
+  const hasImg = imgPath && imgPath !== "null" && imgPath !== "/null";
+
   const handleImageUpload = async () => {
     if (!imageFile) {
       toast.warning("No image selected", {
@@ -129,7 +134,7 @@ const Profile = () => {
         <div className="w-40 h-40 rounded-full bg-teal-300 relative ">
           <Avatar className="focus:outline-none focus-visible:outline-none focus-visible:ring-0 border-white w-full h-full">
             <AvatarImage
-              src={`https://djangoattendance.atpldhaka.com${profile.profile_img}`}
+              src={hasImg ? new URL(imgPath, BASE).href : undefined}
               alt="Profile"
               className="object-cover w-full h-full"
             />

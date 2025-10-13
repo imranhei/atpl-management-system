@@ -1,34 +1,40 @@
 import { SIDEBAR_MENU } from "@/components/config";
-import { useSelector } from "react-redux";
-import { Link, useLocation } from "react-router-dom";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
-  SidebarMenu,
-  SidebarMenuItem,
-  SidebarMenuButton,
-  SidebarMenuSub,
-  SidebarMenuSubItem,
   SidebarHeader,
-  SidebarFooter,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarMenuSub,
   SidebarMenuSubButton,
+  SidebarMenuSubItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import {
-  Collapsible,
-  CollapsibleTrigger,
-  CollapsibleContent,
-} from "@/components/ui/collapsible";
+import { Avatar, AvatarFallback } from "@radix-ui/react-avatar";
 import { ChevronDown } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
+import { useSelector } from "react-redux";
+import { Link, useLocation } from "react-router-dom";
 import avatar from "/avatar.png";
+import { AvatarImage } from "../ui/avatar";
 
 const AppSidebar = () => {
   const { role, user, profile } = useSelector((state) => state.auth);
   const { setOpenMobile, isMobile } = useSidebar();
   const location = useLocation();
+
+  const BASE = "https://djangoattendance.atpldhaka.com";
+
+  const imgPath = profile?.profile_img;
+  const hasImg = imgPath && imgPath !== "null" && imgPath !== "/null";
 
   const menuItems = SIDEBAR_MENU[role] || [];
 
@@ -124,7 +130,7 @@ const AppSidebar = () => {
             <SidebarMenuButton>
               <Avatar className="focus:outline-none focus-visible:outline-none focus-visible:ring-0 h-8 w-8 border-white rounded-full">
                 <AvatarImage
-                  src={`https://djangoattendance.atpldhaka.com${profile.profile_img}`}
+                  src={hasImg ? new URL(imgPath, BASE).href : undefined}
                   alt="Profile"
                   className="object-cover w-full h-full"
                 />

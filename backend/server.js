@@ -7,9 +7,6 @@ app.use(express.json({ limit: "5mb" }));
 app.use(cors());
 dotenv.config();
 
-app.get('/health', (req, res) => {
-  res.type('text').send('ok!');
-});
 // if you serve a SPA with a catch-all, keep it LAST:
 app.get('/', (req, res) => res.json({ ups: true }));
 app.get('/api/alive', (req, res) => {

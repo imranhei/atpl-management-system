@@ -1,9 +1,5 @@
-import React from "react";
-import { LogOut } from "lucide-react";
-import { useDispatch, useSelector } from "react-redux";
-import { logout } from "@/store/auth-slice";
-import { useNavigate, Link } from "react-router-dom";
-import avatar2 from "/avatar2.png";
+import { useTheme } from "@/components/theme-provider";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,15 +8,23 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Moon, Sun } from "lucide-react";
-import { useTheme } from "@/components/theme-provider";
+import { logout } from "@/store/auth-slice";
+import { LogOut, Moon, Sun } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import avatar2 from "/avatar2.png";
 
 const SystemNavbar = () => {
   const { theme, setTheme } = useTheme();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { profile } = useSelector((state) => state.auth);
+
+  const BASE = "https://djangoattendance.atpldhaka.com";
+
+  const imgPath = profile?.profile_img;
+  const hasImg = imgPath && imgPath !== "null" && imgPath !== "/null";
+
   const handleLogout = () => {
     dispatch(logout()).then((res) => {
       if (res.meta.requestStatus === "fulfilled") {
@@ -58,7 +62,7 @@ const SystemNavbar = () => {
           <DropdownMenuTrigger>
             <Avatar className="focus:outline-none focus-visible:outline-none focus-visible:ring-0 ring-1 ring-white h-8 w-8 border-white">
               <AvatarImage
-                src={`https://djangoattendance.atpldhaka.com${profile.profile_img}`}
+                src={hasImg ? new URL(imgPath, BASE).href : undefined}
                 alt="Profile"
                 className="object-cover w-full h-full"
               />

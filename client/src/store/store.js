@@ -9,6 +9,7 @@ import attendanceSlice from "./employee/attendance-slice";
 import employeeDetailsSlice from "./admin/employee-details-slice";
 import profileSlice from "./employee/profile-slice";
 import chatSlice from "./chat/chat-slice";
+import memberSlice from "./member/member-slice";
 
 const store = configureStore({
   reducer: {
@@ -22,6 +23,7 @@ const store = configureStore({
     employeeDetails: employeeDetailsSlice,
     profile: profileSlice,
     chat: chatSlice,
+    members: memberSlice,
   },
 });
 
