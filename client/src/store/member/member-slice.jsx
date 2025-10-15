@@ -30,6 +30,24 @@ export const fetchMembers = createAsyncThunk(
   }
 );
 
+export const fetchMembersPage  = createAsyncThunk(
+  "members/fetchMemberList",
+  async ({ page = 1, perPage = 5 }, { rejectWithValue }) => {
+    try {
+      const res = await axios.get(
+        `${import.meta.env.VITE_API_URL}/api/assign/members/`,
+        { params: { page, perPage } }
+      );
+      return res.data; // ✅ serializable
+    } catch (err) {
+      const payload = err?.response?.data ?? {
+        message: err?.message || "Request failed",
+      };
+      return rejectWithValue(payload);
+    }
+  }
+);
+
 export const updateMember = createAsyncThunk(
   "members/updateMember",
   async ({ id, body }, { rejectWithValue }) => {

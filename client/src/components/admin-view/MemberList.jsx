@@ -14,17 +14,67 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import AddMemberModal from "@/pages/admin/AddMemberModal";
-import { deleteMember, fetchMembers, fetchEmployeeList } from "@/store/member/member-slice";
-import { Edit, Loader2Icon, Trash2 } from "lucide-react";
-import { useCallback, useState } from "react";
+import {
+  deleteMember,
+  fetchEmployeeList,
+  fetchMembers,
+} from "@/store/member/member-slice";
+import { Edit, Loader2, Trash2 } from "lucide-react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
 import DeleteModal from "../common/DeleteModal";
 import { Button } from "../ui/button";
+import PaginationWithEllipsis from "../user-view/PaginationWithEllipsis";
+
+const DEFAULT_PER_PAGE = 10;
 
 const MemberList = ({ members = [] }) => {
   const dispatch = useDispatch();
-  const { isLoading } = useSelector((state) => state.members);
+  const { isLoading, pagination } = useSelector((state) => state.members);
+
+  // ---- table params (single source of truth) ----
+  const [params, setParams] = useState({ page: 1, per_page: DEFAULT_PER_PAGE });
+
+  // keep employees/members in sync with params — no direct fetchMembers() elsewhere
+  useEffect(() => {
+    dispatch(fetchMembers(params));
+  }, [dispatch, params]);
+
+  useEffect(() => {
+    if (
+      typeof pagination?.page === "number" &&
+      pagination.page !== params.page
+    ) {
+      setParams((p) => ({ ...p, page: pagination.page }));
+    }
+  }, [pagination?.page]);
+
+  const handlePageChange = (pageNum) => {
+    setParams((p) => ({ ...p, page: pageNum }));
+  };
+
+  const currentPage =
+    typeof pagination?.page === "number" ? pagination.page : params.page;
+
+  const perPage = Number(
+    pagination?.perPage ?? params.per_page ?? DEFAULT_PER_PAGE
+  );
+
+  // compute total pages (prefer last_page if backend gives it)
+  const totalPages = useMemo(() => {
+    if (pagination?.last_page) return Number(pagination.last_page);
+    const total = Number(pagination?.total ?? 0);
+    const per = Number(
+      pagination?.perPage ?? params.per_page ?? DEFAULT_PER_PAGE
+    );
+    return Math.max(1, Math.ceil(total / per));
+  }, [
+    pagination?.last_page,
+    pagination?.total,
+    pagination?.perPage,
+    params.per_page,
+  ]);
 
   // Delete dialog
   const [delOpen, setDelOpen] = useState(false);
@@ -45,8 +95,18 @@ const MemberList = ({ members = [] }) => {
     try {
       setDelLoading(true);
       await dispatch(deleteMember(selected.id)).unwrap();
-      await dispatch(fetchMembers());
-      await dispatch(fetchEmployeeList());
+
+      // after delete, refetch current page; if it became empty and we’re not on page 1,
+      // step back one page
+      await dispatch(fetchMembers(params)).unwrap();
+      if ((members?.length ?? 0) <= 1 && params.page > 1) {
+        setParams((p) => ({ ...p, page: p.page - 1 }));
+      } else {
+        // keep same page
+        setParams((p) => ({ ...p }));
+      }
+
+      await dispatch(fetchEmployeeList()); // if employees depend on members
       toast.success(`${selected.name} deleted`);
     } catch (e) {
       toast.error("Failed to delete member");
@@ -68,14 +128,15 @@ const MemberList = ({ members = [] }) => {
   }, []);
 
   const handleEditSuccess = useCallback(async () => {
-    await dispatch(fetchMembers());
+    // re-fetch current page (don’t call fetchMembers() without params)
+    setParams((p) => ({ ...p })); // triggers useEffect -> fetch with current params
     setEditOpen(false);
     setEditing(null);
-  }, [dispatch]);
+  }, []);
 
   return (
     <div>
-      <Card>
+      <Card className="bg-container">
         <CardHeader className="border-b p-4">
           <CardTitle>Members</CardTitle>
           <CardDescription>
@@ -83,9 +144,9 @@ const MemberList = ({ members = [] }) => {
           </CardDescription>
         </CardHeader>
 
-        <CardContent>
+        <CardContent className="p-0">
           <div className="overflow-x-auto">
-            <Table>
+            <Table className="bg-background">
               <TableHeader>
                 <TableRow>
                   <TableHead>Name</TableHead>
@@ -100,12 +161,13 @@ const MemberList = ({ members = [] }) => {
                   <TableRow>
                     <TableCell colSpan={4}>
                       <div className="py-4 text-center text-sm text-muted-foreground flex items-center justify-center">
-                        <Loader2Icon className="mr-2 h-4 w-4 animate-spin" /> Loading...
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Loading...
                       </div>
                     </TableCell>
                   </TableRow>
                 ) : members && members.length > 0 ? (
-                  members?.map((m) => (
+                  members.map((m) => (
                     <TableRow key={String(m.id)}>
                       <TableCell className="font-medium">{m.name}</TableCell>
                       <TableCell>{m.email}</TableCell>
@@ -141,21 +203,31 @@ const MemberList = ({ members = [] }) => {
               </TableBody>
             </Table>
           </div>
+
+          {totalPages > 1 && (
+            <div className="my-2">
+              {/* Force remount when page or totalPages changes so any internal state resets */}
+              <PaginationWithEllipsis
+                key={`p-${params.page}-${totalPages}`}
+                currentPage={params.page}
+                totalPages={totalPages}
+                onPageChange={handlePageChange}
+              />
+            </div>
+          )}
         </CardContent>
       </Card>
 
-      {/* Single, shared Edit modal (mounted once) */}
+      {/* Single, shared Edit modal */}
       <AddMemberModal
         open={editOpen}
         onOpenChange={(o) => {
-          // don’t lose data mid-edit unless explicitly closed
           setEditOpen(o);
           if (!o) setEditing(null);
         }}
         initialData={editing || {}}
         onSuccess={handleEditSuccess}
       >
-        {/* Hidden trigger because we open it programmatically */}
         <span style={{ display: "none" }} />
       </AddMemberModal>
 
@@ -163,7 +235,7 @@ const MemberList = ({ members = [] }) => {
       <DeleteModal
         open={delOpen}
         onOpenChange={(o) => {
-          if (delLoading) return; // block while deleting
+          if (delLoading) return;
           setDelOpen(o);
           if (!o) setSelected(null);
         }}
