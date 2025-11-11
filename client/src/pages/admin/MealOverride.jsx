@@ -129,7 +129,7 @@ const MealOverride = () => {
 
   return (
     <div
-      className="min-h-screen px-6 sm:px-10 md:px-12 py-12 
+      className="min-h-screen p-4 
       bg-gradient-to-br from-gray-50 to-gray-100 
       dark:from-gray-950 dark:to-gray-900 transition-colors duration-500"
     >

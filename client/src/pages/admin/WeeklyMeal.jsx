@@ -154,12 +154,11 @@ const WeeklyMeal = () => {
 
   return (
     <div
-      className="min-h-screen w-full 
+      className="min-h-screen w-full p-4 space-y-4
       bg-gradient-to-br from-gray-50 to-gray-100 
-      dark:from-gray-950 dark:to-gray-900 
-      py-16 flex flex-col items-center justify-start"
+      dark:from-gray-950 dark:to-gray-900 flex flex-col items-center justify-start"
     >
-      <div className="text-center mb-10">
+      <div className="text-center mb-6">
         <h2 className="text-3xl font-bold text-gray-800 dark:text-white">
           🍱 Weekly Meal Plan
         </h2>

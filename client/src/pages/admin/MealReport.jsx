@@ -134,7 +134,7 @@ const MealReport = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-950 dark:to-gray-900 py-12 px-6">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-950 dark:to-gray-900 py-12 p-4">
       <div className="max-w-7xl mx-auto">
         {/* ===== Header ===== */}
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 gap-4">
@@ -232,11 +232,11 @@ const MealReport = () => {
               <thead className="bg-gray-200/60 dark:bg-gray-800/80 text-gray-800 dark:text-gray-300">
                 <tr>
                   <th className="py-3 px-4 text-left">Date</th>
-                  <th className="py-3 px-4 text-left">Meal</th>
+                  <th className="py-3 px-4 min-w-48 text-left">Meal</th>
                   <th className="py-3 px-4 text-left">Price</th>
                   <th className="py-3 px-4 text-left">Eaters</th>
-                  <th className="py-3 px-4 text-left">Opt-Out</th>
-                  <th className="py-3 px-4 text-left">On Leave</th>
+                  <th className="py-3 px-4 text-left text-nowrap">Opt-Out</th>
+                  <th className="py-3 px-4 text-left text-nowrap">On Leave</th>
                   <th className="py-3 px-4 text-left">Total</th>
                   <th className="py-3 px-4 text-left">Notes</th>
                   <th className="py-3 px-4 text-center">Status</th>

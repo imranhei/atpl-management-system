@@ -120,7 +120,7 @@ const MealOptOut = () => {
       className="min-h-screen w-full 
       bg-gradient-to-br from-gray-50 to-gray-100 
       dark:from-gray-950 dark:to-gray-900 
-      py-16 flex flex-col items-center justify-start"
+      p-4 flex flex-col items-center justify-start"
     >
       {/* Header */}
       <div className="text-center mb-10 flex flex-col items-center">
