@@ -16,6 +16,7 @@ import {
   Settings,
   TicketsPlane,
   Users,
+  Utensils,
 } from "lucide-react";
 
 export const registerFormControls = [
@@ -150,6 +151,26 @@ export const SIDEBAR_MENU = {
       ],
     },
     {
+      id: "meal",
+      label: "Meal",
+      path: "/meal",
+      icon: Utensils,
+      submenu: [
+        {
+          id: "weekly-menu",
+          label: "Weekly Menu",
+          path: "/EmployeeWeeklyMeal",
+          icon: Layers,
+        },
+        {
+          id: "meal-opt-out",
+          label: "Meal Opt-Out",
+          path: "/meal-opt-out", // ✅ match App.jsx
+          icon: Users,
+        },
+      ],
+    },
+    {
       id: "settings",
       label: "Settings",
       path: "/setting",
@@ -252,6 +273,32 @@ export const SIDEBAR_MENU = {
           label: "Application History",
           path: "/job-application-history",
           icon: MailWarning,
+        },
+      ],
+    },
+    {
+      id: "meal",
+      label: "Meal",
+      path: "/meal",
+      icon: Utensils, // import this icon at the top
+      submenu: [
+        {
+          id: "weekly-menu",
+          label: "Weekly Menu",
+          path: "/meal/weekly",
+          icon: Layers,
+        },
+        {
+          id: "meal-override",
+          label: "Meal Override",
+          path: "/meal/override",
+          icon: Layers, // or CalendarDays for visual distinction
+        },
+        {
+          id: "meal-report",
+          label: "Meal Report",
+          path: "/meal/report",
+          icon: FileChartColumn, // Or choose any Lucide icon you like
         },
       ],
     },

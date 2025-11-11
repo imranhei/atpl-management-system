@@ -37,6 +37,11 @@ import TodayMeals from "./pages/user-view/DayWiseMeal";
 import EmployeeLeaveApplication from "./pages/user-view/EmployeeLeaveApplication";
 import EmployeeLeaveHistory from "./pages/user-view/EmployeeLeaveHistory";
 import Meal from "./pages/user-view/Meal";
+import WeeklyMeal from "./pages/admin/WeeklyMeal";
+import MealOverride from "./pages/admin/MealOverride";
+import MealReport from "./pages/admin/MealReport";
+import MealOptOut from "./pages/user-view/MealOptOut";
+import EmployeeWeeklyMeal from "./pages/user-view/EmployeeWeeklyMeal";
 import Employee from "./pages/admin/Employee";
 
 function App() {
@@ -121,6 +126,8 @@ function App() {
           <Route path="day-wise-meal" element={<TodayMeals />} />
           <Route path="reset-password" element={<ResetPassword />} />
           <Route path="chat" element={<Chat />} />
+          <Route path="meal-opt-out" element={<MealOptOut />} />
+          <Route path="EmployeeWeeklyMeal" element={<EmployeeWeeklyMeal />} />
         </Route>
         <Route
           path="/admin"
@@ -139,7 +146,16 @@ function App() {
           <Route path="employees" element={<Employee />} />
           <Route path="overview" element={<Overview />} />
           <Route path="irregularities" element={<Irregularities />} />
+
+          {/* 👇 Existing meal route (maybe shows overview page) */}
           <Route path="meal" element={<Meal />} />
+
+          {/* 👇 New weekly meal management page */}
+          <Route path="meal/weekly" element={<WeeklyMeal />} />
+          <Route path="meal/override" element={<MealOverride />} />
+          <Route path="meal/report" element={<MealReport />} />
+
+
           <Route path="leave-records" element={<LeaveSummary />} />
           <Route path="leave-records/:id" element={<DetailLeaveSummary />} />
           <Route
