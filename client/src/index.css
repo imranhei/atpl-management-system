@@ -228,3 +228,48 @@
     @apply bg-background text-foreground;
   }
 }
+
+.fc .fc-daygrid-day-number {
+  font-size: 14px;
+  padding: 4px;
+  color: var(--textHead);
+}
+
+.fc .fc-daygrid-day-frame {
+  padding: 4px !important;
+}
+
+.fc .fc-event {
+  border-radius: 6px !important;
+  padding: 2px 4px !important;
+}
+
+.dark .fc-col-header-cell-cushion {
+  color: rgb(199, 199, 199) !important;
+}
+
+.dark .fc-col-header-cell {
+  background-color: rgb(12, 27, 49) !important;
+}
+
+.calendar-legend {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 10px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+}
+
+.color-box {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+}
+
+.full-day { background: rgb(244, 63, 94); }
+.half-day { background: rgb(124, 58, 237); }

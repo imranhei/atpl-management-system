@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
-import { getAttendance } from "@/store/employee/attendance-slice";
-import { useDispatch, useSelector } from "react-redux";
+import TextChangeAnimation from "@/components/common/TextChangeAnimation";
+import Box from "@/components/ui/box";
+import FullCalendarView from "@/components/ui/FullCalendar";
 import {
   Table,
   TableBody,
@@ -9,15 +9,37 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Skeleton } from "@/components/ui/skeleton";
-import TextChangeAnimation from "@/components/common/TextChangeAnimation";
 import WorkCountdown from "@/components/user-view/Countdown";
 import ProgressAnimation from "@/components/user-view/ProgressAnimation";
-import Box from "@/components/ui/box";
+import { getAttendance } from "@/store/employee/attendance-slice";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 const Dashboard = () => {
+  const [calendarData, setCalendarData] = React.useState(null);
   const dispatch = useDispatch();
   const { attendance, isLoading } = useSelector((state) => state.attendance);
+
+  // 👉 FIXED: Calendar fetch function
+  function fetchCalendar(month) {
+    const token = localStorage.getItem("access_token");
+    if (!token) return;
+
+    fetch(
+      `https://djangoattendance.atpldhaka.com/api/leave/calendar/?month=${month}`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    )
+      .then((res) => res.json())
+      .then((data) => setCalendarData(data))
+      .catch((err) => console.error("Calendar error", err));
+  }
+
+  useEffect(() => {
+    const month = new Date().toISOString().slice(0, 7); // example: 2025-11
+    fetchCalendar(month);
+  }, []);
 
   function getWeekRange(date) {
     // Convert input to a Date object if it's not already
@@ -220,7 +242,9 @@ const Dashboard = () => {
       </div>
 
       <Box>
-        <h1 className="text-lg font-bold p-2 text-center text-textHead">Daily Attendance</h1>
+        <h1 className="text-lg font-bold p-2 text-center text-textHead">
+          Daily Attendance
+        </h1>
         <Table className="bg-background rounded border-b">
           <TableHeader>
             <TableRow className="text-nowrap dark:text-textHead">
@@ -273,6 +297,13 @@ const Dashboard = () => {
           </TableBody>
         </Table>
       </Box>
+
+      {calendarData && (
+        <FullCalendarView
+          data={calendarData}
+          onMonthChange={(newMonth) => fetchCalendar(newMonth)}
+        />
+      )}
     </div>
   );
 };

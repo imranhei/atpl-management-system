@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { getAttendance } from "@/store/employee/attendance-slice";
-import { useDispatch, useSelector } from "react-redux";
+import TextChangeAnimation from "@/components/common/TextChangeAnimation";
+import Box from "@/components/ui/box";
+import FullCalendarView from "@/components/ui/FullCalendar";
 import {
   Table,
   TableBody,
@@ -9,10 +9,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { getAttendance } from "@/store/employee/attendance-slice";
 import { ArrowUpDown, Users } from "lucide-react";
-import TextChangeAnimation from "@/components/common/TextChangeAnimation";
-import { Card } from "@/components/ui/card";
-import Box from "@/components/ui/box";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 const formatDate = (dateString) => {
   if (!dateString) return "";
@@ -84,25 +84,47 @@ const AdminDashboard = () => {
     }
   }, [results]);
 
+  const [calendarData, setCalendarData] = useState(null);
+
+  function fetchCalendar(month) {
+    const token = localStorage.getItem("access_token");
+    if (!token) return;
+
+    fetch(
+      `https://djangoattendance.atpldhaka.com/api/leave/calendar/?month=${month}`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    )
+      .then((res) => res.json())
+      .then((data) => setCalendarData(data))
+      .catch((err) => console.error("Calendar error", err));
+  }
+
+  useEffect(() => {
+    const month = new Date().toISOString().slice(0, 7);
+    fetchCalendar(month);
+  }, []);
+
   return (
     <div className="m-4 sm:space-y-4 space-y-3">
       <div className="w-full grid grid-cols-3 sm:text-xl text-sm sm:font-bold font-semibold sm:gap-4 gap-3">
         <Box className="!flex-row sm:gap-4 gap-2 sm:p-4 p-2 text-muted-foreground">
-          <Users className="sm:size-16 size-6"/>
+          <Users className="sm:size-16 size-6" />
           <div className="flex flex-col sm:gap-1">
             <div>Employee</div>
             <div>16</div>
           </div>
         </Box>
         <Box className="!flex-row sm:gap-4 gap-2 sm:p-4 text-green-400">
-          <Users className="sm:size-16 size-6"/>
+          <Users className="sm:size-16 size-6" />
           <div className="flex flex-col sm:gap-1">
             <div className="text-muted-foreground">Present</div>
             <div>{pagination?.total || 0}</div>
           </div>
         </Box>
         <Box className="!flex-row sm:gap-4 gap-2 sm:p-4 text-rose-400">
-          <Users className="sm:size-16 size-6"/>
+          <Users className="sm:size-16 size-6" />
           <div className="flex flex-col sm:gap-1">
             <div className="text-muted-foreground">Absent</div>
             <div>{16 - pagination?.total || 0}</div>
@@ -110,9 +132,7 @@ const AdminDashboard = () => {
         </Box>
       </div>
       <Box className="shadow rounded-md">
-        <p className="text-lg font-semibold p-2">
-          Attendance for {todayLabel}
-        </p>
+        <p className="text-lg font-semibold p-2">Attendance for {todayLabel}</p>
         <Table className="bg-background rounded border-b">
           <TableHeader>
             <TableRow className="text-nowrap bg-gray-100 dark:bg-slate-900">
@@ -170,7 +190,10 @@ const AdminDashboard = () => {
                   className="text-center text-nowrap text-textBody"
                 >
                   <TableCell className="text-left">
-                    {`${(punch?.first_name + " " + punch?.last_name).split(" ").slice(0, 2).join(" ")}`}
+                    {`${(punch?.first_name + " " + punch?.last_name)
+                      .split(" ")
+                      .slice(0, 2)
+                      .join(" ")}`}
                   </TableCell>
                   {/* <TableCell>{formatDate(punch?.date)}</TableCell> */}
                   <TableCell>{punch?.first_punch_time}</TableCell>
@@ -193,7 +216,13 @@ const AdminDashboard = () => {
           </TableBody>
         </Table>
       </Box>
-      </div>
+      {calendarData && (
+        <FullCalendarView
+          data={calendarData}
+          onMonthChange={(newMonth) => fetchCalendar(newMonth)}
+        />
+      )}
+    </div>
   );
 };
 
