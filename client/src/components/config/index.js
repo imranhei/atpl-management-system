@@ -17,6 +17,7 @@ import {
   TicketsPlane,
   Users,
   Utensils,
+  XCircle,
 } from "lucide-react";
 
 export const registerFormControls = [
@@ -253,6 +254,12 @@ export const SIDEBAR_MENU = {
           label: "Application History",
           path: "/leave-application-history",
           icon: MailWarning,
+        },
+        {
+          id: "leave-cancelled",
+          label: "Leave Cancelled",
+          path: "/leave-cancelled",
+          icon: XCircle,
         },
       ],
     },

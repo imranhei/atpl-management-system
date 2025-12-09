@@ -43,6 +43,7 @@ import MealReport from "./pages/admin/MealReport";
 import MealOptOut from "./pages/user-view/MealOptOut";
 import EmployeeWeeklyMeal from "./pages/user-view/EmployeeWeeklyMeal";
 import Employee from "./pages/admin/Employee";
+import LeaveCancelled from "./pages/admin/LeaveCancelled";
 
 function App() {
   const { isAuthenticated, role, isLoadingAuth } = useSelector(
@@ -149,6 +150,7 @@ function App() {
 
           {/* 👇 Existing meal route (maybe shows overview page) */}
           <Route path="meal" element={<Meal />} />
+          <Route path="leave-cancelled" element={<LeaveCancelled />} />
 
           {/* 👇 New weekly meal management page */}
           <Route path="meal/weekly" element={<WeeklyMeal />} />
