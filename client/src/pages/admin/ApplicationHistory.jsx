@@ -1,4 +1,5 @@
 import FilterModal from "@/components/admin-view/FilterModal";
+import DeleteModal from "@/components/common/DeleteModal";
 import { Badge } from "@/components/ui/badge";
 import Box from "@/components/ui/box";
 import { Button } from "@/components/ui/button";
@@ -16,7 +17,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import PaginationWithEllipsis from "@/components/user-view/PaginationWithEllipsis";
-import { fetchLeaveApplicationList } from "@/store/leave/leave-slice";
+import { fetchLeaveApplicationList, requestLeaveCancellation } from "@/store/leave/leave-slice";
 import { format, parseISO } from "date-fns";
 import { LoaderCircle, SlidersHorizontal } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -31,9 +32,8 @@ const typeMap = {
 const ApplicationHistory = () => {
   const dispatch = useDispatch();
   const { role } = useSelector((s) => s.auth);
-  const { leaveApplicationList, pagination, isLoading } = useSelector(
-    (s) => s.leaveApplication
-  );
+  const { leaveApplicationList, pagination, isLoading, isSubmiting } =
+    useSelector((s) => s.leaveApplication);
   const [params, setParams] = useState({
     id: null,
     page: 1,
@@ -41,6 +41,9 @@ const ApplicationHistory = () => {
     status: null,
     leave_type: null,
   });
+  const [cancelModalOpen, setCancelModalOpen] = useState(false);
+  const [selectedLeave, setSelectedLeave] = useState(null);
+  const [selectedDates, setSelectedDates] = useState([]);
 
   useEffect(() => {
     dispatch(fetchLeaveApplicationList(params));
@@ -73,6 +76,9 @@ const ApplicationHistory = () => {
               <TableHead>Type</TableHead>
               <TableHead className="min-w-40">Reason</TableHead>
               <TableHead className="text-center">Status</TableHead>
+              {role !== "admin" && (
+                <TableHead className="text-center">Action</TableHead>
+              )}
             </TableRow>
           </TableHeader>
 
@@ -246,6 +252,21 @@ const ApplicationHistory = () => {
                         {row.status[0].toUpperCase() + row.status.slice(1)}
                       </Badge>
                     </TableCell>
+                    {role !== "admin" && (
+                      <TableCell className="text-center">
+                        <Button
+                          size="sm"
+                          className="py-0"
+                          variant="destructive"
+                          onClick={() => {
+                            setSelectedLeave(row);
+                            setCancelModalOpen(true);
+                          }}
+                        >
+                          Cancel
+                        </Button>
+                      </TableCell>
+                    )}
                   </TableRow>
                 ))
               )}
@@ -261,6 +282,49 @@ const ApplicationHistory = () => {
           onPageChange={handlePageChange}
         />
       )}
+
+      <DeleteModal
+        open={cancelModalOpen}
+        onOpenChange={(isOpen) => {
+    setCancelModalOpen(isOpen);
+
+    if (!isOpen) {
+      setSelectedDates([]);
+    }
+  }}
+        loading={isSubmiting}
+        title="Request Leave Cancellation"
+        description="Please select which date(s) you want to request cancellation for."
+        confirmText="Confirm Request"
+        onConfirm={() => {
+          dispatch(
+            requestLeaveCancellation({
+              id: selectedLeave.id,
+              dates: selectedDates,
+            })
+          ).then(() => {
+            setCancelModalOpen(false);
+            setSelectedDates([]);
+          });
+        }}
+      >
+        {selectedLeave?.date?.map((d) => (
+          <label key={d} className="flex items-center gap-2 mt-2">
+            <input
+              type="checkbox"
+              checked={selectedDates.includes(d)}
+              onChange={(e) => {
+                if (e.target.checked) {
+                  setSelectedDates([...selectedDates, d]);
+                } else {
+                  setSelectedDates(selectedDates.filter((x) => x !== d));
+                }
+              }}
+            />
+            <span>{d}</span>
+          </label>
+        ))}
+      </DeleteModal>
     </div>
   );
 };

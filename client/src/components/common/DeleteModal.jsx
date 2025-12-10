@@ -19,6 +19,7 @@ export default function DeleteModal({
   confirmText = "Delete",
   cancelText = "Cancel",
   itemLabel,
+  children
 }) {
   // Prevent closing via outside click or ESC while loading
   const blockWhileLoading = (e) => {
@@ -44,6 +45,8 @@ export default function DeleteModal({
               } from the system.`}
           </DialogDescription>
         </DialogHeader>
+
+        {children}
 
         <DialogFooter className="gap-2 sm:gap-3">
           <Button

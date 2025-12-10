@@ -113,7 +113,7 @@ const AdminDashboard = () => {
           <Users className="sm:size-16 size-6" />
           <div className="flex flex-col sm:gap-1">
             <div>Employee</div>
-            <div>16</div>
+            <div>15</div>
           </div>
         </Box>
         <Box className="!flex-row sm:gap-4 gap-2 sm:p-4 text-green-400">
@@ -127,7 +127,7 @@ const AdminDashboard = () => {
           <Users className="sm:size-16 size-6" />
           <div className="flex flex-col sm:gap-1">
             <div className="text-muted-foreground">Absent</div>
-            <div>{16 - pagination?.total || 0}</div>
+            <div>{15 - pagination?.total || 0}</div>
           </div>
         </Box>
       </div>

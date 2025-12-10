@@ -37,6 +37,31 @@ export const addLeaveApplication = createAsyncThunk(
   }
 );
 
+export const requestLeaveCancellation = createAsyncThunk(
+  "defaultLeaveData/requestLeaveCancellation",
+  async ({ id, dates }, { rejectWithValue }) => {
+    const token = localStorage.getItem("access_token");
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/api//leave/cancel-request/${id}`,
+        { dates },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return response.data; // Assumes response.data contains the added leave application
+    } catch (error) {
+      console.log(error);
+      return rejectWithValue(
+        error.response?.data?.reason[0] ||
+          "An error occurred while requesting leave cancellation."
+      );
+    }
+  }
+);
+
 export const fetchLeaveApplicationList = createAsyncThunk(
   "defaultLeaveData/fetchLeaveApplicationList",
   async (params, { rejectWithValue }) => {
@@ -129,8 +154,15 @@ const leaveSlice = createSlice({
         state.isSubmiting = false;
         state.error = action.payload;
       })
-
-      // Fetch leave application list
+      .addCase(requestLeaveCancellation.pending, (state) => {
+        state.isSubmiting = true;
+      })
+      .addCase(requestLeaveCancellation.fulfilled, (state, action) => {
+        state.isSubmiting = false;
+      })
+      .addCase(requestLeaveCancellation.rejected, (state, action) => {
+        state.isSubmiting = false;
+      })
       .addCase(fetchLeaveApplicationList.pending, (state) => {
         state.isLoading = true;
       })
