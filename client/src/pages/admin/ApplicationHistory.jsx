@@ -17,8 +17,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import PaginationWithEllipsis from "@/components/user-view/PaginationWithEllipsis";
-import { fetchLeaveApplicationList, requestLeaveCancellation } from "@/store/leave/leave-slice";
-import { format, parseISO } from "date-fns";
+import {
+  fetchLeaveApplicationList,
+  requestLeaveCancellation,
+} from "@/store/leave/leave-slice";
+import { format, isBefore, parseISO, startOfDay, subDays } from "date-fns";
 import { LoaderCircle, SlidersHorizontal } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -27,6 +30,20 @@ const typeMap = {
   full_day: "Full Day",
   "1st_half": "1st Half",
   "2nd_half": "2nd Half",
+};
+
+const canShowCancelButton = (dates) => {
+  if (!dates || dates.length === 0) return false;
+
+  // Earliest leave date
+  const firstLeaveDate = parseISO(dates[0]);
+
+  // Last allowed cancel date = leave date - 3 days
+  const cancelDeadline = startOfDay(subDays(firstLeaveDate, 3));
+  // Today (normalized)
+  const today = startOfDay(new Date());
+
+  return isBefore(today, cancelDeadline);
 };
 
 const ApplicationHistory = () => {
@@ -254,17 +271,19 @@ const ApplicationHistory = () => {
                     </TableCell>
                     {role !== "admin" && (
                       <TableCell className="text-center">
-                        <Button
-                          size="sm"
-                          className="py-0"
-                          variant="destructive"
-                          onClick={() => {
-                            setSelectedLeave(row);
-                            setCancelModalOpen(true);
-                          }}
-                        >
-                          Cancel
-                        </Button>
+                        {canShowCancelButton(row.date) && (
+                          <Button
+                            size="sm"
+                            className="py-0"
+                            variant="destructive"
+                            onClick={() => {
+                              setSelectedLeave(row);
+                              setCancelModalOpen(true);
+                            }}
+                          >
+                            Cancel
+                          </Button>
+                        )}
                       </TableCell>
                     )}
                   </TableRow>
@@ -286,12 +305,12 @@ const ApplicationHistory = () => {
       <DeleteModal
         open={cancelModalOpen}
         onOpenChange={(isOpen) => {
-    setCancelModalOpen(isOpen);
+          setCancelModalOpen(isOpen);
 
-    if (!isOpen) {
-      setSelectedDates([]);
-    }
-  }}
+          if (!isOpen) {
+            setSelectedDates([]);
+          }
+        }}
         loading={isSubmiting}
         title="Request Leave Cancellation"
         description="Please select which date(s) you want to request cancellation for."
