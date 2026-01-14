@@ -122,48 +122,93 @@ export const deleteMember = createAsyncThunk(
 export const assignToEmployee = createAsyncThunk(
   "members/assignToEmployee",
   async ({ employeeId, memberId }, { rejectWithValue }) => {
-    console.log("assignToEmployee", { employeeId, memberId });
+    const token = localStorage.getItem("access_token");
     try {
       const res = await axios.post(
-        // 👇 memberId in the path
-        `${
-          import.meta.env.VITE_API_URL
-        }/api/assign/members/${memberId}/assign-user/`,
-        // 👇 user/employee id in JSON body (rename key if your API expects a different name)
-        { user_id: employeeId },
+        `${import.meta.env.VITE_API_URL}/api/assign/members/${employeeId}/assign-member/`,
         {
-          headers: { "Content-Type": "application/json" },
+          member_id: memberId, // ✅ correct
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
-      return res.data; // ✅ serializable
+      return res.data;
     } catch (err) {
-      const payload = err?.response?.data ?? {
-        message: err?.message || "Request failed",
-      };
-      return rejectWithValue(payload);
+      return rejectWithValue(err?.response?.data);
     }
   }
 );
 
-export const unassignMember = createAsyncThunk(
-  "members/unassignMember",
-  async ({ employeeId, memberId }, { rejectWithValue }) => {
+export const assignToSignIn = createAsyncThunk(
+  "members/assignToSignIn",
+  async ({ employeeId, signInId }, { rejectWithValue }) => {
+    const token = localStorage.getItem("access_token");
     try {
       const res = await axios.post(
-        `${
-          import.meta.env.VITE_API_URL
-        }/api/assign/members/${memberId}/unassign-user/`,
-        { user_id: employeeId },
+        `${import.meta.env.VITE_API_URL}/api/assign/members/${employeeId}/assign-member/`,
         {
-          headers: { "Content-Type": "application/json" },
+          sign_in_id: signInId, // ✅ ONLY THIS
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
-      return res.data; // ✅ serializable
+      return res.data;
     } catch (err) {
-      const payload = err?.response?.data ?? {
-        message: err?.message || "Request failed",
-      };
-      return rejectWithValue(payload);
+      return rejectWithValue(err?.response?.data);
+    }
+  }
+);
+
+export const unassignTeamMember = createAsyncThunk(
+  "members/unassignTeamMember",
+  async ({ fieldId, memberId }, { rejectWithValue }) => {
+    try {
+      const token = localStorage.getItem("access_token");
+      const res = await axios.post(
+        `${import.meta.env.VITE_API_URL}/api/assign/members/${fieldId}/unassign-user/`,
+        { member_id: memberId },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return res.data;
+    } catch (err) {
+      return rejectWithValue(err?.response?.data);
+    }
+  }
+);
+
+export const unassignSignInMember = createAsyncThunk(
+  "members/unassignSignInMember",
+  async ({ fieldId, signInId }, { rejectWithValue }) => {
+    try {
+      const token = localStorage.getItem("access_token");
+      const res = await axios.post(
+        `${import.meta.env.VITE_API_URL}/api/assign/members/${fieldId}/unassign-user/`,
+        {
+          sign_in_id: signInId,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return res.data;
+    } catch (err) {
+      return rejectWithValue(err?.response?.data);
     }
   }
 );
@@ -191,7 +236,7 @@ const memberSlice = createSlice({
       })
       .addCase(fetchEmployeeList.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.employees = action.payload.results;
+        state.employees = action.payload.members.results;
         state.pagination = action.payload.pagination;
       })
       .addCase(fetchEmployeeList.rejected, (state, action) => {

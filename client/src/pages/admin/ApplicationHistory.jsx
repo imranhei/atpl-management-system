@@ -271,7 +271,7 @@ const ApplicationHistory = () => {
                     </TableCell>
                     {role !== "admin" && (
                       <TableCell className="text-center">
-                        {canShowCancelButton(row.date) && (
+                        {canShowCancelButton(row.date) ? (
                           <Button
                             size="sm"
                             className="py-0"
@@ -283,6 +283,8 @@ const ApplicationHistory = () => {
                           >
                             Cancel
                           </Button>
+                        ) : (
+                          <Badge variant="secondary">Expired</Badge>  
                         )}
                       </TableCell>
                     )}
