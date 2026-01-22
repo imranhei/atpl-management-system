@@ -43,7 +43,7 @@ export const requestLeaveCancellation = createAsyncThunk(
     const token = localStorage.getItem("access_token");
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/api//leave/cancel-request/${id}`,
+        `${import.meta.env.VITE_API_URL}/api//leave/cancel-request/${id}/`,
         { dates },
         {
           headers: {
