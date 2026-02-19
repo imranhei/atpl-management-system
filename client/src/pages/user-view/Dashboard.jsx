@@ -9,11 +9,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import WorkCountdown from "@/components/user-view/Countdown";
 import ProgressAnimation from "@/components/user-view/ProgressAnimation";
 import { getAttendance } from "@/store/employee/attendance-slice";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import RamadanCalendar from "../common/RamadanCalendar";
+import WorkCountdown from "@/components/user-view/Countdown";
 
 const Dashboard = () => {
   const [calendarData, setCalendarData] = React.useState(null);
@@ -29,7 +30,7 @@ const Dashboard = () => {
       `https://djangoattendance.atpldhaka.com/api/leave/calendar/?month=${month}`,
       {
         headers: { Authorization: `Bearer ${token}` },
-      }
+      },
     )
       .then((res) => res.json())
       .then((data) => setCalendarData(data))
@@ -79,7 +80,7 @@ const Dashboard = () => {
             token,
             start_date: weekRange.start,
             end_date: weekRange.end,
-          })
+          }),
         );
       } catch (error) {
         console.error("Error parsing token:", error);
@@ -157,7 +158,7 @@ const Dashboard = () => {
             : "text-emerald-500 dark:text-emerald-300"
         }`}
       >{`${String(totalHours).padStart(2, "0")}:${String(
-        remainingMinutes
+        remainingMinutes,
       ).padStart(2, "0")}`}</span>
     );
   }
@@ -183,128 +184,136 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="rounded-md m-4 sm:space-y-4 space-y-3">
-      <Box className="!flex-row justify-between items-center p-2 sm:mb-4 mb-2">
+    <>
+      <div className="relative">
+        <RamadanCalendar />
+        <div className="absolute top-4 right-4 z-10" >
+          {/* <WorkCountdown results={results} /> */}
+        </div>
+      </div>
+      <div className="rounded-md m-4 sm:space-y-4 space-y-3">
+        <Box className="!flex-row justify-between items-center p-2 sm:mb-4 mb-2">
         <p className="text-lg font-bold text-textHead">Weekly Summary</p>
         <WorkCountdown results={results} />
       </Box>
-      <div className="w-full grid grid-cols-2 grid-rows-2 sm:text-lg text-sm font-bold sm:gap-4 gap-3 sm:mt-2">
-        <Box className="sm:h-[72px] h-14">
-          <span className="text-textHead">Days</span>
-          <span className=" text-emerald-500 dark:text-emerald-300">
-            {results?.length}
-          </span>
-        </Box>
-        <Box className="sm:h-[72px] h-14">
-          <span className="text-textHead">Avg Hour</span>
-          <span className=" text-emerald-500 dark:text-emerald-300">
-            {calculateAvgTime(results, "total_hour")}
-          </span>
-        </Box>
-        <Box className="sm:h-[72px] h-14 !flex-row p-2">
-          <div className="flex flex-col items-center flex-1">
-            <span className="text-textHead">Avg In</span>
-            <span className="text-emerald-500 dark:text-emerald-300">
-              {calculateAvgTime(results, "first_punch_time")}
+        <div className="w-full grid grid-cols-2 grid-rows-2 sm:text-lg text-sm font-bold sm:gap-4 gap-3 sm:mt-2">
+          <Box className="sm:h-[72px] h-14">
+            <span className="text-textHead">Days</span>
+            <span className=" text-emerald-500 dark:text-emerald-300">
+              {results?.length}
             </span>
-          </div>
-          <div className="border-r border-muted-foreground/50 rotate-12 h-full"></div>
-          <div className="flex flex-col items-center flex-1">
-            <span className="text-textHead">Avg Out</span>
-            <span className="text-emerald-500 dark:text-emerald-300">
-              {calculateAvgTime(results, "last_punch_time")}
+          </Box>
+          <Box className="sm:h-[72px] h-14">
+            <span className="text-textHead">Avg Hour</span>
+            <span className=" text-emerald-500 dark:text-emerald-300">
+              {calculateAvgTime(results, "total_hour")}
             </span>
-          </div>
-        </Box>
-        <Box className="sm:h-[72px] h-14 !flex-row p-2 relative overflow-hidden">
-          <div className="absolute top-0 left-0 w-full h-full">
-            <ProgressAnimation
-              value={calculateWorkProgressPercentage(results)}
-              aamplitude={30}
-            />
-          </div>
-          <div className="flex flex-col items-center flex-1 z-10">
-            <span className="text-muted-foreground mix-blend-difference dark:text-slate-300">
-              Committed
-            </span>
-            <span className="text-emerald-500 dark:text-emerald-300">
-              {results?.length * 9}:00
-            </span>
-          </div>
-          <div className="border-r border-muted-foreground/50 rotate-12 h-full"></div>
-          <div className="flex flex-col items-center flex-1 z-10">
-            <span className="text-muted-foreground dark:text-slate-300">
-              Worked
-            </span>
-            <span>{sumTotalHours(results)}</span>
-          </div>
-        </Box>
-      </div>
+          </Box>
+          <Box className="sm:h-[72px] h-14 !flex-row p-2">
+            <div className="flex flex-col items-center flex-1">
+              <span className="text-textHead">Avg In</span>
+              <span className="text-emerald-500 dark:text-emerald-300">
+                {calculateAvgTime(results, "first_punch_time")}
+              </span>
+            </div>
+            <div className="border-r border-muted-foreground/50 rotate-12 h-full"></div>
+            <div className="flex flex-col items-center flex-1">
+              <span className="text-textHead">Avg Out</span>
+              <span className="text-emerald-500 dark:text-emerald-300">
+                {calculateAvgTime(results, "last_punch_time")}
+              </span>
+            </div>
+          </Box>
+          <Box className="sm:h-[72px] h-14 !flex-row p-2 relative overflow-hidden">
+            <div className="absolute top-0 left-0 w-full h-full">
+              <ProgressAnimation
+                value={calculateWorkProgressPercentage(results)}
+                aamplitude={30}
+              />
+            </div>
+            <div className="flex flex-col items-center flex-1 z-10">
+              <span className="text-muted-foreground mix-blend-difference dark:text-slate-300">
+                Committed
+              </span>
+              <span className="text-emerald-500 dark:text-emerald-300">
+                {results?.length * 9}:00
+              </span>
+            </div>
+            <div className="border-r border-muted-foreground/50 rotate-12 h-full"></div>
+            <div className="flex flex-col items-center flex-1 z-10">
+              <span className="text-muted-foreground dark:text-slate-300">
+                Worked
+              </span>
+              <span>{sumTotalHours(results)}</span>
+            </div>
+          </Box>
+        </div>
 
-      <Box>
-        <h1 className="text-lg font-bold p-2 text-center text-textHead">
-          Daily Attendance
-        </h1>
-        <Table className="bg-background rounded border-b">
-          <TableHeader>
-            <TableRow className="text-nowrap dark:text-textHead">
-              {/* <TableHead>Name</TableHead> */}
-              <TableHead className="text-center">Date</TableHead>
-              <TableHead className="text-center">Entry</TableHead>
-              <TableHead className="text-center">Exit</TableHead>
-              <TableHead className="text-center">Hours</TableHead>
-              <TableHead className="text-center">Status</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {isLoading ? (
-              // <<TableRow>
-              //   <TableCell colSpan={5} className="text-center space-y-2">
-              //     {Array.from({ length: 10 }).map((_, index) => (
-              //       <Skeleton
-              //         key={index}
-              //         className="w-full h-[29px] rounded-lg"
-              //       />
-              //     ))}
-              //   </TableCell>
-              // </TableRow>>
-              <></>
-            ) : results?.length > 0 ? (
-              results.map((punch, index) => (
-                <TableRow
-                  key={index}
-                  className="text-center text-nowrap text-textBody"
-                >
-                  {/* <TableCell>{punch?.first_name}</TableCell> */}
-                  <TableCell>{formatDate(punch?.date)}</TableCell>
-                  <TableCell>{punch?.first_punch_time}</TableCell>
-                  <TableCell>{punch?.last_punch_time}</TableCell>
-                  <TableCell className="font-semibold">
-                    {punch?.total_hour}
-                  </TableCell>
-                  <TableCell className="!p-1 min-w-[136px] w-44 sm:text-sm text-xs">
-                    <TextChangeAnimation punch={punch} />
+        <Box>
+          <h1 className="text-lg font-bold p-2 text-center text-textHead">
+            Daily Attendance
+          </h1>
+          <Table className="bg-background rounded border-b">
+            <TableHeader>
+              <TableRow className="text-nowrap dark:text-textHead">
+                {/* <TableHead>Name</TableHead> */}
+                <TableHead className="text-center">Date</TableHead>
+                <TableHead className="text-center">Entry</TableHead>
+                <TableHead className="text-center">Exit</TableHead>
+                <TableHead className="text-center">Hours</TableHead>
+                <TableHead className="text-center">Status</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {isLoading ? (
+                // <<TableRow>
+                //   <TableCell colSpan={5} className="text-center space-y-2">
+                //     {Array.from({ length: 10 }).map((_, index) => (
+                //       <Skeleton
+                //         key={index}
+                //         className="w-full h-[29px] rounded-lg"
+                //       />
+                //     ))}
+                //   </TableCell>
+                // </TableRow>>
+                <></>
+              ) : results?.length > 0 ? (
+                results.map((punch, index) => (
+                  <TableRow
+                    key={index}
+                    className="text-center text-nowrap text-textBody"
+                  >
+                    {/* <TableCell>{punch?.first_name}</TableCell> */}
+                    <TableCell>{formatDate(punch?.date)}</TableCell>
+                    <TableCell>{punch?.first_punch_time}</TableCell>
+                    <TableCell>{punch?.last_punch_time}</TableCell>
+                    <TableCell className="font-semibold">
+                      {punch?.total_hour}
+                    </TableCell>
+                    <TableCell className="!p-1 min-w-[136px] w-44 sm:text-sm text-xs">
+                      <TextChangeAnimation punch={punch} />
+                    </TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={5} className="text-center">
+                    No attendance data found.
                   </TableCell>
                 </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell colSpan={5} className="text-center">
-                  No attendance data found.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </Box>
+              )}
+            </TableBody>
+          </Table>
+        </Box>
 
-      {calendarData && (
-        <FullCalendarView
-          data={calendarData}
-          onMonthChange={(newMonth) => fetchCalendar(newMonth)}
-        />
-      )}
-    </div>
+        {calendarData && (
+          <FullCalendarView
+            data={calendarData}
+            onMonthChange={(newMonth) => fetchCalendar(newMonth)}
+          />
+        )}
+      </div>
+    </>
   );
 };
 
