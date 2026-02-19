@@ -66,6 +66,25 @@ export default function RamadanCalendar() {
     [currentTime],
   );
 
+  const fastingTimes = useMemo(() => {
+    const now = currentTime;
+    const row = getTodayRow(ramadanData, now) || ramadanData[0];
+
+    const seheri = parseTimeOnDate(row.seheri, now);
+    const iftar = parseTimeOnDate(row.iftar, now);
+
+    const totalMs = iftar.getTime() - seheri.getTime();
+    const elapsedMs = now.getTime() - seheri.getTime();
+    const pct = totalMs > 0 ? (elapsedMs / totalMs) * 100 : 0;
+
+    return {
+      row,
+      seheri,
+      iftar,
+      percent: Math.min(Math.max(pct, 0), 100),
+    };
+  }, [currentTime]);
+
   useEffect(() => {
     const timer = setInterval(() => {
       const now = new Date();
@@ -182,13 +201,13 @@ export default function RamadanCalendar() {
                   ) : (
                     <Sunset className="w-6 h-6 text-orange-600 dark:text-orange-400" />
                   )}
-                  <h3 className="text-xl font-semibold text-emerald-800 dark:text-emerald-200">
+                  <h3 className="sm:text-xl text-lg font-semibold text-emerald-800 dark:text-emerald-200">
                     Time Until {nextEvent}
                   </h3>
                 </div>
                 <div className="flex justify-center gap-4 md:gap-8">
                   <div className="text-center">
-                    <div className="text-3xl md:text-5xl font-bold text-emerald-700 dark:text-emerald-300 bg-white dark:bg-emerald-950 rounded-lg p-3 md:p-4 shadow-md">
+                    <div className="text-4xl md:text-5xl font-bold text-emerald-700 dark:text-emerald-300 bg-white dark:bg-emerald-950 rounded-lg p-3 md:p-4 shadow-md">
                       {String(countdown.hours).padStart(2, "0")}
                     </div>
                     <p className="text-sm text-emerald-600 dark:text-emerald-400 mt-2 font-medium">
@@ -199,7 +218,7 @@ export default function RamadanCalendar() {
                     :
                   </div>
                   <div className="text-center">
-                    <div className="text-3xl md:text-5xl font-bold text-emerald-700 dark:text-emerald-300 bg-white dark:bg-emerald-950 rounded-lg p-3 md:p-4 shadow-md">
+                    <div className="text-4xl md:text-5xl font-bold text-emerald-700 dark:text-emerald-300 bg-white dark:bg-emerald-950 rounded-lg p-3 md:p-4 shadow-md">
                       {String(countdown.minutes).padStart(2, "0")}
                     </div>
                     <p className="text-sm text-emerald-600 dark:text-emerald-400 mt-2 font-medium">
@@ -210,7 +229,7 @@ export default function RamadanCalendar() {
                     :
                   </div>
                   <div className="text-center">
-                    <div className="text-3xl md:text-5xl font-bold text-emerald-700 dark:text-emerald-300 bg-white dark:bg-emerald-950 rounded-lg p-3 md:p-4 shadow-md">
+                    <div className="text-4xl md:text-5xl font-bold text-emerald-700 dark:text-emerald-300 bg-white dark:bg-emerald-950 rounded-lg p-3 md:p-4 shadow-md">
                       {String(countdown.seconds).padStart(2, "0")}
                     </div>
                     <p className="text-sm text-emerald-600 dark:text-emerald-400 mt-2 font-medium">
@@ -265,6 +284,69 @@ export default function RamadanCalendar() {
               Today is not found in the dataset — showing nearest schedule.
             </div>
           )}
+
+          {/* Fasting Timeline */}
+          <div className="sm:px-7 px-3 pb-4 sm:-mt-4 -mt-1">
+            {/* <p className="text-sm text-emerald-700 dark:text-emerald-300">
+                {Math.round(fastingTimes.percent)}%
+              </p> */}
+
+            <div
+              className={[
+                "rounded-2xl border p-4 pb-12",
+                "bg-white/60 dark:bg-emerald-950/40",
+                "border-emerald-200/60 dark:border-emerald-800/60",
+              ].join(" ")}
+            >
+              {/* Labels row */}
+              <div className="flex items-center justify-between text-xs md:text-sm mb-3">
+                <div className="text-left">
+                  <div className="text-emerald-700 dark:text-emerald-300 font-semibold">
+                    Fasting starts
+                  </div>
+                  <div className="text-emerald-600 dark:text-emerald-400">
+                    {todayRow?.seheri ?? fastingTimes.row.seheri}
+                  </div>
+                </div>
+
+                <div className="text-right">
+                  <div className="text-emerald-700 dark:text-emerald-300 font-semibold">
+                    Iftar
+                  </div>
+                  <div className="text-emerald-600 dark:text-emerald-400">
+                    {todayRow?.iftar ?? fastingTimes.row.iftar}
+                  </div>
+                </div>
+              </div>
+
+              {/* Timeline bar */}
+              <div className="relative h-3 rounded-full bg-emerald-100 dark:bg-emerald-900/50">
+                {/* Filled progress */}
+                <div
+                  className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-emerald-500 via-teal-400 to-emerald-500 transition-all duration-700"
+                  style={{ width: `${fastingTimes.percent}%` }}
+                />
+
+                <div
+                  className="absolute top-1/2 -translate-y-1/2 transition-all duration-700"
+                  style={{ left: `calc(${fastingTimes.percent}% - 6px)` }}
+                >
+                  {/* Marker */}
+                  <div className="h-6 w-2 rounded-sm bg-white dark:bg-emerald-950 border-2 border-emerald-600 dark:border-emerald-400 shadow" />
+
+                  {/* Always-visible label (bottom) */}
+                  <div className="absolute left-1/2 top-full mt-1 -translate-x-1/2 whitespace-nowrap">
+                    {/* pointer */}
+                    <div className="absolute -top-1 left-1/2 -translate-x-1/2 h-2 w-2 rotate-45 bg-white/95 dark:bg-emerald-950/95 border-l border-t border-emerald-200/70 dark:border-emerald-800/70" />
+                    {/* pill */}
+                    <div className="relative rounded-full px-2.5 py-1 text-[11px] font-semibold bg-white/95 dark:bg-emerald-950/95 text-emerald-800 dark:text-emerald-200 border border-emerald-200/70 dark:border-emerald-800/70 shadow-sm">
+                      {fastingTimes.percent.toFixed(1)}%
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </Card>
 
         {/* Calendar Section */}
@@ -296,9 +378,9 @@ export default function RamadanCalendar() {
               <div className="sticky top-0 z-10 backdrop-blur bg-white/80 dark:bg-emerald-950/80 border-b border-emerald-200/60 dark:border-emerald-800/60">
                 <div className="px-4 py-3 grid grid-cols-12 gap-3 text-xs md:text-sm font-semibold text-emerald-700 dark:text-emerald-300">
                   <div className="col-span-2">Day</div>
-                  <div className="col-span-4 md:col-span-3">Date</div>
+                  <div className="col-span-3 md:col-span-3">Date</div>
                   <div className="hidden md:block md:col-span-2">Weekday</div>
-                  <div className="col-span-6 md:col-span-5 flex justify-end gap-6">
+                  <div className="col-span-7 md:col-span-5 flex justify-end gap-20">
                     <span className="inline-flex items-center gap-1">
                       <Sun className="w-4 h-4" /> Seheri
                     </span>
@@ -356,7 +438,7 @@ export default function RamadanCalendar() {
                         </div>
 
                         {/* Date */}
-                        <div className="col-span-4 md:col-span-3">
+                        <div className="col-span-3 md:col-span-3">
                           <div className="text-sm md:text-base font-semibold text-emerald-900 dark:text-emerald-100">
                             {day.date}
                           </div>
@@ -372,19 +454,19 @@ export default function RamadanCalendar() {
                         </div>
 
                         {/* Times */}
-                        <div className="col-span-6 md:col-span-5 flex justify-end gap-2 md:gap-4">
+                        <div className="col-span-7 md:col-span-5 flex justify-end gap-2 md:gap-4">
                           <span
-                            className="inline-flex items-center gap-2 rounded-xl px-3 py-2 text-xs md:text-sm font-semibold
-                                  border border-amber-200/70 dark:border-amber-800/60
-                                  bg-amber-50/80 dark:bg-amber-950/30
-                                  text-amber-800 dark:text-amber-200"
+                            className="inline-flex items-center gap-2 rounded-xl sm:px-3 px-2 py-1.5 text-xs md:text-sm font-semibold
+                                  border border-emerald-200/70 dark:border-emerald-800/60
+                                  bg-emerald-50/80 dark:bg-emerald-950/30
+                                  text-emerald-800 dark:text-emerald-200"
                           >
                             <Sun className="w-4 h-4" />
                             {day.seheri}
                           </span>
 
                           <span
-                            className="inline-flex items-center gap-2 rounded-xl px-3 py-2 text-xs md:text-sm font-semibold
+                            className="inline-flex items-center gap-2 rounded-xl sm:px-3 px-2 py-1.5 text-xs md:text-sm font-semibold
                                   border border-orange-200/70 dark:border-orange-800/60
                                   bg-orange-50/80 dark:bg-orange-950/30
                                   text-orange-800 dark:text-orange-200"
