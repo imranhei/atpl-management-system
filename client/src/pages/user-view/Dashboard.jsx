@@ -185,12 +185,12 @@ const Dashboard = () => {
 
   return (
     <>
-      <div className="relative">
+      {/* <div className="relative">
         <RamadanCalendar />
         <div className="absolute top-4 right-4 z-10" >
-          {/* <WorkCountdown results={results} /> */}
+          <WorkCountdown results={results} />
         </div>
-      </div>
+      </div> */}
       <div className="rounded-md m-4 sm:space-y-4 space-y-3">
         <Box className="!flex-row justify-between items-center p-2 sm:mb-4 mb-2">
         <p className="text-lg font-bold text-textHead">Weekly Summary</p>

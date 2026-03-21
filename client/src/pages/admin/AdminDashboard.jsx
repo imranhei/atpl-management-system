@@ -109,7 +109,7 @@ const AdminDashboard = () => {
 
   return (
     <>
-      <RamadanCalendar />
+      {/* <RamadanCalendar /> */}
     
     <div className="m-4 sm:space-y-4 space-y-3">
       <div className="w-full grid grid-cols-3 sm:text-xl text-sm sm:font-bold font-semibold sm:gap-4 gap-3">
